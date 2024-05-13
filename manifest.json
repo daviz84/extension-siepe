@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "name": "SIEPE DEV",
+    "version": "1.0.0",
+    "description": "Buscar endereços do SIEPE",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "webRequest"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.siepe.educacao.pe.gov.br/*"
+            ],
+            "css": [],
+            "js": [
+                "scriptCadastro.js",
+                "scriptBoletim.js",
+                "scriptHistorico.js",
+                "scriptPlanejamentos.js"
+            ]
+        }
+    ],
+    "action": {},
+    "host_permissions": [
+        "https://www.siepe.educacao.pe.gov.br/"
+    ]
+}
