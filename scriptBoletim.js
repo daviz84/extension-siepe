@@ -36,6 +36,6 @@ if (document.URL.includes('ws/eol/aluno/documentos/BoletimEscolar')) {
 
 		}
 
-	}, 1000);
+	}, 5000);
 
 }
