@@ -20,10 +20,20 @@
                 "scriptHistorico.js",
                 "scriptPlanejamentos.js"
             ]
+        },
+        {
+            "matches": [
+                "https://presenca.mec.gov.br/seb/registra-frequencia-escola/*"
+            ],
+            "css": ["styles.87b8b25c5debe806658a.css"],
+            "js": [
+                "scriptPresenca.js"
+            ]
         }
     ],
     "action": {},
     "host_permissions": [
-        "https://www.siepe.educacao.pe.gov.br/"
+        "https://www.siepe.educacao.pe.gov.br/",
+        "https://presenca.mec.gov.br/"
     ]
 }
