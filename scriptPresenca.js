@@ -18,7 +18,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 .offcanvas{
     width: 30% !important;
-    min-width: 30% !important;
+    min-width: 450px !important;
 }
 
 .statusAluno {
@@ -103,20 +103,20 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 <div class="offcanvas-body">
 
-    <div class="card">
+    <div id="alertUpdate" class="m-4 alert alert-danger alert-dismissible fade show" role="alert" hidden>
+        <p id="descAlert">IMPORTAR UM NOVO ARQUIVO IRÁ SUBSTITUIR O ARMAZENADO NO LOCALSTORAGE</p>
+        <button id="closeAlert" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
-        <div id="formFormatarTabela" class="card m-1" style="heigth: 150px">
+    <div id="cardFormatarTabela" class="card">
+
+        <div id="formFormatarTabela" class="card m-1" style="height: 105px">
 
             <input id="botaoFormatarTabela" class="btn m-1 btn-primary h-100" value="FORMATAR TABELA">
 
         </div>
     
         <div id="formUpdate" class="card m-1" hidden>
-
-            <div id="alertUpdate" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
-                <p id="descAlert">IMPORTAR UM NOVO ARQUIVO IRÁ SUBSTITUIR O ARMAZENADO NO LOCALSTORAGE</p>
-                <button id="closeAlert" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
 
             <div class="p-2">
 
@@ -137,16 +137,16 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         </div>
 
-        <div id="formGerar" class="card m-1" hidden>
+        <div id="formGerar" class="card m-1" style="height: 500px" hidden>
 
             <div class="p-2">
 
                 <div class="form-floating">
-                    <textarea class="form-control h-100" id="txtAreaMatriculas"></textarea>
-                    <label id="lblMatriculas" for="txtAreaMatriculas">JSON</label>
+                    <textarea class="form-control h-400" id="txtAreaAlunos"></textarea>
+                    <label id="lblAlunos" for="txtAreaAlunos">JSON</label>
                 </div>
 
-                <div class="d-flex my-2" hidden>
+                <div class="d-flex my-2">
 
                     <div class="d-flex flex-column align-items-end mx-1">
                         <input class="btn btn-primary col-12 mb-1" id="botaoGerar" value="GERAR">
@@ -179,6 +179,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let descAlert = document.getElementById("descAlert")
     let alertUpdate = document.getElementById("alertUpdate")
     let botoesFechar = document.querySelectorAll(".btn-close")
+    let txtAreaAlunos = document.getElementById("txtAreaAlunos")
+    let botaoGerar = document.getElementById("botaoGerar")
 
 
     // EVENTOS
@@ -206,6 +208,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
                 formFormatarTabela.hidden = true
                 formUpdate.hidden = false
                 formGerar.hidden = true
+                alertUpdate.hidden = false
                 break
 
             case "gerarArquivo":
@@ -241,13 +244,17 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
+    botaoGerar.addEventListener("click", () =>{
+
+        gerarJson()
+
+
+    })
+
 
     //PARTE FUNCIONAL DO CÓDIGO
 
     function importarDatabase() {
-
-        localStorage.clear = function(){alert("tentou apagar")}
-
         const input = document.getElementById('inputArquivo');
         const arquivo = input.files[0];
 
@@ -255,7 +262,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         fileReader.onload = function (e) {
 
-            localStorage.setItem("alunos", fileReader.result)
+            resultado = fileReader.result
+
+            localStorage.setItem("alunos", resultado)
             input.value = ""
             alertUpdate.hidden = false
             alertUpdate.classList.remove("alert-danger")
@@ -286,8 +295,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             alertUpdate.classList.add("alert-danger")
             alertUpdate.classList.add("show")
-            alertUpdate.hidden = false
             descAlert.innerText = "AINDA NÃO EXISTEM DADOS DOS ESTUDANTES NO LOCALSTORAGE"
+            alertUpdate.hidden = false
+
 
         } else {
 
@@ -348,6 +358,14 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
         }
 
 
+
+    }
+
+    function gerarJson(){
+
+        txtAreaAlunos.value = localStorage.getItem("alunos")
+
+        
 
     }
 
