@@ -21,6 +21,10 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     min-width: 450px !important;
 }
 
+.offcanvas *{
+    font-size: 1.2rem !important;
+}
+
 .statusAluno {
 
     background-color: rgba(255, 255, 255, 0.411);
@@ -110,9 +114,10 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     <div id="cardFormatarTabela" class="card">
 
-        <div id="formFormatarTabela" class="card m-1" style="height: 105px">
+        <div id="formFormatarTabela" class="card m-1" style="height: 155px">
 
             <input id="botaoFormatarTabela" class="btn m-1 btn-primary h-100" value="FORMATAR TABELA">
+            <input id="botaoLimparFormatacaoTabela" class="btn m-1 btn-danger h-50" value="LIMPAR FORMATAÇÃO TABELA">
 
         </div>
     
@@ -137,19 +142,23 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         </div>
 
-        <div id="formGerar" class="card m-1" style="height: 500px" hidden>
+        <div id="formGerar" class="card m-1" style="height: 650px" hidden>
 
             <div class="p-2">
 
                 <div class="form-floating">
-                    <textarea class="form-control h-400" id="txtAreaAlunos"></textarea>
+                    <textarea class="form-control h-300" id="txtAreaAlunos" disabled></textarea>
                     <label id="lblAlunos" for="txtAreaAlunos">JSON</label>
+
+                    <textarea class="form-control h-200" id="txtAreaAlunosNovos"></textarea>
+                    <label id="lblAlunos" for="txtAreaAlunosNovos">JSON</label>
                 </div>
 
                 <div class="d-flex my-2">
 
                     <div class="d-flex flex-column align-items-end mx-1">
-                        <input class="btn btn-primary col-12 mb-1" id="botaoGerar" value="GERAR">
+                        <input class="btn btn-dark col-12 mb-1" id="botaoGerarJson" value="GERAR JSON">
+                        <a class="btn btn-success col-12 mb-1" id="botaoBaixarJson">BAIXAR JSON</a>
                         <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
                     </div>
 
@@ -168,6 +177,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     document.body.append(divoffcanvas)
 
     //INSTANCIAÇÃO DOS ELEMENTOS E VARIÁVEIS DE CONTROLE
+    let nomesAlunosPresenca = {}
+    let nomesAlunosNew = []
     let offcanvas = document.getElementById('offcanvasId')
     let botoesAlteraJanela = document.getElementsByClassName('botaoAlteraJanela')
     let selectOperacao = document.getElementById('selectOperacao')
@@ -176,11 +187,14 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let formGerar = document.getElementById('formGerar')
     let botaoSubmit = document.getElementById('botaoSubmit')
     let botaoFormatarTabela = document.getElementById("botaoFormatarTabela")
+    let botaoLimparFormatacaoTabela = document.getElementById("botaoLimparFormatacaoTabela")
     let descAlert = document.getElementById("descAlert")
     let alertUpdate = document.getElementById("alertUpdate")
     let botoesFechar = document.querySelectorAll(".btn-close")
     let txtAreaAlunos = document.getElementById("txtAreaAlunos")
-    let botaoGerar = document.getElementById("botaoGerar")
+    let botaoGerarJson = document.getElementById("botaoGerarJson")
+    let txtAreaAlunosNovos = document.getElementById("txtAreaAlunosNovos")
+    let botaoBaixarJson = document.getElementById("botaoBaixarJson")
 
 
     // EVENTOS
@@ -209,6 +223,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
                 formUpdate.hidden = false
                 formGerar.hidden = true
                 alertUpdate.hidden = false
+                alertUpdate.classList.add("show")
                 break
 
             case "gerarArquivo":
@@ -228,7 +243,14 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     botaoFormatarTabela.addEventListener("click", () => {
 
+        limparFormatacao()
         formatarTabela()
+
+    })
+
+    botaoLimparFormatacaoTabela.addEventListener("click", () => {
+
+        limparFormatacao()
 
     })
 
@@ -244,17 +266,38 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
-    botaoGerar.addEventListener("click", () =>{
+    botaoGerarJson.addEventListener("click", () => {
 
         gerarJson()
-
 
     })
 
 
+
+
+    function formataObjAluno(objAluno) {
+
+        let dadosFormatados
+        //FORMATA
+        dadosFormatados = `"${nomeAlunoPropriedade}":{\n`
+        dadosFormatados += (JSON.stringify(nomesAlunosPresenca[nomeAlunoPropriedade])).replace('{', "")
+        dadosFormatados = dadosFormatados.replaceAll('"nomeSerie"', '"nomeSerie"')
+        dadosFormatados = dadosFormatados.replaceAll('"nascimentoAluno"', '\n"nascimentoAluno"')
+        dadosFormatados = dadosFormatados.replaceAll('"ok"', '\n"ok"')
+        dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
+
+        return dadosFormatados
+
+    }
+
     //PARTE FUNCIONAL DO CÓDIGO
 
     function importarDatabase() {
+
+        // LIMPA CASO UMA NOVA DATABASE SEJA INCLUIDA
+        txtAreaAlunos.innerHTML = ""
+        txtAreaAlunosNovos.innerHTML = ""
+
         const input = document.getElementById('inputArquivo');
         const arquivo = input.files[0];
 
@@ -303,14 +346,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
 
-            let nomesAlunosPresenca = {}
-
-            alunosPresenca.forEach(aluno => {
-
-                nomesAlunosPresenca[aluno.nome] = { "nomeSerie": aluno.nomeSerie, "ok": aluno.ok }
-
-            })
-
+            nomesAlunosPresenca = alunosPresenca
 
             let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
 
@@ -326,28 +362,29 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                     if (nomesAlunosPresenca[nomeAluno.innerText]["nomeSerie"] == serieAluno.innerText) {
 
-                        serieAluno.innerHTML = `<div class="divFormatada"><div class="statusAluno" style="color: green"> ✔ </div>  ${serieAluno.innerText}</div>`
+                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: green"> ✔ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                     } else {
 
-                        serieAluno.innerHTML = `<div class="divFormatada"><div class="statusAluno" style="color: red"> ⚠ </div>  ${serieAluno.innerText}</div>`
+                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: red"> ⚠ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                     }
 
                     if (nomesAlunosPresenca[nomeAluno.innerText]["ok"] == true) {
 
-                        nomeAluno.innerHTML = `<div class="divFormatada"><div class="statusAluno" style="color: green"> ✔ </div>  ${nomeAluno.innerText}</div>`
+                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> ✔ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
 
                     } else {
 
-                        nomeAluno.innerHTML = `<div class="divFormatada"><div class="statusAluno" style="color: red"> ⚠ </div>  ${nomeAluno.innerText}</div>`
+                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ⚠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
 
                     }
 
 
                 } else {
 
-                    nomeAluno.innerHTML = `<div class="divFormatada"><div class="statusAluno" style="color: yellow"> ≠ </div>  ${nomeAluno.innerText}</div>`
+                    nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                    serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                 }
 
@@ -361,11 +398,142 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     }
 
-    function gerarJson(){
+    function gerarJson() {
 
-        txtAreaAlunos.value = localStorage.getItem("alunos")
+        //limparFormatacao()
 
-        
+        if (localStorage.getItem("alunos") == null) {
+
+            //EXECUTADA PARA A PRIMEIRA VEZ GERANDO OS DADOS DOS ALUNOS
+
+            nomesAlunosPresenca = {}
+
+        } else {
+
+            //EXECUTADA PARA GERAR O ARQUIVO A PARTIR DE DADOS INCLUÍDOS NO INPUT E ADICIONAR NOVOS ALUNOS
+
+            let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
+
+            nomesAlunosPresenca = alunosPresenca
+
+        }
+
+        let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
+
+        linhasTabela.forEach(linha => {
+
+            let nomeAluno = ""
+            let serieAluno = ""
+            let nascimentoAluno = ""
+
+
+            if (linha.querySelectorAll(".divFormatada").length > 0) {
+
+                nomeAluno = linha.querySelector(".mat-column-nome .divFormatada .nomeAluno").innerText
+                serieAluno = linha.querySelector(".mat-column-noSerie .divFormatada .serieAluno").innerText
+                nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
+
+            } else {
+
+                nomeAluno = linha.querySelector(".mat-column-nome").innerText
+                serieAluno = linha.querySelector(".mat-column-noSerie").innerText
+                nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
+
+
+            }
+
+
+            if (!nomesAlunosPresenca[nomeAluno]) {
+
+                nomesAlunosPresenca[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "ok": true, "new": true }
+
+            }
+
+        })
+
+
+        for (nomeAlunoPropriedade in nomesAlunosPresenca) {
+
+            //EXECUTADA PARA INCLUIR OS ALUNOS QUE AINDA NÃO ESTÃO NO TXTAREA DE GERAR ARQUIVO
+
+            if (!txtAreaAlunos.innerHTML.includes(nomeAlunoPropriedade)) {
+
+                let dadosFormatados
+
+                dadosFormatados = formataObjAluno(nomesAlunosPresenca[nomeAlunoPropriedade])
+
+                if (nomesAlunosPresenca[nomeAlunoPropriedade]["new"]) {
+
+                    delete nomesAlunosPresenca[nomeAlunoPropriedade]["new"]
+
+                    //FORMATA
+                    dadosFormatados = formataObjAluno(nomesAlunosPresenca[nomeAlunoPropriedade])
+
+                    nomesAlunosNew.push(dadosFormatados)
+
+                } else {
+                    txtAreaAlunos.disabled = false
+                    txtAreaAlunos.innerHTML += dadosFormatados // PREENCHE O TXT AREA A CADA PAGINA DE ALUNOS
+                    txtAreaAlunos.disabled = true
+                }
+
+            }
+
+        }
+
+        nomesAlunosNew.forEach((aluno) => {
+
+            if (!txtAreaAlunosNovos.innerHTML.includes(aluno)) {
+
+
+                txtAreaAlunosNovos.innerHTML += aluno
+            }
+
+        })
+
+        gerarAquivoDownload()
+    }
+
+    function limparFormatacao() {
+
+        celulasFormatadas = document.querySelectorAll(".divFormatada")
+
+        celulasFormatadas.forEach((div) => {
+
+            if (div.classList.contains("divFormatadaNome")) {
+
+                div.parentElement.innerText = div.querySelector(".nomeAluno").innerText
+
+            } else if (div.classList.contains("divFormatadaSerie")) {
+
+
+                div.parentElement.innerText = div.querySelector(".serieAluno").innerText
+
+            }
+
+        })
+
+    }
+
+    function gerarAquivoDownload() {
+
+        let conteudo = ""
+
+        if (txtAreaAlunosNovos.innerHTML.length == 0) {
+
+            conteudo = `{${txtAreaAlunos.innerHTML.trim().slice(0, -1)}}`
+
+        } else {
+
+            conteudo = `{${txtAreaAlunos.innerHTML.trim()}\n\n${txtAreaAlunosNovos.innerHTML.trim().slice(0, -1)}}`
+
+        }
+
+        let blob = new Blob([conteudo], { type: "application/json" })
+        let url = window.URL.createObjectURL(blob)
+        botaoBaixarJson.href = url
+        botaoBaixarJson.download = `alunos_presenca_${new Date().toLocaleString()}`
+        //window.URL.revokeObjectURL(url)
 
     }
 
