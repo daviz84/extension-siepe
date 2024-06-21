@@ -90,14 +90,31 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     <input type="button" class="botaoAlteraJanela btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></input>
 </div>
 
-<div class="col-5 m-4 form-floating">
-    <select id="selectOperacao" class="form-select" id="floatingSelect" aria-label="">
-        <option id="formatarTabela" value="formatarTabela">Formatar tabela</option>
-        <option id="updateDados" value="inserirDados">Atualização de dados trimestral</option>
-        <option id="setDatabase" value="gerarArquivo">Gerar arquivo</option>
-    </select>
-    <label for="floatingSelect">Opções</label>
+<div class="d-flex justify-content-between"> 
+
+    <div class="col-4 m-4 form-floating">
+        <select id="selectOperacao" class="form-select" id="floatingSelect" aria-label="">
+            <option id="formatarTabela" value="formatarTabela">Formatar tabela</option>
+            <option id="updateDados" value="inserirDados">Atualização de dados trimestral</option>
+            <option id="setDatabase" value="gerarArquivo">Gerar arquivo</option>
+        </select>
+        <label for="floatingSelect">Opções</label>
+    </div>
+
+    <div class="d-flex"> 
+
+        <div id="alertErros" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
+            <strong id="descAlert">0</strong>
+        </div>
+
+        <div id="alertFora" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
+            <strong id="descAlert">0</strong>
+        </div>
+    
+    </div>
+
 </div>
+
 
 <div class="mx-3">
     <div hidden class="progress mb-2" id="bar-group-progress">
@@ -272,6 +289,13 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
+    txtAreaAlunosNovos.addEventListener("input", () =>{
+
+
+        gerarAquivoDownload()
+
+    })
+
 
 
 
@@ -295,8 +319,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     function importarDatabase() {
 
         // LIMPA CASO UMA NOVA DATABASE SEJA INCLUIDA
-        txtAreaAlunos.innerHTML = ""
-        txtAreaAlunosNovos.innerHTML = ""
+        txtAreaAlunos.value = ""
+        txtAreaAlunosNovos.value = ""
 
         const input = document.getElementById('inputArquivo');
         const arquivo = input.files[0];
@@ -456,7 +480,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             //EXECUTADA PARA INCLUIR OS ALUNOS QUE AINDA NÃO ESTÃO NO TXTAREA DE GERAR ARQUIVO
 
-            if (!txtAreaAlunos.innerHTML.includes(nomeAlunoPropriedade)) {
+            if (!txtAreaAlunos.value.includes(nomeAlunoPropriedade)) {
 
                 let dadosFormatados
 
@@ -473,7 +497,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                 } else {
                     txtAreaAlunos.disabled = false
-                    txtAreaAlunos.innerHTML += dadosFormatados // PREENCHE O TXT AREA A CADA PAGINA DE ALUNOS
+                    txtAreaAlunos.value += dadosFormatados // PREENCHE O TXT AREA A CADA PAGINA DE ALUNOS
                     txtAreaAlunos.disabled = true
                 }
 
@@ -483,10 +507,10 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         nomesAlunosNew.forEach((aluno) => {
 
-            if (!txtAreaAlunosNovos.innerHTML.includes(aluno)) {
+            if (!txtAreaAlunosNovos.value.includes(aluno)) {
 
 
-                txtAreaAlunosNovos.innerHTML += aluno
+                txtAreaAlunosNovos.value += aluno
             }
 
         })
@@ -519,13 +543,13 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         let conteudo = ""
 
-        if (txtAreaAlunosNovos.innerHTML.length == 0) {
+        if (txtAreaAlunosNovos.value.length == 0) {
 
-            conteudo = `{${txtAreaAlunos.innerHTML.trim().slice(0, -1)}}`
+            conteudo = `{${txtAreaAlunos.value.trim().slice(0, -1)}}`
 
         } else {
 
-            conteudo = `{${txtAreaAlunos.innerHTML.trim()}\n\n${txtAreaAlunosNovos.innerHTML.trim().slice(0, -1)}}`
+            conteudo = `{${txtAreaAlunos.value.trim()}\n\n${txtAreaAlunosNovos.value.trim().slice(0, -1)}}`
 
         }
 
