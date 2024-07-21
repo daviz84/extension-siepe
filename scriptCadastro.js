@@ -35,6 +35,7 @@ text-align: center;
 </style>`
 
     // POSICIONA O BOTÃO NO INÍCIO DA DIV E NÃO NO FINAL
+    
     let layoutCabecalhoGestao = document.getElementsByClassName('LayoutCabecalhoGestao')[0]
 
     // POSICIONA O BOTÃO NO INÍCIO DA DIV E NÃO NO FINAL

@@ -17,17 +17,26 @@
             "js": [
                 "scriptCadastro.js",
                 "scriptBoletim.js",
-                "scriptHistorico.js",
-                "scriptPlanejamentos.js"
+                "scriptHistorico.js"
             ]
         },
         {
             "matches": [
                 "https://presenca.mec.gov.br/seb/registra-frequencia-escola/*"
             ],
-            "css": ["styles.87b8b25c5debe806658a.css"],
+            "css": ["css/styles.87b8b25c5debe806658a.css"],
             "js": [
                 "scriptPresenca.js"
+            ]
+        },
+        {
+            "matches": [
+                "https://www.siepe.educacao.pe.gov.br/diarioclasse/DiarioClasse.do?apontamentoDesempenho=true"
+            ],
+            "css": ["css/bootstrap_edit.css"],
+            "js": [
+                "scriptPlanejamentos.js",
+                "bootstrap.bundle.min.js"
             ]
         }
     ],
