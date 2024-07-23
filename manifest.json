@@ -17,7 +17,8 @@
             "js": [
                 "scriptCadastro.js",
                 "scriptBoletim.js",
-                "scriptHistorico.js"
+                "scriptHistorico.js",
+                "scriptBuscaHistorico.js"
             ]
         },
         {

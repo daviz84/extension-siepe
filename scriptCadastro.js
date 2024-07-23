@@ -35,7 +35,7 @@ text-align: center;
 </style>`
 
     // POSICIONA O BOTÃO NO INÍCIO DA DIV E NÃO NO FINAL
-    
+
     let layoutCabecalhoGestao = document.getElementsByClassName('LayoutCabecalhoGestao')[0]
 
     // POSICIONA O BOTÃO NO INÍCIO DA DIV E NÃO NO FINAL
@@ -181,7 +181,48 @@ text-align: center;
                 </div>
 
             </form>
+            </br>
 
+            <h1>PESQUISAR HISTÓRICO</h1>
+
+
+            <form id="formRequestHistorico" class="card m-1">
+
+                <div class="col-4 p-2">
+
+                    <input type="text" name="ordenacao" hidden>
+                    <input type="text" name="codigoAluno" hidden>
+                    <input type="text" name="nomeAluno" hidden>
+                    <input type="text" name="semestre" hidden>
+                    <input type="text" name="curso" hidden>
+                    <input type="text" name="serie" hidden>
+                    <input type="text" name="turma" hidden>
+                    <input type="text" name="actionType" hidden>
+                    <input type="text" name="dadosAluno" hidden>
+
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">ANO</span>
+                        <input name="ano" type="text" class="form-control" value="">
+                    </div>
+
+                    <div class="d-flex my-2">
+
+                        <div class="form-floating">
+                            <textarea class="form-control h-100" id="txtAreaMatriculasHistorico"></textarea>
+                            <label id="lblMatriculas" for="txtAreaMatriculasHistorico">MATRICULAS</label>
+                        </div>
+
+                        <div class="d-flex flex-column align-items-end mx-1">
+                            <input class="btn btn-primary col-12 mb-1" id="botaoSubmitHistorico" type="submit" value="PESQUISAR">
+                            <input class="btn btn-danger col-12 mb-1" id="botaoExcluirHistorico" value="LIMPAR">
+                        </div>
+
+                    </div>
+                
+                
+                </div>
+
+            </form>
 
 
         </div>
