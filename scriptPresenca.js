@@ -6,13 +6,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 .formataBotao {
 
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    width: 75%;
-    justify-content: end;
-    align-items: start;
-
+    display: block;
+    unicode-bidi: isolate;
 
 }
 
@@ -50,8 +45,12 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 `
 
     toolbar = document.getElementsByClassName("div-componente-interno")[0]
+    bodyMain = document.getElementById("container-1")
 
     toolbar.innerHTML = `<div class="formataBotao"> <input class="botaoAlteraJanela btn btn-primary mt-1 btn-lg" id="botaoAlteraJanela" type="button" value="ÁREA DEV" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></input> </div>` + toolbar.innerHTML
+
+    // bodyMain.innerHTML = `<div class="formataBotao"> <input class="botaoAlteraJanela btn btn-primary mt-1 btn-lg" id="botaoAlteraJanela" type="button" value="ÁREA DEV" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></input> </div>` + bodyMain.innerHTML
+
 
     document_Um = document.getElementById("container-1")
 
@@ -104,11 +103,11 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     <div class="d-flex"> 
 
         <div id="alertErros" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
-            <strong id="descAlert">0</strong>
+            <strong id="descAlertErros">0</strong>
         </div>
 
-        <div id="alertFora" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
-            <strong id="descAlert">0</strong>
+        <div id="alertFora" class="m-4 alert alert-warning alert-dismissible fade show" role="alert">
+            <strong id="descAlertFora">0</strong>
         </div>
     
     </div>
@@ -212,6 +211,11 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let botaoGerarJson = document.getElementById("botaoGerarJson")
     let txtAreaAlunosNovos = document.getElementById("txtAreaAlunosNovos")
     let botaoBaixarJson = document.getElementById("botaoBaixarJson")
+    let descAlertErros = document.getElementById("descAlertErros")
+    let descAlertFora = document.getElementById("descAlertFora")
+    let contagemErros = 0
+    let contagemFora = 0
+    let ngx_overlay = document.getElementsByClassName("ngx-overlay")[0]
 
 
     // EVENTOS
@@ -296,8 +300,10 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
+    ngx_overlay.addEventListener((''))
 
 
+    //PARTE FUNCIONAL DO CÓDIGO
 
     function formataObjAluno(objAluno) {
 
@@ -313,8 +319,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
         return dadosFormatados
 
     }
-
-    //PARTE FUNCIONAL DO CÓDIGO
 
     function importarDatabase() {
 
@@ -374,7 +378,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
 
-
             linhasTabela.forEach(linha => {
 
                 nomeAluno = linha.querySelector(".mat-column-nome")
@@ -398,15 +401,17 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                         nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> ✔ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
 
+
                     } else {
 
                         nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ⚠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
-
+                        contagemErros++
                     }
 
 
                 } else {
 
+                    contagemFora++
                     nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
                     serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
@@ -414,9 +419,10 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             });
 
-
-
         }
+
+        descAlertErros.innerText = contagemErros
+        descAlertFora.innerText = contagemFora
 
 
 
