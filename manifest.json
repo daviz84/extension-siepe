@@ -18,7 +18,8 @@
                 "scriptCadastro.js",
                 "scriptBoletim.js",
                 "scriptHistorico.js",
-                "scriptBuscaHistorico.js"
+                "scriptBuscaHistorico.js",
+                "bootstrap.bundle.min.js"
             ]
         },
         {
