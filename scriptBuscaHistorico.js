@@ -109,9 +109,24 @@ async function tratarPesquisa(txtDocument) {
     card_body.style.flexDirection = "column"
 
 
-    let card_title = document.createElement("h5")
+    let card_title = document.createElement("div")
     card_title.classList.add("card-title")
-    card_title.innerText = `${chkNome}`
+
+
+    let card_title_button = document.createElement("input")
+    card_title_button.type = "button"
+    card_title_button.classList.add("btn")
+    card_title_button.classList.add("btn-primary")
+    card_title_button.style.color = "blank"
+    card_title_button.value = `${chkNome}`
+
+    card_title_button.addEventListener("click", () => {
+
+        navigator.clipboard.writeText(card_title_button.value)
+
+
+
+    })
 
     let iframe_aluno = document.createElement("iframe")
     iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/`
@@ -120,6 +135,7 @@ async function tratarPesquisa(txtDocument) {
 
     // mesclando
 
+    card_title.appendChild(card_title_button)
     card_body.appendChild(card_title)
     card_body.appendChild(iframe_aluno)
     card_historico.appendChild(card_body)

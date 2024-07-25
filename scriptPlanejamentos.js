@@ -141,6 +141,7 @@ function iniciarObserverFrequencia() {
 
                 //EXECUTADOS PARA CADA MODIFICAÇÃO
                 adicionaEventos()
+                alteraVisibilidade()
 
             }
 
@@ -149,6 +150,8 @@ function iniciarObserverFrequencia() {
             observer.observe(iframe, { attributes: true, childList: false, subtree: true })
 
         })
+        
+        alteraVisibilidade()
 
 
 
@@ -232,7 +235,9 @@ function atualizaTabela() {
 
 function alteraVisibilidade() {
 
-    tabelaDiarioClasseLinhas = document.querySelectorAll(".TabelaDiarioClasse tbody > tr")
+    tabelaDiarioClasse = document.querySelectorAll(".TabelaDiarioClasse")[0]
+
+    tabelaDiarioClasseLinhas = tabelaDiarioClasse.querySelectorAll("tbody > tr")
 
     tabelaDiarioClasseLinhas.forEach((linha) => {
 
