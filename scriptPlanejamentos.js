@@ -25,12 +25,7 @@ divoffcanvas.innerHTML = `
 
     <div class="offcanvas-body">
 
-        <div class="card">
-
-            <div hidden class="input-group m-4 w-50">
-                <span class="input-group-text" id="inputGroup-sizing-default">RETIRAR</span>
-                <input id="faltasTirar" type="number" value="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-            </div>
+        <div class="card mb-5">
 
             <div class="form-floating col-10 m-4">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
@@ -59,6 +54,22 @@ divoffcanvas.innerHTML = `
 
         </div>
 
+        <div class="card">
+
+            <div class="input-group m-4 w-50">
+                <span class="input-group-text" id="inputGroup-sizing-default">DELIMITADOR</span>
+                <input id="faltasTirar" type="number" value="0" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            </div>
+
+            <div class="form-floating col-10 m-4">
+                <textarea class="form-control" placeholder="Leave a comment here" id="txtAreaFormataFaltas" style="cursor: pointer"></textarea>
+                <label for="floatingTextarea">Faltas dos alunos</label>
+            </div>
+
+            <input id="botaoIniciaFormatacaoFaltas" type="button" class="btn btn-secondary m-1 border border-light" value="FORMATAR"></input>
+
+        </div>
+
     </div>
 
 </div>
@@ -78,6 +89,7 @@ var dadosAlunos = {}
 var observer
 let contagemMutations = 0
 let faltasTirar = document.getElementById("faltasTirar")
+let txtAreaFormataFaltas = document.getElementById("txtAreaFormataFaltas")
 
 
 // EVENTOS 
@@ -85,6 +97,10 @@ let faltasTirar = document.getElementById("faltasTirar")
 botaoIniciaFrequencia.addEventListener("click", () => { iniciarObserverFrequencia() })
 
 botaoEncerraFrequencia.addEventListener("click", () => { encerraObserver() })
+
+botaoIniciaFormatacaoFaltas.addEventListener("click", () => { formataTabelaFaltas() })
+
+txtAreaFormataFaltas.addEventListener("click", () =>{ navigator.clipboard.writeText(txtAreaFormataFaltas.value)})
 
 
 function iniciarObserverPlanejamento() {
@@ -129,15 +145,16 @@ function iniciarObserverPlanejamento() {
 
 function iniciarObserverFrequencia() {
 
+    botaoIniciaFrequencia.disabled = true
     formataTxtArea()
     atualizaTabela()
 
     observer = new MutationObserver((mutations) => {
 
 
-        mutations.forEach((mut) =>{
+        mutations.forEach((mut) => {
 
-            if(mut.target.id == "txtDataFrequenciaDisciplina"){
+            if (mut.target.id == "txtDataFrequenciaDisciplina") {
 
                 //EXECUTADOS PARA CADA MODIFICAÇÃO
                 adicionaEventos()
@@ -150,7 +167,7 @@ function iniciarObserverFrequencia() {
             observer.observe(iframe, { attributes: true, childList: false, subtree: true })
 
         })
-        
+
         alteraVisibilidade()
 
 
@@ -174,13 +191,14 @@ function encerraObserver() {
         dadosAlunos = {}
         floatingTextarea.value = ""
         floatingTextarea.disabled = false
+        botaoIniciaFrequencia.disabled = false
 
         linhasTabelaFaltas = tbodytabelaDados.querySelectorAll("tr")
         linhasTabelaFaltas.forEach((linha) => {
             linha.remove()
         })
 
-        for (aluno in dadosAlunos){
+        for (aluno in dadosAlunos) {
 
             dadosAlunos[aluno] = undefined
         }
@@ -195,7 +213,7 @@ function formataTxtArea() {
     content.forEach((linhaData, i) => {
 
         linhaData = linhaData.split(" | ")
-        dadosAlunos[linhaData[0]] = { 'nome': linhaData[0], 'freq': parseInt(linhaData[1]) }
+        dadosAlunos[linhaData[0]] = { 'nome': linhaData[0], 'freq': parseInt(linhaData[1]), 'pend': true}
 
     })
 
@@ -205,7 +223,7 @@ function formataTxtArea() {
 function atualizaTabela() {
 
     let linhasTabelaFaltas = tbodytabelaDados.querySelectorAll("tr")
-    linhasTabelaFaltas.forEach((linha) =>{
+    linhasTabelaFaltas.forEach((linha) => {
 
         linha.remove()
 
@@ -214,18 +232,20 @@ function atualizaTabela() {
 
     for (aluno in dadosAlunos) {
 
-        if(aluno != (undefined || "")){
+        console.log(aluno)
+
+        if (dadosAlunos[aluno].pend == true) {
 
             let linha = document.createElement("tr")
             let tdNome = document.createElement("td")
             let tdFaltas = document.createElement("td")
-    
+
             tdNome.innerText = dadosAlunos[aluno]['nome']
             tdFaltas.innerText = dadosAlunos[aluno]['freq']
-    
+
             linha.appendChild(tdNome)
             linha.appendChild(tdFaltas)
-    
+
             tbodytabelaDados.appendChild(linha)
 
 
@@ -283,36 +303,43 @@ function adicionaEventos() {
 
     chkFNJ.forEach((chk) => {
 
-        chk.addEventListener("input", function() {
+        chk.addEventListener("input", function () {
 
-            if(chk.checked === false){
+            if (chk.checked == false) {
 
                 let tdChk = chk.parentElement
                 let trChk = tdChk.parentElement
-    
+
                 let aluno = trChk.querySelector("td > a").innerText
-                console.log(aluno)
                 let freq = dadosAlunos[aluno].freq
-    
+
                 dadosAlunos[aluno].freq = freq - 1
-    
-    
-                console.log(dadosAlunos[aluno])
+
+                if(dadosAlunos[aluno].freq <= parseInt(faltasTirar.value)){
+
+                    dadosAlunos[aluno].pend = false
+
+                }
+
                 atualizaTabela()
 
-            } else{
+            } else {
 
                 let tdChk = chk.parentElement
                 let trChk = tdChk.parentElement
-    
+
                 let aluno = trChk.querySelector("td > a").innerText
-                console.log(aluno)
                 let freq = dadosAlunos[aluno].freq
-    
+
                 dadosAlunos[aluno].freq = freq + 1
-    
-    
-                console.log(dadosAlunos[aluno])
+
+                if(dadosAlunos[aluno].freq >= parseInt(faltasTirar.value)){
+
+                    dadosAlunos[aluno].pend = true
+
+                }
+
+
                 atualizaTabela()
 
 
@@ -321,6 +348,40 @@ function adicionaEventos() {
 
 
         })
+
+    })
+
+
+}
+
+function formataTabelaFaltas() {
+
+    tabelaDiarioClasseFaltas = document.querySelectorAll(".TabelaDiarioClasse")[0]
+
+    if (document.querySelectorAll(".TabelaDiarioClasse").length > 1) {
+
+        tabelaDiarioClasseFaltas = document.querySelectorAll(".TabelaDiarioClasse")[1]
+
+
+    }
+
+    tabelaDiarioClasseFaltasLinhas = tabelaDiarioClasseFaltas.querySelectorAll("tbody > tr:not([id])")
+
+    tabelaDiarioClasseFaltasLinhas.forEach((linha) => {
+
+
+        qtdFaltas = linha.querySelector(".campoFaltaNaoJustificada")
+        console.log(qtdFaltas)
+
+        if (parseInt(qtdFaltas.value) > parseInt(faltasTirar.value)) {
+
+            aluno = linha.querySelector("td > a")
+
+            let nomeAluno = aluno.innerText
+
+            txtAreaFormataFaltas.value += `${nomeAluno} | ${parseInt(qtdFaltas.value)}\n`
+
+        }
 
     })
 
