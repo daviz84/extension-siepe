@@ -11,22 +11,23 @@
     "content_scripts": [
         {
             "matches": [
-                "https://www.siepe.educacao.pe.gov.br/*"
+                "https://www.siepe.educacao.pe.gov.br/gestaoescolar/*",
+                "https://www.siepe.educacao.pe.gov.br/gestaoescolar.do"
             ],
-            "css": [],
+            "css": ["css/bootstrap_edit.css"],
             "js": [
+                "bootstrap.bundle.min.js",
                 "scriptCadastro.js",
                 "scriptBoletim.js",
                 "scriptHistorico.js",
-                "scriptBuscaHistorico.js",
-                "bootstrap.bundle.min.js"
+                "scriptBuscaHistorico.js"
             ]
         },
         {
             "matches": [
                 "https://presenca.mec.gov.br/seb/registra-frequencia-escola/*"
             ],
-            "css": ["css/styles.87b8b25c5debe806658a.css"],
+            "css": ["css/styles.a8f19adb82ba740eae42.css"],
             "js": [
                 "scriptPresenca.js"
             ]

@@ -78,7 +78,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     document_Tres.style.paddingLeft = "0px"
 
     //REMOVE O STYLE ATUAL PARA INJETAR O MODIFICADO (NECESSÁRIO PELO BOOTSTRAP)
-    document.querySelector("link[href='/seb/styles.87b8b25c5debe806658a.css']").remove()
+    document.querySelector("link[href='/seb/styles.a8f19adb82ba740eae42.css']").remove()
 
     // CRIA E ADICIONA O OFFCANVAS LATERAL NA PAGINA
     let divoffcanvas = document.createElement('div')

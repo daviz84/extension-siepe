@@ -765,7 +765,7 @@ textarea.cdk-textarea-autosize-measuring {
 :not(mat-form-field)>button:not(.btn, .btn-close, .form-control),
 :not(mat-form-field)>input[type=button]:not(.btn, .btn-close, .form-control),
 :not(mat-form-field)>input[type=submit]:not(.btn, .btn-close, .form-control) {
-    background: 0 0
+    background: 0 0 !important;
 }
 
 button {
