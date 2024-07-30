@@ -273,7 +273,7 @@ function alteraVisibilidade() {
             let td = aluno.parentElement
             let tr = td.parentElement
 
-            if (!dadosAlunos[nomeAluno]) {
+            if (!dadosAlunos[nomeAluno] || dadosAlunos[nomeAluno]["pend"] == false) {
 
                 tr.style.display = "none"
                 // tr.remove()
