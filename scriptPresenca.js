@@ -22,14 +22,14 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 .statusAluno {
 
-    background-color: rgba(255, 255, 255, 0.411);
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    min-width: 40px;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
-    border: 1px dashed white;
+    border: 2px dashed;
+    border-radius: 20%;
+    font-size: 10px;
+    vertical-align: middle;
 
 }
 
@@ -313,7 +313,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
         dadosFormatados += (JSON.stringify(nomesAlunosPresenca[nomeAlunoPropriedade])).replace('{', "")
         dadosFormatados = dadosFormatados.replaceAll('"nomeSerie"', '"nomeSerie"')
         dadosFormatados = dadosFormatados.replaceAll('"nascimentoAluno"', '\n"nascimentoAluno"')
-        dadosFormatados = dadosFormatados.replaceAll('"ok"', '\n"ok"')
+        dadosFormatados = dadosFormatados.replaceAll('"pend"', '\n"pend"')
         dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
 
         return dadosFormatados
@@ -389,22 +389,21 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                     if (nomesAlunosPresenca[nomeAluno.innerText]["nomeSerie"] == serieAluno.innerText) {
 
-                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: green"> ✔ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: green"> OK </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                     } else {
 
-                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: red"> ⚠ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: red"> MODIF </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                     }
 
-                    if (nomesAlunosPresenca[nomeAluno.innerText]["ok"] == true) {
+                    if (nomesAlunosPresenca[nomeAluno.innerText]["pend"] == false) {
 
-                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> ✔ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> OK </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
 
 
                     } else {
-
-                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ⚠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ${nomesAlunosPresenca[nomeAluno.innerText]["pend"].type} </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
                         contagemErros++
                     }
 
@@ -412,8 +411,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
                 } else {
 
                     contagemFora++
-                    nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
-                    serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> ≠ </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+                    nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                    serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
 
                 }
 
@@ -475,7 +474,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             if (!nomesAlunosPresenca[nomeAluno]) {
 
-                nomesAlunosPresenca[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "ok": true, "new": true }
+                nomesAlunosPresenca[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": {"type": "nome cpf pdm"}, "new": true }
 
             }
 
