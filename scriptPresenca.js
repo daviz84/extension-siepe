@@ -182,6 +182,24 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             
             </div>
 
+            <table class="table table-hover table-striped" id="tabelaDados">
+                <thead>
+                    <tr>
+                        <th scope="col">ALUNOS</th>
+                        <th scope="col">SERIE</th>
+                        <th scope="col">DATA NASCIMENTO</th>
+                        <th scope="col">PENDENCIAS</th>
+                        <th scope="col">AÇÕES</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tbodytabelaDados">
+
+
+                </tbody>
+
+            </table>
+
         </div>
 
     </div>
