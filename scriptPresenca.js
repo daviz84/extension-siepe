@@ -40,6 +40,12 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 }
 
+.divChecks{
+
+    display: flex;
+    gap: 5px;
+}
+
 </style>
 
 `
@@ -158,7 +164,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         </div>
 
-        <div id="formGerar" class="card m-1" style="height: 650px" hidden>
+        <div id="formGerar" class="card m-1" hidden>
 
             <div class="p-2">
 
@@ -166,8 +172,24 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
                     <textarea class="form-control h-300" id="txtAreaAlunos" disabled></textarea>
                     <label id="lblAlunos" for="txtAreaAlunos">JSON</label>
 
-                    <textarea class="form-control h-200" id="txtAreaAlunosNovos"></textarea>
-                    <label id="lblAlunos" for="txtAreaAlunosNovos">JSON</label>
+                    <table class="table table-hover table-striped" id="tabelaDados" style="min-height: 200px">
+                        <thead>
+                            <tr>
+                                <th scope="col">ALUNOS</th>
+                                <th scope="col">SERIE</th>
+                                <th scope="col">DATA NASCIMENTO</th>
+                                <th scope="col">PENDENCIAS</th>
+                                <th scope="col">AÇÕES</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tbodytabelaDados">
+
+
+                        </tbody>
+
+                    </table>
+
                 </div>
 
                 <div class="d-flex my-2">
@@ -182,24 +204,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             
             </div>
 
-            <table class="table table-hover table-striped" id="tabelaDados">
-                <thead>
-                    <tr>
-                        <th scope="col">ALUNOS</th>
-                        <th scope="col">SERIE</th>
-                        <th scope="col">DATA NASCIMENTO</th>
-                        <th scope="col">PENDENCIAS</th>
-                        <th scope="col">AÇÕES</th>
-                    </tr>
-                </thead>
-
-                <tbody id="tbodytabelaDados">
-
-
-                </tbody>
-
-            </table>
-
         </div>
 
     </div>
@@ -212,7 +216,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     //INSTANCIAÇÃO DOS ELEMENTOS E VARIÁVEIS DE CONTROLE
     let nomesAlunosPresenca = {}
-    let nomesAlunosNew = []
+    let nomesAlunosNew = {}
+    let nomesAlunosTemporario = {}
     let offcanvas = document.getElementById('offcanvasId')
     let botoesAlteraJanela = document.getElementsByClassName('botaoAlteraJanela')
     let selectOperacao = document.getElementById('selectOperacao')
@@ -227,13 +232,14 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let botoesFechar = document.querySelectorAll(".btn-close")
     let txtAreaAlunos = document.getElementById("txtAreaAlunos")
     let botaoGerarJson = document.getElementById("botaoGerarJson")
-    let txtAreaAlunosNovos = document.getElementById("txtAreaAlunosNovos")
     let botaoBaixarJson = document.getElementById("botaoBaixarJson")
     let descAlertErros = document.getElementById("descAlertErros")
     let descAlertFora = document.getElementById("descAlertFora")
     let contagemErros = 0
     let contagemFora = 0
     let ngx_overlay = document.getElementsByClassName("ngx-overlay")[0]
+    let tabelaDados = document.getElementById("tabelaDados")
+    let tbodytabelaDados = document.getElementById("tbodytabelaDados")
 
 
     // EVENTOS
@@ -311,10 +317,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
-    txtAreaAlunosNovos.addEventListener("input", () =>{
+    botaoBaixarJson.addEventListener("click", () => {
 
-
-        gerarAquivoDownload()
+        formataObjAlunoTabela()
 
     })
 
@@ -323,16 +328,19 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     //PARTE FUNCIONAL DO CÓDIGO
 
-    function formataObjAluno(objAluno) {
+    function formataObjAluno(objAluno, nomeAlunoPropriedade) {
 
         let dadosFormatados
-        //FORMATA
+        //FORMATA PARA A NOTAÇÃO JSON
         dadosFormatados = `"${nomeAlunoPropriedade}":{\n`
         dadosFormatados += (JSON.stringify(nomesAlunosPresenca[nomeAlunoPropriedade])).replace('{', "")
         dadosFormatados = dadosFormatados.replaceAll('"nomeSerie"', '"nomeSerie"')
         dadosFormatados = dadosFormatados.replaceAll('"nascimentoAluno"', '\n"nascimentoAluno"')
         dadosFormatados = dadosFormatados.replaceAll('"pend"', '\n"pend"')
         dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
+        dadosFormatados = dadosFormatados.replaceAll('},\n\n},', '}},\n\n')
+
+        console.log(dadosFormatados)
 
         return dadosFormatados
 
@@ -342,7 +350,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         // LIMPA CASO UMA NOVA DATABASE SEJA INCLUIDA
         txtAreaAlunos.value = ""
-        txtAreaAlunosNovos.value = ""
 
         const input = document.getElementById('inputArquivo');
         const arquivo = input.files[0];
@@ -447,8 +454,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     function gerarJson() {
 
-        //limparFormatacao()
-
         if (localStorage.getItem("alunos") == null) {
 
             //EXECUTADA PARA A PRIMEIRA VEZ GERANDO OS DADOS DOS ALUNOS
@@ -492,53 +497,84 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             if (!nomesAlunosPresenca[nomeAluno]) {
 
-                nomesAlunosPresenca[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": {"type": "nome cpf pdm"}, "new": true }
+                nomesAlunosNew[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
+                nomesAlunosTemporario[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
 
             }
 
         })
 
+        for (aluno in nomesAlunosPresenca) {
 
-        for (nomeAlunoPropriedade in nomesAlunosPresenca) {
+            //PREENCHE TXTAREA COM OS DADOS DO LOCALSTORAGE
 
-            //EXECUTADA PARA INCLUIR OS ALUNOS QUE AINDA NÃO ESTÃO NO TXTAREA DE GERAR ARQUIVO
-
-            if (!txtAreaAlunos.value.includes(nomeAlunoPropriedade)) {
-
-                let dadosFormatados
-
-                dadosFormatados = formataObjAluno(nomesAlunosPresenca[nomeAlunoPropriedade])
-
-                if (nomesAlunosPresenca[nomeAlunoPropriedade]["new"]) {
-
-                    delete nomesAlunosPresenca[nomeAlunoPropriedade]["new"]
-
-                    //FORMATA
-                    dadosFormatados = formataObjAluno(nomesAlunosPresenca[nomeAlunoPropriedade])
-
-                    nomesAlunosNew.push(dadosFormatados)
-
-                } else {
-                    txtAreaAlunos.disabled = false
-                    txtAreaAlunos.value += dadosFormatados // PREENCHE O TXT AREA A CADA PAGINA DE ALUNOS
-                    txtAreaAlunos.disabled = true
-                }
-
-            }
+            txtAreaAlunos.value += formataObjAluno(nomesAlunosPresenca[aluno], aluno)
 
         }
 
-        nomesAlunosNew.forEach((aluno) => {
 
-            if (!txtAreaAlunosNovos.value.includes(aluno)) {
+        for (nomeAlunoPropriedade in nomesAlunosTemporario) {
 
+            //POPULA A TABELA COM OS DADOS DOS ALUNOS NOVOS
 
-                txtAreaAlunosNovos.value += aluno
-            }
+            let tr = document.createElement("tr")
+            let tdNome = document.createElement("td")
+            tdNome.classList.add("idAlunoNome")
+            let tdSerie = document.createElement("td")
+            let tdNasc = document.createElement("td")
+            tdNasc.classList.add("tdNasc")
+            let tdPendencias = document.createElement("td")
+            let tdAcao = document.createElement("td")
+            let divChecks = document.createElement("div")
+            divChecks.classList.add("divChecks")
 
-        })
+            let chkNome = document.createElement("input")
+            let chkCPF = document.createElement("input")
+            let labelchkNome = document.createElement("label")
+            labelchkNome.innerText = "NOME"
+            let labelchkCPF = document.createElement("label")
+            labelchkCPF.innerText = "CPF"
+            chkNome.classList.add("form-check-input")
+            chkNome.classList.add("pend")
+            chkNome.type = "checkbox"
+            chkNome.value = "NOME"
+            chkCPF.classList.add("form-check-input")
+            chkCPF.classList.add("pend")
+            chkCPF.type = "checkbox"
+            chkCPF.value = "CPF"
+
+            let inputSerie = document.createElement("input")
+            inputSerie.classList.add("inputSerie")
+
+            divChecks.append(chkNome)
+            divChecks.append(labelchkNome)
+            divChecks.append(chkCPF)
+            divChecks.append(labelchkCPF)
+            tdPendencias.append(divChecks)
+
+            tdNome.innerText = nomeAlunoPropriedade
+            inputSerie.value = nomesAlunosNew[nomeAlunoPropriedade]["nomeSerie"]
+
+            tdSerie.append(inputSerie)
+
+            tdNasc.innerText = nomesAlunosNew[nomeAlunoPropriedade]["nascimentoAluno"]
+            tdPendencias.append(divChecks)
+
+            tr.append(tdNome)
+            tr.append(tdSerie)
+            tr.append(tdNasc)
+            tr.append(tdPendencias)
+            tr.append(tdAcao)
+
+            tbodytabelaDados.append(tr)
+
+        }
+
 
         gerarAquivoDownload()
+        nomesAlunosTemporario = {}
+
+
     }
 
     function limparFormatacao() {
@@ -566,21 +602,55 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         let conteudo = ""
 
-        if (txtAreaAlunosNovos.value.length == 0) {
+        console.log(JSON.stringify(nomesAlunosNew))
 
-            conteudo = `{${txtAreaAlunos.value.trim().slice(0, -1)}}`
+        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew).slice(1, -1)}}`
 
-        } else {
-
-            conteudo = `{${txtAreaAlunos.value.trim()}\n\n${txtAreaAlunosNovos.value.trim().slice(0, -1)}}`
-
-        }
 
         let blob = new Blob([conteudo], { type: "application/json" })
         let url = window.URL.createObjectURL(blob)
         botaoBaixarJson.href = url
         botaoBaixarJson.download = `alunos_presenca_${new Date().toLocaleString()}`
         //window.URL.revokeObjectURL(url)
+
+    }
+
+    function formataObjAlunoTabela() {
+
+        linhas = tbodytabelaDados.querySelectorAll("tr")
+
+        linhas.forEach((linha) => {
+
+            nome = linha.querySelector(".idAlunoNome").innerText
+            nomeSerie = linha.querySelector(".inputSerie").value
+            dataNascimento = linha.querySelector(".tdNasc").innerText
+            pendTipos = ""
+            pendInputs = linha.querySelectorAll(".pend")
+
+            pendInputs.forEach((chk) => {
+
+                if (chk.checked == true) {
+
+                    pendTipos = pendTipos + `${chk.value}<br>`
+
+                }
+
+            })
+
+            nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
+            nomesAlunosNew[nome]["dataNascimento"] = dataNascimento
+            nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
+
+            if (pendTipos == "") {
+
+                nomesAlunosNew[nome]["pend"] = false
+
+            }
+
+        })
+
+
+        gerarAquivoDownload()
 
     }
 
