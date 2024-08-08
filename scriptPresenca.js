@@ -495,7 +495,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             }
 
 
-            if (!nomesAlunosPresenca[nomeAluno]) {
+            if ((!nomesAlunosPresenca[nomeAluno]) || (nomesAlunosPresenca[nomeAluno]["pend"] != false)) {
 
                 nomesAlunosNew[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
                 nomesAlunosTemporario[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
@@ -525,15 +525,41 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             tdNasc.classList.add("tdNasc")
             let tdPendencias = document.createElement("td")
             let tdAcao = document.createElement("td")
+
+            let botaoExcluir = document.createElement("div")
+            botaoExcluir.classList.add("btn")
+            botaoExcluir.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>`
+
+            if(nomesAlunosPresenca[nomeAlunoPropriedade]){
+
+                botaoExcluir.classList.add("btn-danger")
+
+            } else{
+
+                botaoExcluir.classList.add("btn-warning")
+
+            }
+
+            botaoExcluir.addEventListener("click", () => {
+
+                tr.remove()
+
+            })
+
+
+            tdAcao.append(botaoExcluir)
             let divChecks = document.createElement("div")
             divChecks.classList.add("divChecks")
 
             let chkNome = document.createElement("input")
             let chkCPF = document.createElement("input")
+            let chkPPM = document.createElement("input")
             let labelchkNome = document.createElement("label")
             labelchkNome.innerText = "NOME"
             let labelchkCPF = document.createElement("label")
             labelchkCPF.innerText = "CPF"
+            let labelchkPPM = document.createElement("label")
+            labelchkPPM.innerText = "PPM"
             chkNome.classList.add("form-check-input")
             chkNome.classList.add("pend")
             chkNome.type = "checkbox"
@@ -543,6 +569,11 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             chkCPF.type = "checkbox"
             chkCPF.value = "CPF"
 
+            chkPPM.classList.add("form-check-input")
+            chkPPM.classList.add("pend")
+            chkPPM.type = "checkbox"
+            chkPPM.value = "PPM"
+
             let inputSerie = document.createElement("input")
             inputSerie.classList.add("inputSerie")
 
@@ -550,6 +581,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             divChecks.append(labelchkNome)
             divChecks.append(chkCPF)
             divChecks.append(labelchkCPF)
+            divChecks.append(chkPPM)
+            divChecks.append(labelchkPPM)
             tdPendencias.append(divChecks)
 
             tdNome.innerText = nomeAlunoPropriedade
