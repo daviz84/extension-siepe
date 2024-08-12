@@ -196,6 +196,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                     <div class="d-flex flex-column align-items-end mx-1">
                         <input class="btn btn-dark col-12 mb-1" id="botaoGerarJson" value="GERAR JSON">
+                        <input class="btn btn-dark col-12 mb-1" id="botaoAtualizarJson" value="ATUALIZAR JSON">
                         <a class="btn btn-success col-12 mb-1" id="botaoBaixarJson">BAIXAR JSON</a>
                         <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
                     </div>
@@ -240,6 +241,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let ngx_overlay = document.getElementsByClassName("ngx-overlay")[0]
     let tabelaDados = document.getElementById("tabelaDados")
     let tbodytabelaDados = document.getElementById("tbodytabelaDados")
+    let botaoAtualizarJson = document.getElementById("botaoAtualizarJson")
 
 
     // EVENTOS
@@ -317,9 +319,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
-    botaoBaixarJson.addEventListener("click", () => {
+    botaoAtualizarJson.addEventListener("click", () => {
 
-        formataObjAlunoTabela()
+        gerarAquivoDownload()
 
     })
 
@@ -339,8 +341,6 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
         dadosFormatados = dadosFormatados.replaceAll('"pend"', '\n"pend"')
         dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
         dadosFormatados = dadosFormatados.replaceAll('},\n\n},', '}},\n\n')
-
-        console.log(dadosFormatados)
 
         return dadosFormatados
 
@@ -543,6 +543,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             botaoExcluir.addEventListener("click", () => {
 
                 tr.remove()
+                nomesAlunosNew[nomeAlunoPropriedade] = undefined
+                formataObjAlunoTabela()
+                delete nomesAlunosNew[nomeAlunoPropriedade]
 
             })
 
@@ -635,10 +638,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         let conteudo = ""
 
-        console.log(JSON.stringify(nomesAlunosNew))
-
-        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew).slice(1, -1)}}`
-
+        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew)}}`
 
         let blob = new Blob([conteudo], { type: "application/json" })
         let url = window.URL.createObjectURL(blob)
@@ -670,20 +670,26 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             })
 
-            nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
-            nomesAlunosNew[nome]["dataNascimento"] = dataNascimento
-            nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
+            if(nomesAlunosNew[nome] != undefined){
 
-            if (pendTipos == "") {
+                nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
+                nomesAlunosNew[nome]["dataNascimento"] = dataNascimento
+                nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
+    
+                if (pendTipos == "") {
+    
+                    nomesAlunosNew[nome]["pend"] = false
+    
+                }
+    
 
-                nomesAlunosNew[nome]["pend"] = false
 
             }
 
+
+
+
         })
-
-
-        gerarAquivoDownload()
 
     }
 
