@@ -192,13 +192,18 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
                 </div>
 
-                <div class="d-flex my-2">
+                <div class="d-flex my-2 gap-5">
 
                     <div class="d-flex flex-column align-items-end mx-1">
                         <input class="btn btn-dark col-12 mb-1" id="botaoGerarJson" value="GERAR JSON">
                         <input class="btn btn-dark col-12 mb-1" id="botaoAtualizarJson" value="ATUALIZAR JSON">
                         <a class="btn btn-success col-12 mb-1" id="botaoBaixarJson">BAIXAR JSON</a>
                         <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckIncluirPendencias">
+                        <label class="form-check-label" for="flexSwitchCheckIncluirPendencias">INCLUIR ALUNOS COM PENDÊNCIAS CADASTRAIS</label>
                     </div>
 
                 </div>
@@ -242,6 +247,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
     let tabelaDados = document.getElementById("tabelaDados")
     let tbodytabelaDados = document.getElementById("tbodytabelaDados")
     let botaoAtualizarJson = document.getElementById("botaoAtualizarJson")
+    let flexSwitchCheckIncluirPendencias = document.getElementById("flexSwitchCheckIncluirPendencias")
 
 
     // EVENTOS
@@ -493,9 +499,9 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
 
             }
+            
 
-
-            if ((!nomesAlunosPresenca[nomeAluno]) || (nomesAlunosPresenca[nomeAluno]["pend"] != false)) {
+            if ((!nomesAlunosPresenca[nomeAluno]) || (nomesAlunosPresenca[nomeAluno]["pend"] != false && flexSwitchCheckIncluirPendencias.checked == true)) {
 
                 nomesAlunosNew[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
                 nomesAlunosTemporario[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
@@ -530,11 +536,11 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             botaoExcluir.classList.add("btn")
             botaoExcluir.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>`
 
-            if(nomesAlunosPresenca[nomeAlunoPropriedade]){
+            if (nomesAlunosPresenca[nomeAlunoPropriedade]) {
 
                 botaoExcluir.classList.add("btn-danger")
 
-            } else{
+            } else {
 
                 botaoExcluir.classList.add("btn-warning")
 
@@ -543,9 +549,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             botaoExcluir.addEventListener("click", () => {
 
                 tr.remove()
-                nomesAlunosNew[nomeAlunoPropriedade] = undefined
+                delete nomesAlunosNew[tdNome.innerText]
                 formataObjAlunoTabela()
-                delete nomesAlunosNew[nomeAlunoPropriedade]
 
             })
 
@@ -576,6 +581,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             chkPPM.classList.add("pend")
             chkPPM.type = "checkbox"
             chkPPM.value = "PPM"
+            
 
             let inputSerie = document.createElement("input")
             inputSerie.classList.add("inputSerie")
@@ -606,11 +612,21 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         }
 
+        chksPend = document.querySelectorAll(".pend")
 
-        gerarAquivoDownload()
+        chksPend.forEach(chk => {
+
+
+            chk.addEventListener("click", () =>{
+
+                formataObjAlunoTabela()
+
+            })
+
+        })
+
         nomesAlunosTemporario = {}
-
-
+        formataObjAlunoTabela()
     }
 
     function limparFormatacao() {
@@ -638,7 +654,7 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
         let conteudo = ""
 
-        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew)}}`
+        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew).slice(1,-1)}}`
 
         let blob = new Blob([conteudo], { type: "application/json" })
         let url = window.URL.createObjectURL(blob)
@@ -670,26 +686,20 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
             })
 
-            if(nomesAlunosNew[nome] != undefined){
+            nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
+            nomesAlunosNew[nome]["nascimentoAluno"] = dataNascimento
+            nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
 
-                nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
-                nomesAlunosNew[nome]["dataNascimento"] = dataNascimento
-                nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
-    
-                if (pendTipos == "") {
-    
-                    nomesAlunosNew[nome]["pend"] = false
-    
-                }
-    
+            if (pendTipos == "") {
 
+                nomesAlunosNew[nome]["pend"] = false
 
             }
 
 
-
-
         })
+
+        gerarAquivoDownload()
 
     }
 
