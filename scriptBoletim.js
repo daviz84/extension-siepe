@@ -1,41 +1,38 @@
-if (document.URL.includes('ws/eol/aluno/documentos/BoletimEscolar')) {
 
-	let camposNotas = []
-
-
-	setTimeout(() => {
+let camposNotas = []
 
 
-		let qtdDisciplinas = document.querySelectorAll('.trDisciplina')
-
-		for (let i = 1; i <= 4; i++) {
+setTimeout(() => {
 
 
-			document.querySelectorAll('.tdMediaPeriodo' + i).forEach((td) => {
+	let qtdDisciplinas = document.querySelectorAll('.trDisciplina')
 
-				td.classList.remove('esconder')
-
-
-				if (td.innerText !== '') {
-
-					if (parseFloat(td.innerText) < 6) {
+	for (let i = 1; i <= 4; i++) {
 
 
+		document.querySelectorAll('.tdMediaPeriodo' + i).forEach((td) => {
 
-						td.style.backgroundColor = '#80ACEE'
-						td.classList.add('baixa')
-
-					} else {
+			td.classList.remove('esconder')
 
 
-					}
+			if (td.innerText !== '') {
+
+				if (parseFloat(td.innerText) < 6) {
+
+
+
+					td.style.backgroundColor = '#80ACEE'
+					td.classList.add('baixa')
+
+				} else {
+
 
 				}
 
-			})
+			}
 
-		}
+		})
 
-	}, 5000);
+	}
 
-}
+}, 5000);

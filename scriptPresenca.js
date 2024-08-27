@@ -325,11 +325,13 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
 
     })
 
+    /** 
     botaoAtualizarJson.addEventListener("click", () => {
 
         gerarAquivoDownload()
 
     })
+    */
 
     ngx_overlay.addEventListener((''))
 
@@ -509,6 +511,8 @@ if (document.URL.includes('seb/registra-frequencia-escola')) {
             }
 
         })
+
+        txtAreaAlunos.value = ""
 
         for (aluno in nomesAlunosPresenca) {
 
