@@ -77,7 +77,6 @@ divoffcanvas.innerHTML = `
                 <table class="table" id="tabelaDados">
                     <thead>
                         <tr>
-                            <th scope="col">Sel</th>
                             <th scope="col">Matrícula</th>
                             <th scope="col">Nome completo do aluno</th>
                             <th scope="col">Data Nascimento</th>
@@ -536,11 +535,6 @@ function pegaDados(iframeDocument, turmaAlunoRes) {
     let dataNascimento = document.createElement('td')
     let nisAluno = document.createElement('td')
 
-    let tdCheck = document.createElement('td')
-    let checkSelect = document.createElement('input')
-    checkSelect.type = "checkbox"
-    tdCheck.appendChild(checkSelect)
-
     let tr = document.createElement('tr')
 
 
@@ -592,9 +586,9 @@ function pegaDados(iframeDocument, turmaAlunoRes) {
 
             dataNascimento.innerText = tabelaDados["Datadenascimento"]
 
-            nisAluno.innerText = tabelaDados["NIS"]
+            nisAluno.innerText = tabelaDados["NIS2"]
 
-            tr.append(tdCheck, matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno)
+            tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno)
 
 
             if (btncheckOutros.checked == true) {
@@ -652,9 +646,10 @@ function formataTabela(documentDOM) {
 
                 let conteudoTdImpar = td.innerHTML.toString().replace(/[\n: {\2,}]/g, "")
 
-                if (!tabelaObj[conteudoTdImpar]) { // RETORNA A CHAVE SE ELA NÃO EXISTIR OU ESTIVER SEM VALOR
+                if (!tabelaObj.hasOwnProperty(conteudoTdImpar)) { // RETORNA NÃO EXISTIR
                     tabelaObj[conteudoTdImpar] = " "
                     anterior = conteudoTdImpar
+                    
 
 
                 } else {
@@ -686,9 +681,10 @@ function formataTabela(documentDOM) {
 
         }
 
-        // console.log(JSON.stringify(tabelaObj))
+        
     }
 
+    //console.log(tabelaObj)
 
 
 

@@ -32,7 +32,7 @@
         },
         {
             "matches": [
-                "https://presenca.mec.gov.br/seb/registra-frequencia-escola/*"
+                "https://presenca.mec.gov.br/seb/inicio"
             ],
             "css": ["css/styles.a8f19adb82ba740eae42.css"],
             "js": [
