@@ -32,7 +32,7 @@
         },
         {
             "matches": [
-                "https://presenca.mec.gov.br/seb/inicio"
+                "https://presenca.mec.gov.br/seb/*"
             ],
             "css": ["css/styles.a8f19adb82ba740eae42.css"],
             "js": [
