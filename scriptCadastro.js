@@ -89,6 +89,7 @@ divoffcanvas.innerHTML = `
                             <th scope="col" class="px-3">TURMA</th>
                             <!--<th scope="col" class="px-3">Bols. Fam.</th>-->
                             <th scope="col" class="px-3">NIS</th>
+                            <th scope="col" class="px-3">Codigo sistema</th>
                         </tr>
                     </thead>
                     <tbody id="tbodytabelaDados">
@@ -493,7 +494,7 @@ async function tratarBusca(txtDocument, codMatricula, actionType, infosAluno) {
 
         // INICIA A MANIPULAÇÃO DOS DADOS DO ALUNO A SEREM FILTRADOS
 
-        pegaDados(documentDOM, infosAluno.turma_aluno)
+        pegaDados(documentDOM, infosAluno.turma_aluno, infosAluno.codigo_sistema)
 
 
 
@@ -513,7 +514,7 @@ async function tratarBusca(txtDocument, codMatricula, actionType, infosAluno) {
 
 }
 
-function pegaDados(iframeDocument, turmaAlunoRes) {
+function pegaDados(iframeDocument, turmaAlunoRes, codigo_sistema) {
 
     let tabelaDados = formataTabela(iframeDocument)
 
@@ -534,6 +535,7 @@ function pegaDados(iframeDocument, turmaAlunoRes) {
     let cpfAluno = document.createElement('td')
     let dataNascimento = document.createElement('td')
     let nisAluno = document.createElement('td')
+    let tdcodigo_sistema = document.createElement('td')
 
     let tr = document.createElement('tr')
 
@@ -545,6 +547,7 @@ function pegaDados(iframeDocument, turmaAlunoRes) {
     nameAluno.innerText = tabelaDados['Nomecivil']
     matAluno.innerText = tabelaDados['Matrícula']
     turmaAluno.innerText = turmaAlunoRes
+    tdcodigo_sistema.innerText = codigo_sistema.split(';')[1]
 
 
     switch (document.getElementById('selectPesquisa').value) {
@@ -588,7 +591,7 @@ function pegaDados(iframeDocument, turmaAlunoRes) {
 
             nisAluno.innerText = tabelaDados["NIS2"]
 
-            tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno)
+            tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema)
 
 
             if (btncheckOutros.checked == true) {

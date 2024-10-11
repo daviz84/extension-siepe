@@ -26,6 +26,11 @@ divoffcanvas.innerHTML = `
     <div class="offcanvas-body">
 
         <div class="card mb-5">
+            <input id="botaoIniciaPlanejamento" type="button" class="btn btn-secondary m-1 border border-light" value="INICIAR PLAJENAMENTO"></input>
+            <input id="botaoEncerraPlanejamento" type="button" class="btn btn-danger m-1 border border-light" value="ENCERRAR PLAJENAMENTO"></input>
+        </div>
+
+        <div class="card mb-5">
 
             <div class="form-floating col-10 m-4">
                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
@@ -54,7 +59,7 @@ divoffcanvas.innerHTML = `
 
         </div>
 
-        <div class="card">
+        <div class="card mb-5">
 
             <div class="input-group m-4 w-50">
                 <span class="input-group-text" id="inputGroup-sizing-default">DELIMITADOR</span>
@@ -90,7 +95,8 @@ var observer
 let contagemMutations = 0
 let faltasTirar = document.getElementById("faltasTirar")
 let txtAreaFormataFaltas = document.getElementById("txtAreaFormataFaltas")
-
+let botaoIniciaPlanejamento = document.querySelector("#botaoIniciaPlanejamento")
+let botaoEncerraPlanejamento = document.querySelector("#botaoEncerraPlanejamento")
 
 // EVENTOS 
 
@@ -101,6 +107,10 @@ botaoEncerraFrequencia.addEventListener("click", () => { encerraObserver() })
 botaoIniciaFormatacaoFaltas.addEventListener("click", () => { formataTabelaFaltas() })
 
 txtAreaFormataFaltas.addEventListener("click", () =>{ navigator.clipboard.writeText(txtAreaFormataFaltas.value)})
+
+botaoIniciaPlanejamento.addEventListener("click", () =>{iniciarObserverPlanejamento()})
+
+botaoEncerraPlanejamento.addEventListener("click", () =>{encerraObserver()})
 
 
 function iniciarObserverPlanejamento() {
