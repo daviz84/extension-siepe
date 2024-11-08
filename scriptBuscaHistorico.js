@@ -1,15 +1,18 @@
-let progressBarUm = document.getElementById('progress-bar-1')
-let barGroupProgress = document.getElementById('bar-group-progress')
+//let progressBarUm = document.getElementById('progress-bar-1')
+let formRequestHistorico = document.getElementById('formRequestHistorico')
+//let barGroupProgress = document.getElementById('bar-group-progress')
 let carouselHistorico = document.getElementById("carouselHistorico")
 let carousel_historico_inner = document.getElementById("carousel-historico-inner")
 let contagemCards = 0
+let alunosUltimoAno = []
+
 
 formRequestHistorico.addEventListener('submit', (event) => {
 
 
     event.preventDefault()
     iniciaLoop()
-    barGroupProgress.toggleAttribute("hidden")
+    // barGroupProgress.toggleAttribute("hidden")
 
 
 })
@@ -24,11 +27,11 @@ async function iniciaLoop() {
 
         alunoAtual++
         await requisitarPesquisa(matricula, "pesquisar", "")
-        progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
+        //progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
 
     }
 
-    barGroupProgress.toggleAttribute("hidden")
+    //barGroupProgress.toggleAttribute("hidden")
 
 
 
@@ -86,11 +89,27 @@ async function tratarPesquisa(txtDocument) {
 
     //window.open(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/`, '_blank')
 
+    // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
+    const requestHistoricoHtml = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/html`)
+    const documentDOMHTML = parser.parseFromString(await requestHistoricoHtml.text(), "text/html")
+    let resultadosSeries = documentDOMHTML.getElementsByClassName('resultadoSerie')
+
+    if (resultadosSeries[resultadosSeries.length - 2]) {
+
+        let tdEscola = parser.parseFromString(resultadosSeries[resultadosSeries.length - 2].innerHTML, "text/html")
+
+        alunosUltimoAno.push({ aluno: chkNome, escola: tdEscola.querySelector('span').textContent })
+        console.table(alunosUltimoAno)
+
+    }
+
+    // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
+
     let carousel_item = document.createElement("div")
     carousel_item.classList.add("carousel-item")
     carousel_item.classList.add("carousel-item")
 
-    if(contagemCards == 0){
+    if (contagemCards == 0) {
         carousel_item.classList.add("active")
         contagemCards = contagemCards + 1
 
@@ -129,7 +148,7 @@ async function tratarPesquisa(txtDocument) {
     })
 
     let iframe_aluno = document.createElement("iframe")
-    iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/`
+    iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`
     iframe_aluno.style.height = "100%"
     iframe_aluno.style.width = "85%"
 
@@ -141,9 +160,9 @@ async function tratarPesquisa(txtDocument) {
     card_historico.appendChild(card_body)
     centraliza_card.appendChild(card_historico)
     carousel_item.appendChild(centraliza_card)
-    
+
     carousel_historico_inner.appendChild(carousel_item)
 
-    
+
 
 }
