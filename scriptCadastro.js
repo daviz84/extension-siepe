@@ -219,8 +219,27 @@ divoffcanvas.innerHTML = `
                     
                     </div>
 
-                    <div id="carouselHistorico" class="carousel slide" style="height: 600px;">
-                        <div class="carousel-historico-inner" id="carousel-historico-inner">
+                <div class="">
+
+                    <div class="btn-group" role="group" id="btn-group-btncheckOutrosHistorico">
+                        <input type="checkbox" class="btn-check btn-sm" id="btncheckOutrosHistorico" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm" for="btncheckOutrosHistorico" style="font-size: 9px">Adicionar iframe</label>
+                    </div>
+
+                </div>
+
+
+                </form>
+
+
+
+                <div style="display: flex;">
+
+                    <div id="carouselHistorico" class="carousel slide" style="min-width: 60%;">
+
+                     
+
+                        <div class="carousel-historico-inner" id="carousel-historico-inner" style="height: 600px">
 
 
                         </div>
@@ -232,9 +251,33 @@ divoffcanvas.innerHTML = `
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselHistorico" data-bs-slide="next" style="width: 100px">
                             <input class="btn btn-primary h-100" id="botaoExcluir" value="↪" style="width: 100px">
                         </button>
+                
                     </div>
 
-                </form>
+                    <div>
+                        <table class="table" id="alunosHistorico">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome completo do aluno</th>
+                                    <th scope="col">9° ANO</th>
+                                    <th scope="col">1° ANO</th>
+                                    <th scope="col">2° ANO</th>
+                                    <th scope="col">3° ANO</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody id="alunosHistoricoBody">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+
+                </div>
+
             </div>
 
         </div>

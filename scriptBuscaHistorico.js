@@ -5,19 +5,20 @@ let carouselHistorico = document.getElementById("carouselHistorico")
 let carousel_historico_inner = document.getElementById("carousel-historico-inner")
 let contagemCards = 0
 let alunosUltimoAno = []
+let alunosHistoricoBody = document.getElementById("alunosHistoricoBody")
 
 
 formRequestHistorico.addEventListener('submit', (event) => {
 
 
     event.preventDefault()
-    iniciaLoop()
-    // barGroupProgress.toggleAttribute("hidden")
+    iniciaLoopHistorico()
+    barGroupProgress.toggleAttribute("hidden")
 
 
 })
 
-async function iniciaLoop() {
+async function iniciaLoopHistorico() {
 
     intext = document.getElementById('txtAreaMatriculasHistorico').value.split('\n')
     let alunoAtual = 0
@@ -26,18 +27,18 @@ async function iniciaLoop() {
     for (matricula of intext) {
 
         alunoAtual++
-        await requisitarPesquisa(matricula, "pesquisar", "")
-        //progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
+        await requisitarPesquisaHistorico(matricula, "pesquisar", "")
+        progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
 
     }
 
-    //barGroupProgress.toggleAttribute("hidden")
+    barGroupProgress.toggleAttribute("hidden")
 
 
 
 }
 
-async function requisitarPesquisa(codMatricula, actionType) {
+async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
     let formRequest = document.getElementById("formRequestHistorico") // BUSCA FORMULÁRIO
     let formRequestFormData = new FormData(formRequest) // TRANSFORMA EM MANIPULÁVEL
@@ -69,7 +70,7 @@ async function requisitarPesquisa(codMatricula, actionType) {
         case 'pesquisar':
 
             // CHAMADA DA FUNÇÃO RECURSIVA
-            await tratarPesquisa(txtrequest)
+            await tratarPesquisaHistorico(txtrequest)
 
             break
 
@@ -77,7 +78,7 @@ async function requisitarPesquisa(codMatricula, actionType) {
 
 }
 
-async function tratarPesquisa(txtDocument) {
+async function tratarPesquisaHistorico(txtDocument) {
 
     let parser = new DOMParser()
 
@@ -93,15 +94,43 @@ async function tratarPesquisa(txtDocument) {
     const requestHistoricoHtml = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/html`)
     const documentDOMHTML = parser.parseFromString(await requestHistoricoHtml.text(), "text/html")
     let resultadosSeries = documentDOMHTML.getElementsByClassName('resultadoSerie')
+    const resultadosMedio = documentDOMHTML.querySelectorAll('.verticalEstabelecimento')
+
+    const trHistorico = document.createElement('tr')
+    const nomeAlunoHistorico = document.createElement('td')
+    const escolaAlunoHistorico = document.createElement('td')
+    escolaAlunoHistorico.innerText = "-"
+    nomeAlunoHistorico.innerText = chkNome
+
 
     if (resultadosSeries[resultadosSeries.length - 2]) {
 
         let tdEscola = parser.parseFromString(resultadosSeries[resultadosSeries.length - 2].innerHTML, "text/html")
 
+        escolaAlunoHistorico.innerText = tdEscola.querySelector('span').textContent
+
+        trHistorico.append(nomeAlunoHistorico, escolaAlunoHistorico)
         alunosUltimoAno.push({ aluno: chkNome, escola: tdEscola.querySelector('span').textContent })
-        console.table(alunosUltimoAno)
+    } else {
+
+        trHistorico.append(nomeAlunoHistorico, escolaAlunoHistorico)
 
     }
+
+    resultadosMedio.forEach(vertical => {
+
+        let ensinoMedio = document.createElement('td')
+        ensinoMedio.innerHTML = vertical.querySelectorAll('span')[1].innerText
+        trHistorico.append(ensinoMedio)
+
+
+    })
+
+    alunosHistoricoBody.appendChild(trHistorico)
+
+
+
+
 
     // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
 
@@ -148,7 +177,15 @@ async function tratarPesquisa(txtDocument) {
     })
 
     let iframe_aluno = document.createElement("iframe")
-    iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`
+
+
+    if (btncheckOutrosHistorico.checked == true) {
+
+        iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`
+
+    }
+
+
     iframe_aluno.style.height = "100%"
     iframe_aluno.style.width = "85%"
 
