@@ -130,6 +130,8 @@ async function tratarPesquisaHistorico(txtDocument) {
 
 
 
+    //window.URL.revokeObjectURL(url)
+
 
 
     // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
@@ -161,12 +163,23 @@ async function tratarPesquisaHistorico(txtDocument) {
     card_title.classList.add("card-title")
 
 
-    let card_title_button = document.createElement("input")
-    card_title_button.type = "button"
+
+
+    let card_title_button = document.createElement("a")
     card_title_button.classList.add("btn")
     card_title_button.classList.add("btn-primary")
     card_title_button.style.color = "blank"
-    card_title_button.value = `${chkNome}`
+    card_title_button.innerText = chkNome
+
+    const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`)
+    const pdfHistorico = await reeq.blob()
+
+    let url = window.URL.createObjectURL(pdfHistorico)
+
+    card_title_button.href = url
+    card_title_button.download = chkNome
+
+    card_title_button.click()
 
     card_title_button.addEventListener("click", () => {
 
