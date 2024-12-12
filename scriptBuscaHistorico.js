@@ -94,6 +94,7 @@ async function tratarPesquisaHistorico(txtDocument) {
     const requestHistoricoHtml = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/html`)
     const documentDOMHTML = parser.parseFromString(await requestHistoricoHtml.text(), "text/html")
     let resultadosSeries = documentDOMHTML.getElementsByClassName('resultadoSerie')
+    let anosSeries = documentDOMHTML.getElementsByClassName('serie')
     const resultadosMedio = documentDOMHTML.querySelectorAll('.verticalEstabelecimento')
 
     const trHistorico = document.createElement('tr')
@@ -106,8 +107,9 @@ async function tratarPesquisaHistorico(txtDocument) {
     if (resultadosSeries[resultadosSeries.length - 2]) {
 
         let tdEscola = parser.parseFromString(resultadosSeries[resultadosSeries.length - 2].innerHTML, "text/html")
+        let tdUltAno = parser.parseFromString(anosSeries[anosSeries.length - 1].innerHTML, "text/html")
 
-        escolaAlunoHistorico.innerText = tdEscola.querySelector('span').textContent
+        escolaAlunoHistorico.innerText = `${tdUltAno.querySelector('span').textContent} - ${tdEscola.querySelector('span').textContent}`
 
         trHistorico.append(nomeAlunoHistorico, escolaAlunoHistorico)
         alunosUltimoAno.push({ aluno: chkNome, escola: tdEscola.querySelector('span').textContent })
@@ -171,15 +173,20 @@ async function tratarPesquisaHistorico(txtDocument) {
     card_title_button.style.color = "blank"
     card_title_button.innerText = chkNome
 
-    const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`)
-    const pdfHistorico = await reeq.blob()
+    if(btnchecDownloadHistorico.checked == true){
 
-    let url = window.URL.createObjectURL(pdfHistorico)
+        const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`)
+        const pdfHistorico = await reeq.blob()
+    
+        let url = window.URL.createObjectURL(pdfHistorico)
+    
+        card_title_button.href = url
+        card_title_button.download = chkNome
+    
+        card_title_button.click()
 
-    card_title_button.href = url
-    card_title_button.download = chkNome
+    }
 
-    card_title_button.click()
 
     card_title_button.addEventListener("click", () => {
 
@@ -195,6 +202,8 @@ async function tratarPesquisaHistorico(txtDocument) {
     if (btncheckOutrosHistorico.checked == true) {
 
         iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`
+
+
 
     }
 

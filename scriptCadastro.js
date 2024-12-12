@@ -58,6 +58,7 @@ divoffcanvas.innerHTML = `
             <option id="selectEndereco" value="endereco">Endereço</option>
             <option id="selectEndereco" value="saude">Dados de saúde</option>
             <option id="selectHistorico" value="historico">Dados de históricos</option>
+            <option id="selectPendencIti" value="pendIti">Pendêncioa dos Itinerários</option>
         </select>
         <label for="floatingSelect">Opções</label>
     </div>
@@ -70,11 +71,21 @@ divoffcanvas.innerHTML = `
 
     <div class="offcanvas-body">
 
-        <div class="card">
+        <class="card">
 
             <div id="pesquisasCadastro">
 
                 <table class="table" id="tabelaDados">
+
+                    <div class="col-3">
+
+                        <div class="input-group mt-5">
+                            <span class="input-group-text" id="basic-addon1">BOLSA FAMÍLIA</span>
+                            <input id="contadorBolsaFamilia" type="text" class="form-control" value="0">
+                        </div>
+
+                    </div>
+
                     <thead>
                         <tr>
                             <th scope="col">Matrícula</th>
@@ -123,6 +134,7 @@ divoffcanvas.innerHTML = `
                             <th scope="col">Nome completo do aluno</th>
                             <th scope="col">Número cartão do sus</th>
                             <th scope="col" class="px-3">TURMA</th>
+                            <th scope="col" class="px-3">DATA NASCIMENTO</th>
                         </tr>
                     </thead>
                     <tbody id="tbodytabelaSaude">
@@ -184,6 +196,37 @@ divoffcanvas.innerHTML = `
 
             </div>
 
+            <div hidden id="divPendenciaItin">
+
+                <table class="table"  id="tabelaPendenciaItin">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col">Disciplina com Pendência</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaSaude">
+
+                    </tbody>
+
+                    <div class="d-flex my-2">
+
+                        <div class="form-floating">
+                            <textarea class="form-control h-100" id="txtAreaCosSist"></textarea>
+                            <label id="lblMatriculas" for="txtAreaCosSist">Código Sistema</label>
+                        </div>
+
+
+                        <div class="d-flex flex-column align-items-end mx-1">
+                            <input class="btn btn-primary col-12 mb-1" id="botaoSubmitPendIti" type="submit" value="PESQUISAR">
+                        </div>
+
+                    </div>
+
+                </table>
+            
+            </div>
+
             <div id="tabelaHistorico" hidden>
 
                 <h1>PESQUISAR HISTÓRICO</h1>
@@ -226,6 +269,11 @@ divoffcanvas.innerHTML = `
                         <label class="btn btn-outline-primary btn-sm" for="btncheckOutrosHistorico" style="font-size: 9px">Adicionar iframe</label>
                     </div>
 
+                    <div class="btn-group" role="group" id="btn-group-btnchecDownloadHistorico">
+                        <input type="checkbox" class="btn-check btn-sm" id="btnchecDownloadHistorico" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm" for="btnchecDownloadHistorico" style="font-size: 9px">Baixar histórico</label>
+                    </div>
+
                 </div>
 
 
@@ -233,7 +281,7 @@ divoffcanvas.innerHTML = `
 
 
 
-                <div style="display: flex;">
+                <div style="">
 
                     <div id="carouselHistorico" class="carousel slide" style="min-width: 60%;">
 
@@ -259,7 +307,7 @@ divoffcanvas.innerHTML = `
                             <thead>
                                 <tr>
                                     <th scope="col">Nome completo do aluno</th>
-                                    <th scope="col">9° ANO</th>
+                                    <th scope="col">Ensino Fundamental</th>
                                     <th scope="col">1° ANO</th>
                                     <th scope="col">2° ANO</th>
                                     <th scope="col">3° ANO</th>
@@ -304,6 +352,7 @@ let tabelaEndereco = document.getElementById('tabelaEndereco')
 let tabelaDados = document.getElementById('tabelaDados')
 let tabelaSaude = document.getElementById('tabelaSaude')
 let tabelaHistorico = document.getElementById('tabelaHistorico')
+let divPendenciaItin = document.getElementById('divPendenciaItin')
 let pesquisasCadastro = document.getElementById('pesquisasCadastro')
 let btncheckOutros = document.getElementById("btncheckOutros")
 let btnGroupBtncheckOutros = document.getElementById('btn-group-btncheckOutros')
@@ -313,6 +362,8 @@ let botaoExcluir = document.getElementById('botaoExcluir')
 let tbodytabelaDados = document.getElementById('tbodytabelaDados')
 let tbodytabelaEndereco = document.getElementById('tbodytabelaEndereco')
 let tbodytabelaSaude = document.getElementById('tbodytabelaSaude')
+let contadorBolsaFamilia = document.getElementById('contadorBolsaFamilia')
+let btnPesquisarTabelaPendenciaItin = document.querySelector("#botaoSubmitPendIti")
 
 selectPesquisa.addEventListener('input', () => {
 
@@ -324,6 +375,7 @@ selectPesquisa.addEventListener('input', () => {
         btnGroupBtncheckOutros.hidden = false
         tabelaHistorico.hidden = true
         pesquisasCadastro.hidden = false
+        divPendenciaItin.hidden = true
 
 
 
@@ -335,7 +387,7 @@ selectPesquisa.addEventListener('input', () => {
         btnGroupBtncheckOutros.hidden = true
         tabelaHistorico.hidden = true
         pesquisasCadastro.hidden = false
-
+        divPendenciaItin.hidden = true
 
 
     } else if (selectPesquisa.value == "saude") {
@@ -346,7 +398,7 @@ selectPesquisa.addEventListener('input', () => {
         btnGroupBtncheckOutros.hidden = true
         tabelaHistorico.hidden = true
         pesquisasCadastro.hidden = false
-
+        divPendenciaItin.hidden = true
 
     } else if (selectPesquisa.value == "historico") {
         tabelaHistorico.hidden = false
@@ -355,10 +407,21 @@ selectPesquisa.addEventListener('input', () => {
         tabelaDados.hidden = true
         btnGroupBtncheckOutros.hidden = true
         pesquisasCadastro.hidden = true
+        divPendenciaItin.hidden = true
 
+
+    } else if (selectPesquisa.value == "pendIti") {
+        tabelaHistorico.hidden = true
+        tabelaSaude.hidden = true
+        tabelaEndereco.hidden = true
+        tabelaDados.hidden = true
+        btnGroupBtncheckOutros.hidden = true
+        pesquisasCadastro.hidden = true
+        divPendenciaItin.hidden = false
 
 
     }
+
 
 
 })
@@ -409,6 +472,10 @@ txtAreaMatriculas.addEventListener('input', () => {
 
     }
 
+})
+
+btnPesquisarTabelaPendenciaItin.addEventListener("click", () => {
+    buscaPendencias()
 })
 
 
@@ -493,6 +560,8 @@ async function requisitarPesquisa(codMatricula, actionType, infosAluno) {
             break
 
     }
+
+    console.log({'Bolsa Família': contadorBolsaFamilia})
 
 }
 
@@ -634,6 +703,8 @@ function pegaDados(iframeDocument, turmaAlunoRes, codigo_sistema) {
 
             nisAluno.innerText = tabelaDados["NIS2"]
 
+            if(tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
+
             tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema)
 
 
@@ -658,9 +729,10 @@ function pegaDados(iframeDocument, turmaAlunoRes, codigo_sistema) {
         case "saude":
 
             numSus.innerText = tabelaDados.CNS
+            dataNascimento.innerText = tabelaDados["Datadenascimento"]
 
             document.getElementById('tbodytabelaSaude').appendChild(tr)
-            tr.append(matAluno, nameAluno, numSus, turmaAluno)
+            tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento)
 
     }
 
@@ -740,3 +812,39 @@ function formataTabela(documentDOM) {
 
 }
 
+async function buscaPendencias() {
+
+    let textFetchStr = ""
+
+    let matriculas_alunos = document.querySelector("#txtAreaCosSist").value.split('\n')
+
+    let tBodytabelaPendenciaItin = document.querySelector("#tabelaPendenciaItin tbody")
+
+
+
+    matriculas_alunos.forEach(async (mat) => {
+
+
+        const result = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/alunos/matricula/pendenciaitinerario/componentesReprovados/${mat}?pendencia=&idCategoriaItinerarioFormativo=&request.preventCache=1734008531900`)
+
+        let textFetch = await result.json()
+
+        textFetch.forEach((pend, i) => {
+
+            let tdNomeAluno = document.createElement('td')
+            let tdPendTurma = document.createElement('td')
+            let linhaPend = document.createElement('tr')
+
+            tdNomeAluno.innerText = textFetch[i].aluno
+            tdPendTurma.innerText = `${textFetch[i].turma} - ${textFetch[i].componente}`
+            
+            linhaPend.append(tdNomeAluno, tdPendTurma)
+            tBodytabelaPendenciaItin.append(linhaPend)
+
+
+        })
+
+    })
+
+
+}

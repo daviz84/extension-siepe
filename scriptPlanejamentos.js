@@ -57,9 +57,29 @@ divoffcanvas.innerHTML = `
             <input id="botaoIniciaFrequencia" type="button" class="btn btn-success m-1 border border-light" value="FORMATAR TABELA"></input>
             <input id="botaoEncerraFrequencia" type="button" class="btn btn-danger m-1 border border-light" value="LIMPAR"></input>
 
+            <div class="m-3">
+                <p>O TOTAL DE FREQUÊNCIA NA SEMANA DE CADA DISCIPLINA É DE 2.50%</p>
+                <p>TODAS FALTAS RETIRADAS NA SEMANA AUMENTA 2.50% NA FREQUÊNCIA DO ALUNO</p>          
+            </div>
+
         </div>
 
         <div class="card mb-5">
+
+            <div class="m-3">
+                <p>O DELIMITADOR É DE ACORDO COM A QUANTIDADE DE AULAS NA SEMANA E O CURSO</p>
+
+                <p>BASE CURRICULAR:</p>
+                <p>10 FALTAS = 75% = 1 AULA NA SEMANA</p>
+                <p>20 FALTAS = 75% = 2 AULAS NA SEMANA</p>
+                <p>30 FALTAS = 75% = 3 AULAS NA SEMANA</p>
+                </br>
+                </br>
+                <p>ITINERÁRIO:</p>
+                <p>10 FALTAS = 75% = 40H/A AULA NA SEMANA</p>
+                <p>05 FALTAS = 75% = 20H/A AULAS NA SEMANA</p>
+            
+            </div>
 
             <div class="input-group m-4 w-50">
                 <span class="input-group-text" id="inputGroup-sizing-default">DELIMITADOR</span>
