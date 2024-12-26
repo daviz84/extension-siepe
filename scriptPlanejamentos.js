@@ -325,6 +325,7 @@ function alteraVisibilidade() {
         if (linha.id.includes("trMotivo")) {
 
             linha.style.display = "none"
+            linha.remove()
 
         } else {
 
@@ -337,7 +338,7 @@ function alteraVisibilidade() {
             if (!dadosAlunos[nomeAluno] || dadosAlunos[nomeAluno]["pend"] == false) {
 
                 tr.style.display = "none"
-                // tr.remove()
+                tr.remove()
 
             }
         }
