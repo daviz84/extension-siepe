@@ -57,6 +57,7 @@ divoffcanvas.innerHTML = `
             <input id="botaoIniciaFrequencia" type="button" class="btn btn-success m-1 border border-light" value="FORMATAR TABELA"></input>
             <input id="botaoEncerraFrequencia" type="button" class="btn btn-danger m-1 border border-light" value="LIMPAR"></input>
             <input id="botaoTiraFaltas" type="button" class="btn btn-warning m-1 border border-light" value="TIRAR TODAS AS FALTAS"></input>
+            <input id="botaoAddFaltas" type="button" class="btn btn-warning m-1 border border-light" value="ADICIONAR FALTAS EM TODOS"></input>
 
             <div class="m-3">
                 <p>O TOTAL DE FREQUÊNCIA NA SEMANA DE CADA DISCIPLINA É DE 2.50%</p>
@@ -118,6 +119,7 @@ let faltasTirar = document.getElementById("faltasTirar")
 let txtAreaFormataFaltas = document.getElementById("txtAreaFormataFaltas")
 let botaoIniciaPlanejamento = document.querySelector("#botaoIniciaPlanejamento")
 let botaoEncerraPlanejamento = document.querySelector("#botaoEncerraPlanejamento")
+let botaoAddFaltas = document.querySelector("#botaoAddFaltas")
 
 // EVENTOS 
 
@@ -135,6 +137,9 @@ botaoEncerraPlanejamento.addEventListener("click", () =>{encerraObserver()})
 
 botaoTiraFaltas.addEventListener("click", () =>{tirarFaltas()})
 
+botaoAddFaltas.addEventListener("click", () =>{adicionaFaltas()})
+
+
 function tirarFaltas(){
 
 document.querySelectorAll(".campoFrequenciaDisciplinaFNJ").forEach(bt => {
@@ -145,6 +150,18 @@ document.querySelectorAll(".campoFrequenciaDisciplinaFNJ").forEach(bt => {
 })
 
 }
+
+function adicionaFaltas(){
+
+document.querySelectorAll(".campoFrequenciaDisciplinaFNJ").forEach(bt => {
+
+    if(!bt.checked) bt.click();
+
+    
+})
+
+}
+
 
 
 function iniciarObserverPlanejamento() {
