@@ -15,13 +15,13 @@
                 "https://www.siepe.educacao.pe.gov.br/gestaoescolar.do"
             ],
             "css": [
-                "css/bootstrap_edit.css"
+                "src/css/bootstrap_edit.css"
             ],
             "js": [
-                "bootstrap.bundle.min.js",
-                "scriptCadastro.js",
-                "scriptHistorico.js",
-                "scriptBuscaHistorico.js"
+                "src/scripts/bootstrap.bundle.min.js",
+                "src/scripts/scriptCadastro.js",
+                "src/scripts/scriptHistorico.js",
+                "src/scripts/scriptBuscaHistorico.js"
             ]
         },
         {
@@ -29,7 +29,7 @@
                 "https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/BoletimEscolar*"
             ],
             "js": [
-                "scriptBoletim.js"
+                "src/scripts/scriptBoletim.js"
             ]
         },
         {
@@ -37,10 +37,10 @@
                 "https://presenca.mec.gov.br/seb/registra-frequencia-escola"
             ],
             "css": [
-                "css/styles.a8f19adb82ba740eae42.css"
+                "src/css/styles.a8f19adb82ba740eae42.css"
             ],
             "js": [
-                "scriptPresenca.js"
+                "src/scripts/scriptPresenca.js"
             ]
         },
         {
@@ -48,11 +48,11 @@
                 "https://www.siepe.educacao.pe.gov.br/diarioclasse/DiarioClasse.do?apontamentoDesempenho=true"
             ],
             "css": [
-                "css/bootstrap_edit.css"
+                "src/css/bootstrap_edit.css"
             ],
             "js": [
-                "scriptPlanejamentos.js",
-                "bootstrap.bundle.min.js"
+                "src/scripts/scriptPlanejamentos.js",
+                "src/scripts/bootstrap.bundle.min.js"
             ]
         }
     ],

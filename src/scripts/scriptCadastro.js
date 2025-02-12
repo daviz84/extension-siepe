@@ -1,6 +1,6 @@
 async function lerArquivo(arquivo) {
 
-    let response = await fetch(`chrome-extension://${chrome.runtime.id}/src/${arquivo}`)
+    let response = await fetch(`chrome-extension://${chrome.runtime.id}/src/html/${arquivo}`)
 
     let responseText = await response.text()
 
