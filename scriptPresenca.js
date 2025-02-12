@@ -1,712 +1,552 @@
-if (document.URL.includes('seb/registra-frequencia-escola')) {
+async function lerArquivo(arquivo) {
 
-    document.head.innerHTML += `<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"></link>
+    let response = await fetch(`chrome-extension://${chrome.runtime.id}/src/${arquivo}`)
 
-<style>
+    let responseText = await response.text()
 
-.formataBotao {
+    console.log(responseText)
 
-    display: block;
-    unicode-bidi: isolate;
-
-}
-
-.offcanvas{
-    width: 30% !important;
-    min-width: 450px !important;
-}
-
-.offcanvas *{
-    font-size: 1.2rem !important;
-}
-
-.statusAluno {
-
-    min-width: 40px;
-    font-weight: bold;
-    text-align: center;
-    white-space: nowrap;
-    border: 2px dashed;
-    border-radius: 20%;
-    font-size: 10px;
-    vertical-align: middle;
+    return responseText
 
 }
 
-.divFormatada{
+async function incluiRecursos() {
 
-    display: flex; 
-    gap: 5px
+    if (document.URL.includes('seb/registra-frequencia-escola')) {
 
-}
+        document.head.innerHTML += await lerArquivo("presencaStyleHtml.html")
 
-.divChecks{
+        toolbar = document.getElementsByClassName("div-componente-interno")[0]
+        bodyMain = document.getElementById("container-1")
 
-    display: flex;
-    gap: 5px;
-}
+        toolbar.innerHTML = await lerArquivo("botaoAreaDev.html") + toolbar.innerHTML
+
+        document_Um = document.getElementById("container-1")
 
-</style>
+        document_Um.style.maxWidth = "100%"
+        document_Um.style.marginRight = "0px"
+        document_Um.style.marginLeft = "0px"
+        document_Um.style.paddingRight = "0px"
+        document_Um.style.paddingLeft = "0px"
 
-`
+        document_Dois = document.getElementById("container-2")
 
-    toolbar = document.getElementsByClassName("div-componente-interno")[0]
-    bodyMain = document.getElementById("container-1")
+        document_Dois.style.maxWidth = "100%"
+        document_Dois.style.marginRight = "0px"
+        document_Dois.style.marginLeft = "0px"
+        document_Dois.style.paddingRight = "0px"
+        document_Dois.style.paddingLeft = "0px"
 
-    toolbar.innerHTML = `<div class="formataBotao"> <input class="botaoAlteraJanela btn btn-primary mt-1 btn-lg" id="botaoAlteraJanela" type="button" value="ÁREA DEV" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></input> </div>` + toolbar.innerHTML
 
-    // bodyMain.innerHTML = `<div class="formataBotao"> <input class="botaoAlteraJanela btn btn-primary mt-1 btn-lg" id="botaoAlteraJanela" type="button" value="ÁREA DEV" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"></input> </div>` + bodyMain.innerHTML
+        document_Tres = document.getElementById("container-3")
 
+        document_Tres.style.maxWidth = "100%"
+        document_Tres.style.marginRight = "0px"
+        document_Tres.style.marginLeft = "0px"
+        document_Tres.style.paddingRight = "0px"
+        document_Tres.style.paddingLeft = "0px"
 
-    document_Um = document.getElementById("container-1")
+        //REMOVE O STYLE ATUAL PARA INJETAR O MODIFICADO (NECESSÁRIO PELO BOOTSTRAP)
+        document.querySelector("link[href='/seb/styles.9154eca58f8ac122454a.css']").remove()
 
-    document_Um.style.maxWidth = "100%"
-    document_Um.style.marginRight = "0px"
-    document_Um.style.marginLeft = "0px"
-    document_Um.style.paddingRight = "0px"
-    document_Um.style.paddingLeft = "0px"
 
-    document_Dois = document.getElementById("container-2")
+        // CRIA E ADICIONA O OFFCANVAS LATERAL NA PAGINA
+        let divoffcanvas = document.createElement('div')
+        divoffcanvas.innerHTML = await lerArquivo("presencaHtml.html")
 
-    document_Dois.style.maxWidth = "100%"
-    document_Dois.style.marginRight = "0px"
-    document_Dois.style.marginLeft = "0px"
-    document_Dois.style.paddingRight = "0px"
-    document_Dois.style.paddingLeft = "0px"
+        document.body.append(divoffcanvas)
 
+        //INSTANCIAÇÃO DOS ELEMENTOS E VARIÁVEIS DE CONTROLE
+        let nomesAlunosPresenca = {}
+        let nomesAlunosNew = {}
+        let nomesAlunosTemporario = {}
+        let offcanvas = document.getElementById('offcanvasId')
+        //let botoesAlteraJanela = document.getElementsByClassName('botaoAlteraJanela')
+        let selectOperacao = document.getElementById('selectOperacao')
+        let formFormatarTabela = document.getElementById("formFormatarTabela")
+        let formUpdate = document.getElementById('formUpdate')
+        let formGerar = document.getElementById('formGerar')
+        let botaoSubmit = document.getElementById('botaoSubmit')
+        let botaoFormatarTabela = document.getElementById("botaoFormatarTabela")
+        let botaoLimparFormatacaoTabela = document.getElementById("botaoLimparFormatacaoTabela")
+        let descAlert = document.getElementById("descAlert")
+        let alertUpdate = document.getElementById("alertUpdate")
+        let botoesFechar = document.querySelectorAll(".btn-close")
+        let txtAreaAlunos = document.getElementById("txtAreaAlunos")
+        let botaoGerarJson = document.getElementById("botaoGerarJson")
+        let botaoBaixarJson = document.getElementById("botaoBaixarJson")
+        let descAlertErros = document.getElementById("descAlertErros")
+        let descAlertFora = document.getElementById("descAlertFora")
+        let contagemErros = 0
+        let contagemFora = 0
+        let ngx_overlay = document.getElementsByClassName("ngx-overlay")[0]
+        let tabelaDados = document.getElementById("tabelaDados")
+        let tbodytabelaDados = document.getElementById("tbodytabelaDados")
+        let botaoAtualizarJson = document.getElementById("botaoAtualizarJson")
+        let flexSwitchCheckIncluirPendencias = document.getElementById("flexSwitchCheckIncluirPendencias")
 
-    document_Tres = document.getElementById("container-3")
 
-    document_Tres.style.maxWidth = "100%"
-    document_Tres.style.marginRight = "0px"
-    document_Tres.style.marginLeft = "0px"
-    document_Tres.style.paddingRight = "0px"
-    document_Tres.style.paddingLeft = "0px"
+        // EVENTOS
+        for (i = 0; i <= botoesAlteraJanela.length - 1; i++) {
 
-    //REMOVE O STYLE ATUAL PARA INJETAR O MODIFICADO (NECESSÁRIO PELO BOOTSTRAP)
-    document.querySelector("link[href='/seb/styles.9154eca58f8ac122454a.css']").remove()
+            botoesAlteraJanela[i].addEventListener('click', () => {
 
+                offcanvas.classList.toggle('show')
 
-    // CRIA E ADICIONA O OFFCANVAS LATERAL NA PAGINA
-    let divoffcanvas = document.createElement('div')
-    divoffcanvas.innerHTML = `
-<div id="offcanvasId" class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"aria-labelledby="offcanvasScrollingLabel">
+            })
 
-<div class="offcanvas-header d-flex flex-column align-items-end">
-    <input type="button" class="botaoAlteraJanela btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></input>
-</div>
+        }
 
-<div class="d-flex justify-content-between"> 
+        document.getElementById("selectOperacao").addEventListener("input", () => {
 
-    <div class="col-4 m-4 form-floating">
-        <select id="selectOperacao" class="form-select" id="floatingSelect" aria-label="">
-            <option id="formatarTabela" value="formatarTabela">Formatar tabela</option>
-            <option id="updateDados" value="inserirDados">Atualização de dados trimestral</option>
-            <option id="setDatabase" value="gerarArquivo">Gerar arquivo</option>
-        </select>
-        <label for="floatingSelect">Opções</label>
-    </div>
+            switch (selectOperacao.value) {
 
-    <div class="d-flex"> 
+                case "formatarTabela":
+                    formGerar.hidden = true
+                    formUpdate.hidden = true
+                    formFormatarTabela.hidden = false
+                    break
 
-        <div id="alertErros" class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
-            <strong id="descAlertErros">0</strong>
-        </div>
-
-        <div id="alertFora" class="m-4 alert alert-warning alert-dismissible fade show" role="alert">
-            <strong id="descAlertFora">0</strong>
-        </div>
-    
-    </div>
-
-</div>
-
-
-<div class="mx-3">
-    <div hidden class="progress mb-2" id="bar-group-progress">
-        <div id="progress-bar-1" class="progress-bar progress-bar-striped" style="width: 0%"></div>
-    </div>
-</div>
-
-<div class="offcanvas-body">
-
-    <div id="alertUpdate" class="m-4 alert alert-danger alert-dismissible fade show" role="alert" hidden>
-        <p id="descAlert">IMPORTAR UM NOVO ARQUIVO IRÁ SUBSTITUIR O ARMAZENADO NO LOCALSTORAGE</p>
-        <button id="closeAlert" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div id="cardFormatarTabela" class="card">
-
-        <div id="formFormatarTabela" class="card m-1" style="height: 155px">
-
-            <input id="botaoFormatarTabela" class="btn m-1 btn-primary h-100" value="FORMATAR TABELA">
-            <input id="botaoLimparFormatacaoTabela" class="btn m-1 btn-danger h-50" value="LIMPAR FORMATAÇÃO TABELA">
-
-        </div>
-    
-        <div id="formUpdate" class="card m-1" hidden>
-
-            <div class="p-2">
-
-                <div class="input-group">
-                    <input id="inputArquivo" name="inputArquivo" type="file" class="form-control">
-                </div>
-
-                <div class="d-flex my-2">
-
-                    <div class="d-flex flex-column align-items-end mx-1">
-                        <input class="btn btn-primary col-12 mb-1" id="botaoSubmit" value="IMPORTAR">
-                        <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
-                    </div>
-
-                </div>
-            
-            </div>
-
-        </div>
-
-        <div id="formGerar" class="card m-1" hidden>
-
-            <div class="p-2">
-
-                <div class="form-floating">
-                    <textarea class="form-control h-300" id="txtAreaAlunos" disabled></textarea>
-                    <label id="lblAlunos" for="txtAreaAlunos">JSON</label>
-
-                    <table class="table table-hover table-striped" id="tabelaDados" style="min-height: 200px">
-                        <thead>
-                            <tr>
-                                <th scope="col">ALUNOS</th>
-                                <th scope="col">SERIE</th>
-                                <th scope="col">DATA NASCIMENTO</th>
-                                <th scope="col">PENDENCIAS</th>
-                                <th scope="col">AÇÕES</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="tbodytabelaDados">
-
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-                <div class="d-flex my-2 gap-5">
-
-                    <div class="d-flex flex-column align-items-end mx-1">
-                        <input class="btn btn-dark col-12 mb-1" id="botaoGerarJson" value="GERAR JSON">
-                        <input class="btn btn-dark col-12 mb-1" id="botaoAtualizarJson" value="ATUALIZAR JSON">
-                        <a class="btn btn-success col-12 mb-1" id="botaoBaixarJson">BAIXAR JSON</a>
-                        <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
-                    </div>
-
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckIncluirPendencias">
-                        <label class="form-check-label" for="flexSwitchCheckIncluirPendencias">INCLUIR ALUNOS COM PENDÊNCIAS CADASTRAIS</label>
-                    </div>
-
-                </div>
-            
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-</div>`
-
-    document.body.append(divoffcanvas)
-
-    //INSTANCIAÇÃO DOS ELEMENTOS E VARIÁVEIS DE CONTROLE
-    let nomesAlunosPresenca = {}
-    let nomesAlunosNew = {}
-    let nomesAlunosTemporario = {}
-    let offcanvas = document.getElementById('offcanvasId')
-    let botoesAlteraJanela = document.getElementsByClassName('botaoAlteraJanela')
-    let selectOperacao = document.getElementById('selectOperacao')
-    let formFormatarTabela = document.getElementById("formFormatarTabela")
-    let formUpdate = document.getElementById('formUpdate')
-    let formGerar = document.getElementById('formGerar')
-    let botaoSubmit = document.getElementById('botaoSubmit')
-    let botaoFormatarTabela = document.getElementById("botaoFormatarTabela")
-    let botaoLimparFormatacaoTabela = document.getElementById("botaoLimparFormatacaoTabela")
-    let descAlert = document.getElementById("descAlert")
-    let alertUpdate = document.getElementById("alertUpdate")
-    let botoesFechar = document.querySelectorAll(".btn-close")
-    let txtAreaAlunos = document.getElementById("txtAreaAlunos")
-    let botaoGerarJson = document.getElementById("botaoGerarJson")
-    let botaoBaixarJson = document.getElementById("botaoBaixarJson")
-    let descAlertErros = document.getElementById("descAlertErros")
-    let descAlertFora = document.getElementById("descAlertFora")
-    let contagemErros = 0
-    let contagemFora = 0
-    let ngx_overlay = document.getElementsByClassName("ngx-overlay")[0]
-    let tabelaDados = document.getElementById("tabelaDados")
-    let tbodytabelaDados = document.getElementById("tbodytabelaDados")
-    let botaoAtualizarJson = document.getElementById("botaoAtualizarJson")
-    let flexSwitchCheckIncluirPendencias = document.getElementById("flexSwitchCheckIncluirPendencias")
-
-
-    // EVENTOS
-    for (i = 0; i <= botoesAlteraJanela.length - 1; i++) {
-
-        botoesAlteraJanela[i].addEventListener('click', () => {
-
-            offcanvas.classList.toggle('show')
+                case "inserirDados":
+                    formFormatarTabela.hidden = true
+                    formUpdate.hidden = false
+                    formGerar.hidden = true
+                    alertUpdate.hidden = false
+                    alertUpdate.classList.add("show")
+                    break
+
+                case "gerarArquivo":
+                    formFormatarTabela.hidden = true
+                    formGerar.hidden = false
+                    formUpdate.hidden = true
+                    break
+
+            }
 
         })
 
-    }
+        botaoSubmit.addEventListener("click", () => {
 
-    document.getElementById("selectOperacao").addEventListener("input", () => {
+            importarDatabase()
+        })
 
-        switch (selectOperacao.value) {
+        botaoFormatarTabela.addEventListener("click", () => {
 
-            case "formatarTabela":
-                formGerar.hidden = true
-                formUpdate.hidden = true
-                formFormatarTabela.hidden = false
-                break
+            limparFormatacao()
+            formatarTabela()
 
-            case "inserirDados":
-                formFormatarTabela.hidden = true
-                formUpdate.hidden = false
-                formGerar.hidden = true
+        })
+
+        botaoLimparFormatacaoTabela.addEventListener("click", () => {
+
+            limparFormatacao()
+
+        })
+
+        botoesFechar.forEach((btn) => {
+
+            btn.addEventListener("click", () => {
+
+                btn.parentElement.classList.remove("show")
+                btn.parentElement.hidden = true
+
+            })
+
+
+        })
+
+        botaoGerarJson.addEventListener("click", () => {
+
+            gerarJson()
+
+        })
+
+        /** 
+        botaoAtualizarJson.addEventListener("click", () => {
+    
+            gerarAquivoDownload()
+    
+        })
+        */
+
+        ngx_overlay.addEventListener((''))
+
+
+        //PARTE FUNCIONAL DO CÓDIGO
+
+        function formataObjAluno(objAluno, nomeAlunoPropriedade) {
+
+            let dadosFormatados
+            //FORMATA PARA A NOTAÇÃO JSON
+            dadosFormatados = `"${nomeAlunoPropriedade}":{\n`
+            dadosFormatados += (JSON.stringify(nomesAlunosPresenca[nomeAlunoPropriedade])).replace('{', "")
+            dadosFormatados = dadosFormatados.replaceAll('"nomeSerie"', '"nomeSerie"')
+            dadosFormatados = dadosFormatados.replaceAll('"nascimentoAluno"', '\n"nascimentoAluno"')
+            dadosFormatados = dadosFormatados.replaceAll('"pend"', '\n"pend"')
+            dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
+            dadosFormatados = dadosFormatados.replaceAll('},\n\n},', '}},\n\n')
+
+            return dadosFormatados
+
+        }
+
+        function importarDatabase() {
+
+            // LIMPA CASO UMA NOVA DATABASE SEJA INCLUIDA
+            txtAreaAlunos.value = ""
+
+            const input = document.getElementById('inputArquivo');
+            const arquivo = input.files[0];
+
+            let fileReader = new FileReader()
+
+            fileReader.onload = function (e) {
+
+                resultado = fileReader.result
+
+                localStorage.setItem("alunos", resultado)
+                input.value = ""
                 alertUpdate.hidden = false
+                alertUpdate.classList.remove("alert-danger")
+                alertUpdate.classList.add("alert-success")
                 alertUpdate.classList.add("show")
-                break
+                descAlert.innerText = "IMPORTADO COM SUCESSO"
+            }
 
-            case "gerarArquivo":
-                formFormatarTabela.hidden = true
-                formGerar.hidden = false
-                formUpdate.hidden = true
-                break
+            try {
+
+                fileReader.readAsText(arquivo)
+
+
+            } catch (e) {
+                alertUpdate.classList.add("alert-danger")
+                alertUpdate.classList.add("show")
+                alertUpdate.hidden = false
+                descAlert.innerText = e
+
+            }
+
 
         }
 
-    })
+        function formatarTabela() {
 
-    botaoSubmit.addEventListener("click", () => {
+            if (localStorage.getItem("alunos") == null) {
 
-        importarDatabase()
-    })
-
-    botaoFormatarTabela.addEventListener("click", () => {
-
-        limparFormatacao()
-        formatarTabela()
-
-    })
-
-    botaoLimparFormatacaoTabela.addEventListener("click", () => {
-
-        limparFormatacao()
-
-    })
-
-    botoesFechar.forEach((btn) => {
-
-        btn.addEventListener("click", () => {
-
-            btn.parentElement.classList.remove("show")
-            btn.parentElement.hidden = true
-
-        })
+                alertUpdate.classList.add("alert-danger")
+                alertUpdate.classList.add("show")
+                descAlert.innerText = "AINDA NÃO EXISTEM DADOS DOS ESTUDANTES NO LOCALSTORAGE"
+                alertUpdate.hidden = false
 
 
-    })
+            } else {
 
-    botaoGerarJson.addEventListener("click", () => {
+                let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
 
-        gerarJson()
+                nomesAlunosPresenca = alunosPresenca
 
-    })
+                let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
 
-    /** 
-    botaoAtualizarJson.addEventListener("click", () => {
+                linhasTabela.forEach(linha => {
 
-        gerarAquivoDownload()
-
-    })
-    */
-
-    ngx_overlay.addEventListener((''))
+                    nomeAluno = linha.querySelector(".mat-column-nome")
+                    serieAluno = linha.querySelector(".mat-column-noSerie")
 
 
-    //PARTE FUNCIONAL DO CÓDIGO
-
-    function formataObjAluno(objAluno, nomeAlunoPropriedade) {
-
-        let dadosFormatados
-        //FORMATA PARA A NOTAÇÃO JSON
-        dadosFormatados = `"${nomeAlunoPropriedade}":{\n`
-        dadosFormatados += (JSON.stringify(nomesAlunosPresenca[nomeAlunoPropriedade])).replace('{', "")
-        dadosFormatados = dadosFormatados.replaceAll('"nomeSerie"', '"nomeSerie"')
-        dadosFormatados = dadosFormatados.replaceAll('"nascimentoAluno"', '\n"nascimentoAluno"')
-        dadosFormatados = dadosFormatados.replaceAll('"pend"', '\n"pend"')
-        dadosFormatados = dadosFormatados.replaceAll('}', '},\n\n')
-        dadosFormatados = dadosFormatados.replaceAll('},\n\n},', '}},\n\n')
-
-        return dadosFormatados
-
-    }
-
-    function importarDatabase() {
-
-        // LIMPA CASO UMA NOVA DATABASE SEJA INCLUIDA
-        txtAreaAlunos.value = ""
-
-        const input = document.getElementById('inputArquivo');
-        const arquivo = input.files[0];
-
-        let fileReader = new FileReader()
-
-        fileReader.onload = function (e) {
-
-            resultado = fileReader.result
-
-            localStorage.setItem("alunos", resultado)
-            input.value = ""
-            alertUpdate.hidden = false
-            alertUpdate.classList.remove("alert-danger")
-            alertUpdate.classList.add("alert-success")
-            alertUpdate.classList.add("show")
-            descAlert.innerText = "IMPORTADO COM SUCESSO"
-        }
-
-        try {
-
-            fileReader.readAsText(arquivo)
+                    if (nomesAlunosPresenca[nomeAluno.innerText]) {
 
 
-        } catch (e) {
-            alertUpdate.classList.add("alert-danger")
-            alertUpdate.classList.add("show")
-            alertUpdate.hidden = false
-            descAlert.innerText = e
+                        if (nomesAlunosPresenca[nomeAluno.innerText]["nomeSerie"] == serieAluno.innerText) {
+
+                            serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: green"> OK </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+
+                        } else {
+
+                            serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: red"> MODIF </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+
+                        }
+
+                        if (nomesAlunosPresenca[nomeAluno.innerText]["pend"] == false) {
+
+                            nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> OK </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+
+
+                        } else {
+                            nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ${nomesAlunosPresenca[nomeAluno.innerText]["pend"].type} </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                            contagemErros++
+                        }
+
+
+                    } else {
+
+                        contagemFora++
+                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
+                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+
+                    }
+
+                });
+
+            }
+
+            descAlertErros.innerText = contagemErros
+            descAlertFora.innerText = contagemFora
+
+
 
         }
 
+        function gerarJson() {
 
-    }
+            if (localStorage.getItem("alunos") == null) {
 
-    function formatarTabela() {
+                //EXECUTADA PARA A PRIMEIRA VEZ GERANDO OS DADOS DOS ALUNOS
 
-        if (localStorage.getItem("alunos") == null) {
+                nomesAlunosPresenca = {}
 
-            alertUpdate.classList.add("alert-danger")
-            alertUpdate.classList.add("show")
-            descAlert.innerText = "AINDA NÃO EXISTEM DADOS DOS ESTUDANTES NO LOCALSTORAGE"
-            alertUpdate.hidden = false
+            } else {
 
+                //EXECUTADA PARA GERAR O ARQUIVO A PARTIR DE DADOS INCLUÍDOS NO INPUT E ADICIONAR NOVOS ALUNOS
 
-        } else {
+                let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
 
-            let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
+                nomesAlunosPresenca = alunosPresenca
 
-            nomesAlunosPresenca = alunosPresenca
+            }
 
             let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
 
             linhasTabela.forEach(linha => {
 
-                nomeAluno = linha.querySelector(".mat-column-nome")
-                serieAluno = linha.querySelector(".mat-column-noSerie")
+                let nomeAluno = ""
+                let serieAluno = ""
+                let nascimentoAluno = ""
 
 
-                if (nomesAlunosPresenca[nomeAluno.innerText]) {
+                if (linha.querySelectorAll(".divFormatada").length > 0) {
 
-
-                    if (nomesAlunosPresenca[nomeAluno.innerText]["nomeSerie"] == serieAluno.innerText) {
-
-                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: green"> OK </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
-
-                    } else {
-
-                        serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: red"> MODIF </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
-
-                    }
-
-                    if (nomesAlunosPresenca[nomeAluno.innerText]["pend"] == false) {
-
-                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: green"> OK </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
-
-
-                    } else {
-                        nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: red"> ${nomesAlunosPresenca[nomeAluno.innerText]["pend"].type} </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
-                        contagemErros++
-                    }
-
+                    nomeAluno = linha.querySelector(".mat-column-nome .divFormatada .nomeAluno").innerText
+                    serieAluno = linha.querySelector(".mat-column-noSerie .divFormatada .serieAluno").innerText
+                    nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
 
                 } else {
 
-                    contagemFora++
-                    nomeAluno.innerHTML = `<div class="divFormatada divFormatadaNome"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="nomeAluno"> ${nomeAluno.innerText}</div></div>`
-                    serieAluno.innerHTML = `<div class="divFormatada divFormatadaSerie"><div class="statusAluno" style="color: yellow"> NOVO </div> <div class="serieAluno"> ${serieAluno.innerText}</div></div>`
+                    nomeAluno = linha.querySelector(".mat-column-nome").innerText
+                    serieAluno = linha.querySelector(".mat-column-noSerie").innerText
+                    nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
+
 
                 }
 
-            });
 
-        }
+                if ((!nomesAlunosPresenca[nomeAluno]) || (nomesAlunosPresenca[nomeAluno]["pend"] != false && flexSwitchCheckIncluirPendencias.checked == true)) {
 
-        descAlertErros.innerText = contagemErros
-        descAlertFora.innerText = contagemFora
-
-
-
-    }
-
-    function gerarJson() {
-
-        if (localStorage.getItem("alunos") == null) {
-
-            //EXECUTADA PARA A PRIMEIRA VEZ GERANDO OS DADOS DOS ALUNOS
-
-            nomesAlunosPresenca = {}
-
-        } else {
-
-            //EXECUTADA PARA GERAR O ARQUIVO A PARTIR DE DADOS INCLUÍDOS NO INPUT E ADICIONAR NOVOS ALUNOS
-
-            let alunosPresenca = JSON.parse(localStorage.getItem("alunos"))
-
-            nomesAlunosPresenca = alunosPresenca
-
-        }
-
-        let linhasTabela = document.querySelectorAll(".mat-table tbody tr")
-
-        linhasTabela.forEach(linha => {
-
-            let nomeAluno = ""
-            let serieAluno = ""
-            let nascimentoAluno = ""
-
-
-            if (linha.querySelectorAll(".divFormatada").length > 0) {
-
-                nomeAluno = linha.querySelector(".mat-column-nome .divFormatada .nomeAluno").innerText
-                serieAluno = linha.querySelector(".mat-column-noSerie .divFormatada .serieAluno").innerText
-                nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
-
-            } else {
-
-                nomeAluno = linha.querySelector(".mat-column-nome").innerText
-                serieAluno = linha.querySelector(".mat-column-noSerie").innerText
-                nascimentoAluno = linha.querySelector(".mat-column-dataNascimento").innerText
-
-
-            }
-            
-
-            if ((!nomesAlunosPresenca[nomeAluno]) || (nomesAlunosPresenca[nomeAluno]["pend"] != false && flexSwitchCheckIncluirPendencias.checked == true)) {
-
-                nomesAlunosNew[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
-                nomesAlunosTemporario[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
-
-            }
-
-        })
-
-        txtAreaAlunos.value = ""
-
-        for (aluno in nomesAlunosPresenca) {
-
-            //PREENCHE TXTAREA COM OS DADOS DO LOCALSTORAGE
-
-            txtAreaAlunos.value += formataObjAluno(nomesAlunosPresenca[aluno], aluno)
-
-        }
-
-
-        for (nomeAlunoPropriedade in nomesAlunosTemporario) {
-
-            //POPULA A TABELA COM OS DADOS DOS ALUNOS NOVOS
-
-            let tr = document.createElement("tr")
-            let tdNome = document.createElement("td")
-            tdNome.classList.add("idAlunoNome")
-            let tdSerie = document.createElement("td")
-            let tdNasc = document.createElement("td")
-            tdNasc.classList.add("tdNasc")
-            let tdPendencias = document.createElement("td")
-            let tdAcao = document.createElement("td")
-
-            let botaoExcluir = document.createElement("div")
-            botaoExcluir.classList.add("btn")
-            botaoExcluir.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>`
-
-            if (nomesAlunosPresenca[nomeAlunoPropriedade]) {
-
-                botaoExcluir.classList.add("btn-danger")
-
-            } else {
-
-                botaoExcluir.classList.add("btn-warning")
-
-            }
-
-            botaoExcluir.addEventListener("click", () => {
-
-                tr.remove()
-                delete nomesAlunosNew[tdNome.innerText]
-                formataObjAlunoTabela()
-
-            })
-
-
-            tdAcao.append(botaoExcluir)
-            let divChecks = document.createElement("div")
-            divChecks.classList.add("divChecks")
-
-            let chkNome = document.createElement("input")
-            let chkCPF = document.createElement("input")
-            let chkPPM = document.createElement("input")
-            let labelchkNome = document.createElement("label")
-            labelchkNome.innerText = "NOME"
-            let labelchkCPF = document.createElement("label")
-            labelchkCPF.innerText = "CPF"
-            let labelchkPPM = document.createElement("label")
-            labelchkPPM.innerText = "PPM"
-            chkNome.classList.add("form-check-input")
-            chkNome.classList.add("pend")
-            chkNome.type = "checkbox"
-            chkNome.value = "NOME"
-            chkCPF.classList.add("form-check-input")
-            chkCPF.classList.add("pend")
-            chkCPF.type = "checkbox"
-            chkCPF.value = "CPF"
-
-            chkPPM.classList.add("form-check-input")
-            chkPPM.classList.add("pend")
-            chkPPM.type = "checkbox"
-            chkPPM.value = "PPM"
-            
-
-            let inputSerie = document.createElement("input")
-            inputSerie.classList.add("inputSerie")
-
-            divChecks.append(chkNome)
-            divChecks.append(labelchkNome)
-            divChecks.append(chkCPF)
-            divChecks.append(labelchkCPF)
-            divChecks.append(chkPPM)
-            divChecks.append(labelchkPPM)
-            tdPendencias.append(divChecks)
-
-            tdNome.innerText = nomeAlunoPropriedade
-            inputSerie.value = nomesAlunosNew[nomeAlunoPropriedade]["nomeSerie"]
-
-            tdSerie.append(inputSerie)
-
-            tdNasc.innerText = nomesAlunosNew[nomeAlunoPropriedade]["nascimentoAluno"]
-            tdPendencias.append(divChecks)
-
-            tr.append(tdNome)
-            tr.append(tdSerie)
-            tr.append(tdNasc)
-            tr.append(tdPendencias)
-            tr.append(tdAcao)
-
-            tbodytabelaDados.append(tr)
-
-        }
-
-        chksPend = document.querySelectorAll(".pend")
-
-        chksPend.forEach(chk => {
-
-
-            chk.addEventListener("click", () =>{
-
-                formataObjAlunoTabela()
-
-            })
-
-        })
-
-        nomesAlunosTemporario = {}
-        formataObjAlunoTabela()
-    }
-
-    function limparFormatacao() {
-
-        celulasFormatadas = document.querySelectorAll(".divFormatada")
-
-        celulasFormatadas.forEach((div) => {
-
-            if (div.classList.contains("divFormatadaNome")) {
-
-                div.parentElement.innerText = div.querySelector(".nomeAluno").innerText
-
-            } else if (div.classList.contains("divFormatadaSerie")) {
-
-
-                div.parentElement.innerText = div.querySelector(".serieAluno").innerText
-
-            }
-
-        })
-
-    }
-
-    function gerarAquivoDownload() {
-
-        let conteudo = ""
-
-        conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew).slice(1,-1)}}`
-
-        let blob = new Blob([conteudo], { type: "application/json" })
-        let url = window.URL.createObjectURL(blob)
-        botaoBaixarJson.href = url
-        botaoBaixarJson.download = `alunos_presenca_${new Date().toLocaleString()}`
-        //window.URL.revokeObjectURL(url)
-
-    }
-
-    function formataObjAlunoTabela() {
-
-        linhas = tbodytabelaDados.querySelectorAll("tr")
-
-        linhas.forEach((linha) => {
-
-            nome = linha.querySelector(".idAlunoNome").innerText
-            nomeSerie = linha.querySelector(".inputSerie").value
-            dataNascimento = linha.querySelector(".tdNasc").innerText
-            pendTipos = ""
-            pendInputs = linha.querySelectorAll(".pend")
-
-            pendInputs.forEach((chk) => {
-
-                if (chk.checked == true) {
-
-                    pendTipos = pendTipos + `${chk.value}<br>`
+                    nomesAlunosNew[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
+                    nomesAlunosTemporario[nomeAluno] = { "nomeSerie": serieAluno, "nascimentoAluno": nascimentoAluno, "pend": { "type": "nome cpf pdm" } }
 
                 }
 
             })
 
-            nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
-            nomesAlunosNew[nome]["nascimentoAluno"] = dataNascimento
-            nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
+            txtAreaAlunos.value = ""
 
-            if (pendTipos == "") {
+            for (aluno in nomesAlunosPresenca) {
 
-                nomesAlunosNew[nome]["pend"] = false
+                //PREENCHE TXTAREA COM OS DADOS DO LOCALSTORAGE
+
+                txtAreaAlunos.value += formataObjAluno(nomesAlunosPresenca[aluno], aluno)
 
             }
 
 
-        })
+            for (nomeAlunoPropriedade in nomesAlunosTemporario) {
 
-        gerarAquivoDownload()
+                //POPULA A TABELA COM OS DADOS DOS ALUNOS NOVOS
+
+                let tr = document.createElement("tr")
+                let tdNome = document.createElement("td")
+                tdNome.classList.add("idAlunoNome")
+                let tdSerie = document.createElement("td")
+                let tdNasc = document.createElement("td")
+                tdNasc.classList.add("tdNasc")
+                let tdPendencias = document.createElement("td")
+                let tdAcao = document.createElement("td")
+
+                let botaoExcluir = document.createElement("div")
+                botaoExcluir.classList.add("btn")
+                botaoExcluir.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>`
+
+                if (nomesAlunosPresenca[nomeAlunoPropriedade]) {
+
+                    botaoExcluir.classList.add("btn-danger")
+
+                } else {
+
+                    botaoExcluir.classList.add("btn-warning")
+
+                }
+
+                botaoExcluir.addEventListener("click", () => {
+
+                    tr.remove()
+                    delete nomesAlunosNew[tdNome.innerText]
+                    formataObjAlunoTabela()
+
+                })
+
+
+                tdAcao.append(botaoExcluir)
+                let divChecks = document.createElement("div")
+                divChecks.classList.add("divChecks")
+
+                let chkNome = document.createElement("input")
+                let chkCPF = document.createElement("input")
+                let chkPPM = document.createElement("input")
+                let labelchkNome = document.createElement("label")
+                labelchkNome.innerText = "NOME"
+                let labelchkCPF = document.createElement("label")
+                labelchkCPF.innerText = "CPF"
+                let labelchkPPM = document.createElement("label")
+                labelchkPPM.innerText = "PPM"
+                chkNome.classList.add("form-check-input")
+                chkNome.classList.add("pend")
+                chkNome.type = "checkbox"
+                chkNome.value = "NOME"
+                chkCPF.classList.add("form-check-input")
+                chkCPF.classList.add("pend")
+                chkCPF.type = "checkbox"
+                chkCPF.value = "CPF"
+
+                chkPPM.classList.add("form-check-input")
+                chkPPM.classList.add("pend")
+                chkPPM.type = "checkbox"
+                chkPPM.value = "PPM"
+
+
+                let inputSerie = document.createElement("input")
+                inputSerie.classList.add("inputSerie")
+
+                divChecks.append(chkNome)
+                divChecks.append(labelchkNome)
+                divChecks.append(chkCPF)
+                divChecks.append(labelchkCPF)
+                divChecks.append(chkPPM)
+                divChecks.append(labelchkPPM)
+                tdPendencias.append(divChecks)
+
+                tdNome.innerText = nomeAlunoPropriedade
+                inputSerie.value = nomesAlunosNew[nomeAlunoPropriedade]["nomeSerie"]
+
+                tdSerie.append(inputSerie)
+
+                tdNasc.innerText = nomesAlunosNew[nomeAlunoPropriedade]["nascimentoAluno"]
+                tdPendencias.append(divChecks)
+
+                tr.append(tdNome)
+                tr.append(tdSerie)
+                tr.append(tdNasc)
+                tr.append(tdPendencias)
+                tr.append(tdAcao)
+
+                tbodytabelaDados.append(tr)
+
+            }
+
+            chksPend = document.querySelectorAll(".pend")
+
+            chksPend.forEach(chk => {
+
+
+                chk.addEventListener("click", () => {
+
+                    formataObjAlunoTabela()
+
+                })
+
+            })
+
+            nomesAlunosTemporario = {}
+            formataObjAlunoTabela()
+        }
+
+        function limparFormatacao() {
+
+            celulasFormatadas = document.querySelectorAll(".divFormatada")
+
+            celulasFormatadas.forEach((div) => {
+
+                if (div.classList.contains("divFormatadaNome")) {
+
+                    div.parentElement.innerText = div.querySelector(".nomeAluno").innerText
+
+                } else if (div.classList.contains("divFormatadaSerie")) {
+
+
+                    div.parentElement.innerText = div.querySelector(".serieAluno").innerText
+
+                }
+
+            })
+
+        }
+
+        function gerarAquivoDownload() {
+
+            let conteudo = ""
+
+            conteudo = `{${txtAreaAlunos.value.trim()}\n\n${JSON.stringify(nomesAlunosNew).slice(1, -1)}}`
+
+            let blob = new Blob([conteudo], { type: "application/json" })
+            let url = window.URL.createObjectURL(blob)
+            botaoBaixarJson.href = url
+            botaoBaixarJson.download = `alunos_presenca_${new Date().toLocaleString()}`
+            //window.URL.revokeObjectURL(url)
+
+        }
+
+        function formataObjAlunoTabela() {
+
+            linhas = tbodytabelaDados.querySelectorAll("tr")
+
+            linhas.forEach((linha) => {
+
+                nome = linha.querySelector(".idAlunoNome").innerText
+                nomeSerie = linha.querySelector(".inputSerie").value
+                dataNascimento = linha.querySelector(".tdNasc").innerText
+                pendTipos = ""
+                pendInputs = linha.querySelectorAll(".pend")
+
+                pendInputs.forEach((chk) => {
+
+                    if (chk.checked == true) {
+
+                        pendTipos = pendTipos + `${chk.value}<br>`
+
+                    }
+
+                })
+
+                nomesAlunosNew[nome]["nomeSerie"] = nomeSerie
+                nomesAlunosNew[nome]["nascimentoAluno"] = dataNascimento
+                nomesAlunosNew[nome]["pend"] = { "type": pendTipos }
+
+                if (pendTipos == "") {
+
+                    nomesAlunosNew[nome]["pend"] = false
+
+                }
+
+
+            })
+
+            gerarAquivoDownload()
+
+        }
 
     }
+
+
 
 }
 
+incluiRecursos()

@@ -210,11 +210,11 @@ text-align: center;
 
 }
 
-*,
-*::before,
-*::after {
+
+.offcanvas * {
   box-sizing: border-box;
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   :root {

@@ -14,7 +14,9 @@
                 "https://www.siepe.educacao.pe.gov.br/gestaoescolar/*",
                 "https://www.siepe.educacao.pe.gov.br/gestaoescolar.do"
             ],
-            "css": ["css/bootstrap_edit.css"],
+            "css": [
+                "css/bootstrap_edit.css"
+            ],
             "js": [
                 "bootstrap.bundle.min.js",
                 "scriptCadastro.js",
@@ -34,7 +36,9 @@
             "matches": [
                 "https://presenca.mec.gov.br/seb/registra-frequencia-escola"
             ],
-            "css": ["css/styles.a8f19adb82ba740eae42.css"],
+            "css": [
+                "css/styles.a8f19adb82ba740eae42.css"
+            ],
             "js": [
                 "scriptPresenca.js"
             ]
@@ -43,7 +47,9 @@
             "matches": [
                 "https://www.siepe.educacao.pe.gov.br/diarioclasse/DiarioClasse.do?apontamentoDesempenho=true"
             ],
-            "css": ["css/bootstrap_edit.css"],
+            "css": [
+                "css/bootstrap_edit.css"
+            ],
             "js": [
                 "scriptPlanejamentos.js",
                 "bootstrap.bundle.min.js"
@@ -54,5 +60,15 @@
     "host_permissions": [
         "https://www.siepe.educacao.pe.gov.br/",
         "https://presenca.mec.gov.br/"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "src/*"
+            ],
+            "matches": [
+                "https://www.siepe.educacao.pe.gov.br/*"
+            ]
+        }
     ]
 }

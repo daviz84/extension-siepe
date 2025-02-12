@@ -1,0 +1,350 @@
+<style>
+    .formataBotao {
+
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        z-index: -1;
+        height: 100%;
+        width: 1100px;
+        justify-content: end;
+        align-items: start;
+
+
+    }
+
+    .offcanvas {
+        min-width: 100% !important;
+    }
+
+    #cardTabela {
+
+        width: 100%;
+
+    }
+
+    tbody td {
+
+        text-align: center;
+
+    }
+
+    #professoresTurmas {
+
+        width: 100%
+    }
+
+    #professoresTurmas * {
+
+        width: 50%;
+        text-align: center;
+        gap: 10px;
+
+    }
+</style>
+
+<div id="offcanvasId" class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+    aria-labelledby="offcanvasScrollingLabel">
+
+    <div class="offcanvas-header d-flex flex-column align-items-end w-100">
+        <input type="button" class="botaoAlteraJanela btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></input>
+    </div>
+
+    <div id="alertDanger" hidden class="m-4 alert alert-danger alert-dismissible fade show" role="alert">
+        <p id="descAlert"></p>
+        <button id="closeAlert" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="col-3 m-4 form-floating">
+        <select id="selectPesquisa" class="form-select" id="floatingSelect" aria-label="">
+            <option id="selectDados" value="dados">Dados pessoais</option>
+            <option id="selectEndereco" value="endereco">Endereço</option>
+            <option id="selectEndereco" value="saude">Dados de saúde</option>
+            <option id="selectHistorico" value="historico">Dados de históricos</option>
+            <option id="selectPendencIti" value="pendIti">Pendêncioa dos Itinerários</option>
+        </select>
+        <label for="floatingSelect">Opções</label>
+    </div>
+
+    <div class="mx-3">
+        <div hidden class="progress mb-2" id="bar-group-progress">
+            <div id="progress-bar-1" class="progress-bar progress-bar-striped" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <div class="offcanvas-body">
+
+        <div class="card">
+
+            <div id="pesquisasCadastro">
+
+                <table class="table" id="tabelaDados">
+
+                    <div class="col-3">
+
+                        <div class="input-group mt-5">
+                            <span class="input-group-text" id="basic-addon1">BOLSA FAMÍLIA</span>
+                            <input id="contadorBolsaFamilia" type="text" class="form-control" value="0">
+                        </div>
+
+                    </div>
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Matrícula</th>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col">Data Nascimento</th>
+                            <th scope="col" class="px-3">CPF</th>
+                            <th scope="col">Nome da mãe</th>
+                            <th scope="col">Nome da pai</th>
+                            <!--<th scope="col">Responsável</th>-->
+                            <!--<th scope="col">CPF responsável</th>-->
+                            <!--<th scope="col">Nome responsável</th>-->
+                            <th scope="col" class="px-3">TURMA</th>
+                            <!--<th scope="col" class="px-3">Bols. Fam.</th>-->
+                            <th scope="col" class="px-3">NIS</th>
+                            <th scope="col" class="px-3">Codigo sistema</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaDados">
+
+                    </tbody>
+
+                </table>
+
+                <table hidden class="table " id="tabelaEndereco">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col">Matrícula</th>
+                            <th scope="col">Turma</th>
+                            <!-- <th scope="col">Turno</th> -->
+                            <th scope="col">Endereço</th>
+                            <th scope="col">Município</th>
+                            <th scope="col">Área do aluno</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaEndereco">
+
+                    </tbody>
+
+                </table>
+
+                <table hidden class="table" id="tabelaSaude">
+                    <thead>
+                        <tr>
+                            <th scope="col">Matrícula</th>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col">Número cartão do sus</th>
+                            <th scope="col" class="px-3">TURMA</th>
+                            <th scope="col" class="px-3">DATA NASCIMENTO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaSaude">
+
+                    </tbody>
+
+                </table>
+
+                <form id="formRequest" class="card m-1">
+
+                    <div class="col-4 p-2">
+
+                        <input type="text" name="ordenacao" hidden>
+                        <input type="text" name="parecer" hidden>
+
+                        <input type="text" name="txtCodigo" hidden>
+                        <input type="text" name="txtAluno" hidden>
+                        <input type="text" name="idAlunoMatriculaStatus" hidden>
+                        <input type="text" name="curso" hidden>
+                        <input type="text" name="serie" hidden>
+                        <input type="text" name="turma" hidden>
+                        <input type="text" name="actionType" hidden>
+                        <input type="text" name="chkAluno" hidden>
+                        <input type="text" name="dadosAluno" hidden>
+
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">ANO</span>
+                            <input name="txtAno" type="text" class="form-control" value="2024">
+                        </div>
+
+                        <div class="d-flex my-2">
+
+                            <div class="form-floating">
+                                <textarea class="form-control h-100" id="txtAreaMatriculas"></textarea>
+                                <label id="lblMatriculas" for="txtAreaMatriculas">MATRICULAS</label>
+                            </div>
+
+
+                            <div class="d-flex flex-column align-items-end mx-1">
+                                <input class="btn btn-primary col-12 mb-1" id="botaoSubmit" type="submit"
+                                    value="PESQUISAR">
+                                <input class="btn btn-danger col-12 mb-1" id="botaoExcluir" value="LIMPAR">
+                            </div>
+
+                        </div>
+
+                        <div class="">
+
+                            <div class="btn-group" role="group" id="btn-group-btncheckOutros">
+                                <input type="checkbox" class="btn-check btn-sm" id="btncheckOutros" autocomplete="off">
+                                <label class="btn btn-outline-primary btn-sm" for="btncheckOutros"
+                                    style="font-size: 9px">Somente "outros"</label>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div hidden id="divPendenciaItin">
+
+                <table class="table" id="tabelaPendenciaItin">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col">Disciplina com Pendência</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaSaude">
+
+                    </tbody>
+
+                    <div class="d-flex my-2">
+
+                        <div class="form-floating">
+                            <textarea class="form-control h-100" id="txtAreaCosSist"></textarea>
+                            <label id="lblMatriculas" for="txtAreaCosSist">Código Sistema</label>
+                        </div>
+
+
+                        <div class="d-flex flex-column align-items-end mx-1">
+                            <input class="btn btn-primary col-12 mb-1" id="botaoSubmitPendIti" type="submit"
+                                value="PESQUISAR">
+                        </div>
+
+                    </div>
+
+                </table>
+
+            </div>
+
+            <div id="tabelaHistorico" hidden>
+
+                <h1>PESQUISAR HISTÓRICO</h1>
+
+                <form id="formRequestHistorico" class="card m-1">
+
+                    <div class="col-4 p-2">
+
+                        <input type="text" name="ordenacao" hidden>
+                        <input type="text" name="codigoAluno" hidden>
+                        <input type="text" name="nomeAluno" hidden>
+                        <input type="text" name="semestre" hidden>
+                        <input type="text" name="curso" hidden>
+                        <input type="text" name="serie" hidden>
+                        <input type="text" name="turma" hidden>
+                        <input type="text" name="actionType" hidden>
+                        <input type="text" name="dadosAluno" hidden>
+
+                        <div class="d-flex my-2">
+
+                            <div class="form-floating">
+                                <textarea class="form-control h-100" id="txtAreaMatriculasHistorico"></textarea>
+                                <label id="lblMatriculas" for="txtAreaMatriculasHistorico">MATRICULAS</label>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-end mx-1">
+                                <input class="btn btn-primary col-12 mb-1" id="botaoSubmitHistorico" type="submit"
+                                    value="PESQUISAR">
+                                <input class="btn btn-danger col-12 mb-1" id="botaoExcluirHistorico" value="LIMPAR">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="">
+
+                        <div class="btn-group" role="group" id="btn-group-btncheckOutrosHistorico">
+                            <input type="checkbox" class="btn-check btn-sm" id="btncheckOutrosHistorico"
+                                autocomplete="off">
+                            <label class="btn btn-outline-primary btn-sm" for="btncheckOutrosHistorico"
+                                style="font-size: 9px">Adicionar iframe</label>
+                        </div>
+
+                        <div class="btn-group" role="group" id="btn-group-btnchecDownloadHistorico">
+                            <input type="checkbox" class="btn-check btn-sm" id="btnchecDownloadHistorico"
+                                autocomplete="off">
+                            <label class="btn btn-outline-primary btn-sm" for="btnchecDownloadHistorico"
+                                style="font-size: 9px">Baixar histórico</label>
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+                <div style="">
+
+                    <div id="carouselHistorico" class="carousel slide" style="min-width: 60%;">
+
+
+
+                        <div class="carousel-historico-inner" id="carousel-historico-inner" style="height: 600px">
+
+
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHistorico"
+                            data-bs-slide="prev" style="width: 100px">
+                            <input class="btn btn-danger h-100" id="botaoExcluir" value="↩" style="width: 100px">
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselHistorico"
+                            data-bs-slide="next" style="width: 100px">
+                            <input class="btn btn-primary h-100" id="botaoExcluir" value="↪" style="width: 100px">
+                        </button>
+
+                    </div>
+
+                    <div>
+                        <table class="table" id="alunosHistorico">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome completo do aluno</th>
+                                    <th scope="col">Ensino Fundamental</th>
+                                    <th scope="col">1° ANO</th>
+                                    <th scope="col">2° ANO</th>
+                                    <th scope="col">3° ANO</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody id="alunosHistoricoBody">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+                <div id="professoresTurmas" style="justify-content: center">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
