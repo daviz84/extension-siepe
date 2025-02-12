@@ -324,6 +324,12 @@ async function incluiRecursos() {
         let cpfResp = document.createElement('td')
         let nomeResp = document.createElement('td')
         let numSus = document.createElement('td')
+        let saudeAluno = document.createElement('td') 
+        let usaMedicacaoControlada = document.createElement('td')
+        let medicacaoControlada = document.createElement('td')
+        let alergia = document.createElement('td')
+        let possuiDeficiencia = document.createElement('td')
+        let tipoDeficiencia = document.createElement('td')
         let bolsaFamilia = document.createElement('td')
         let cpfAluno = document.createElement('td')
         let dataNascimento = document.createElement('td')
@@ -411,9 +417,16 @@ async function incluiRecursos() {
 
                 numSus.innerText = tabelaDados.CNS
                 dataNascimento.innerText = tabelaDados["Datadenascimento"]
+                let saudeParaFormatar = document.createElement("p")
+                saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
+                usaMedicacaoControlada.innerText = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] 
+                medicacaoControlada.innerText = tabelaDados["Medicaçãocontroladaoudeusocontínuo"]
+                alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"]
+                possuiDeficiencia.innerText = tabelaDados["Possuideficiência"]
+                tipoDeficiencia.innerText = tabelaDados["Deficiência"]
 
                 document.getElementById('tbodytabelaSaude').appendChild(tr)
-                tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento)
+                tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
 
         }
 
