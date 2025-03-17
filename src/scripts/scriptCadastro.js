@@ -335,6 +335,8 @@ async function incluiRecursos() {
         let dataNascimento = document.createElement('td')
         let nisAluno = document.createElement('td')
         let tdcodigo_sistema = document.createElement('td')
+        let telefoneResp = document.createElement('td')
+
 
         let tr = document.createElement('tr')
 
@@ -390,9 +392,11 @@ async function incluiRecursos() {
 
                 nisAluno.innerText = tabelaDados["NIS2"]
 
+                telefoneResp.innerText = tabelaDados["Telefone"]
+
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema)
+                tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp)
 
 
                 if (btncheckOutros.checked == true) {
@@ -419,22 +423,16 @@ async function incluiRecursos() {
                 dataNascimento.innerText = tabelaDados["Datadenascimento"]
                 let saudeParaFormatar = document.createElement("p")
                 saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
-                usaMedicacaoControlada.innerText = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] 
-                medicacaoControlada.innerText = tabelaDados["Medicaçãocontroladaoudeusocontínuo"]
-                alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"]
-                possuiDeficiencia.innerText = tabelaDados["Possuideficiência"]
-                tipoDeficiencia.innerText = tabelaDados["Deficiência"]
+                tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] ? usaMedicacaoControlada.innerText = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] : ""
+                tabelaDados["Medicaçãocontroladaoudeusocontínuo"] ? medicacaoControlada.innerText = tabelaDados["Medicaçãocontroladaoudeusocontínuo"] : ""
+                tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ?  alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
+                tabelaDados["Possuideficiência"] ? possuiDeficiencia.innerText = tabelaDados["Possuideficiência"] : ""
+                tabelaDados["Deficiência"] ? tipoDeficiencia.innerText = tabelaDados["Deficiência"] : ""
 
                 document.getElementById('tbodytabelaSaude').appendChild(tr)
                 tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
 
         }
-
-
-        // navigator.clipboard.writeText(`${nameAluno}	${matAluno}	TURMA	INTEGRAL	${enderecoAluno}	${cidadeAluno}	${zonaAluno}`);
-
-
-
 
 
     }

@@ -40,7 +40,8 @@
                 "src/css/styles.a8f19adb82ba740eae42.css"
             ],
             "js": [
-                "src/scripts/scriptPresenca.js"
+                "src/scripts/scriptPresenca.js",
+                "src/scripts/bootstrap.bundle.min.js"
             ]
         },
         {
@@ -67,7 +68,8 @@
                 "src/*"
             ],
             "matches": [
-                "https://www.siepe.educacao.pe.gov.br/*"
+                "https://www.siepe.educacao.pe.gov.br/*",
+                "https://presenca.mec.gov.br/*"
             ]
         }
     ]
