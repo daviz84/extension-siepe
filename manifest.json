@@ -46,6 +46,17 @@
         },
         {
             "matches": [
+                "https://presenca.mec.gov.br/seb/pesquisar-estudante-transferencia"
+            ],
+            "css": [
+                "src/css/styles.a8f19adb82ba740eae42.css"
+            ],
+            "js": [
+                "src/scripts/scriptCopiaAlunos.js"
+            ]
+        },
+        {
+            "matches": [
                 "https://www.siepe.educacao.pe.gov.br/diarioclasse/DiarioClasse.do?apontamentoDesempenho=true"
             ],
             "css": [

@@ -47,7 +47,9 @@ async function incluiRecursos() {
         document_Tres.style.paddingLeft = "0px"
 
         //REMOVE O STYLE ATUAL PARA INJETAR O MODIFICADO (NECESSÁRIO PELO BOOTSTRAP)
-        document.querySelector("link[href='/seb/styles.924e48e39d77e43bccf3.css']").remove()
+        document.querySelector("link[href='/seb/styles.9154eca58f8ac122454a.css']").remove()
+
+        
 
 
         // CRIA E ADICIONA O OFFCANVAS LATERAL NA PAGINA

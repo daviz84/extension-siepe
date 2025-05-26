@@ -39,6 +39,7 @@ async function incluiRecursos() {
     let tabelaDados = document.getElementById('tabelaDados')
     let tabelaSaude = document.getElementById('tabelaSaude')
     let tabelaHistorico = document.getElementById('tabelaHistorico')
+    let tabelaAtestados = document.getElementById('tabelaAtestados')
     let divPendenciaItin = document.getElementById('divPendenciaItin')
     let pesquisasCadastro = document.getElementById('pesquisasCadastro')
     let btncheckOutros = document.getElementById("btncheckOutros")
@@ -63,6 +64,7 @@ async function incluiRecursos() {
             tabelaHistorico.hidden = true
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
+            tabelaAtestados.hidden = true
 
 
 
@@ -75,7 +77,7 @@ async function incluiRecursos() {
             tabelaHistorico.hidden = true
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
-
+            tabelaAtestados.hidden = true
 
         } else if (selectPesquisa.value == "saude") {
 
@@ -86,6 +88,7 @@ async function incluiRecursos() {
             tabelaHistorico.hidden = true
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
+            tabelaAtestados.hidden = true
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
@@ -95,7 +98,7 @@ async function incluiRecursos() {
             btnGroupBtncheckOutros.hidden = true
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
-
+            tabelaAtestados.hidden = true
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
@@ -105,12 +108,20 @@ async function incluiRecursos() {
             btnGroupBtncheckOutros.hidden = true
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = false
+            tabelaAtestados.hidden = true
 
+        } else {
+
+            tabelaHistorico.hidden = true
+            tabelaSaude.hidden = true
+            tabelaEndereco.hidden = true
+            tabelaDados.hidden = true
+            btnGroupBtncheckOutros.hidden = true
+            pesquisasCadastro.hidden = false
+            divPendenciaItin.hidden = true
+            tabelaAtestados.hidden = false
 
         }
-
-
-
     })
 
     botaoExcluir.addEventListener("click", () => {
@@ -307,8 +318,9 @@ async function incluiRecursos() {
 
     }
 
-    function pegaDados(iframeDocument, turmaAlunoRes, codigo_sistema) {
+    async function pegaDados(iframeDocument, turmaAlunoRes, codigo_sistema) {
 
+        //let parser = new DOMParser()
         let tabelaDados = formataTabela(iframeDocument)
 
         let nameAluno = document.createElement('td')
@@ -324,7 +336,7 @@ async function incluiRecursos() {
         let cpfResp = document.createElement('td')
         let nomeResp = document.createElement('td')
         let numSus = document.createElement('td')
-        let saudeAluno = document.createElement('td') 
+        let saudeAluno = document.createElement('td')
         let usaMedicacaoControlada = document.createElement('td')
         let medicacaoControlada = document.createElement('td')
         let alergia = document.createElement('td')
@@ -336,6 +348,8 @@ async function incluiRecursos() {
         let nisAluno = document.createElement('td')
         let tdcodigo_sistema = document.createElement('td')
         let telefoneResp = document.createElement('td')
+        let rgAluno = document.createElement('td')
+        let ctrEnergia = document.createElement('td')
 
 
         let tr = document.createElement('tr')
@@ -364,13 +378,14 @@ async function incluiRecursos() {
 
                 zonaAluno.innerText = tabelaDados['Bairro']
 
-                tr.append(nameAluno, matAluno, turmaAluno, enderecoAluno, cidadeAluno, zonaAluno)
+                ctrEnergia.innerHTML = tabelaDados['Númerodacontadeenergia']
+                ctrEnergia.innerText = ctrEnergia.textContent
+
+                tr.append(nameAluno, matAluno, turmaAluno, enderecoAluno, cidadeAluno, zonaAluno, ctrEnergia)
 
                 document.getElementById('tbodytabelaEndereco').appendChild(tr)
 
                 break;
-
-
 
             case 'dados':
 
@@ -394,9 +409,19 @@ async function incluiRecursos() {
 
                 telefoneResp.innerText = tabelaDados["Telefone"]
 
+                if (tabelaDados["RG2"] !== " ") {
+
+                    rgAluno.innerText = tabelaDados["RG2"]
+                    rgAluno.innerText += ` | ${tabelaDados["Órgãoexpedidor2"]}`
+                    rgAluno.innerText += ` | ${tabelaDados["UF2"]}`
+
+                } else {
+                    rgAluno.innerText = tabelaDados["CPF2"]
+                }
+
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp)
+                tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp, rgAluno)
 
 
                 if (btncheckOutros.checked == true) {
@@ -425,12 +450,23 @@ async function incluiRecursos() {
                 saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
                 tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] ? usaMedicacaoControlada.innerText = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] : ""
                 tabelaDados["Medicaçãocontroladaoudeusocontínuo"] ? medicacaoControlada.innerText = tabelaDados["Medicaçãocontroladaoudeusocontínuo"] : ""
-                tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ?  alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
+                tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ? alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
                 tabelaDados["Possuideficiência"] ? possuiDeficiencia.innerText = tabelaDados["Possuideficiência"] : ""
                 tabelaDados["Deficiência"] ? tipoDeficiencia.innerText = tabelaDados["Deficiência"] : ""
 
                 document.getElementById('tbodytabelaSaude').appendChild(tr)
                 tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
+
+            case "atestados":
+
+                const td = await buscaAtestados(codigo_sistema.split(';')[0])
+                if(td.atestados === false) return null
+
+                tr.append(matAluno, nameAluno, turmaAluno, td)
+
+                document.getElementById('tbodytabelaAtestados').appendChild(tr)
+
+                break;
 
         }
 
@@ -645,6 +681,41 @@ async function incluiRecursos() {
             }
 
         })
+    }
+
+    async function buscaAtestados(idCidadao) {
+
+        const test = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/alunos/matricula/atestado/?dataInicio=null&dataFim=null&idMotivoFaltaJustificada=&idCidadao=${idCidadao}&auge.preventCache=1744376798290&rangeStartParam=0&rangeCountParam=10`)
+
+        const testRef = await test.json()
+
+        const atestados = testRef["items"]
+        const list = document.createElement("ul")
+        const td = document.createElement("td")
+        td.atestados = false
+
+        atestados.forEach((atestado) => {
+            let dataStr = atestado.data_fim_formatada.split("/")
+            let dataStrForm = `${dataStr[2]}/${dataStr[1]}/${dataStr[0]}/`
+            
+            const data_fim = new Date(dataStrForm)
+            const data_hoje = new Date()
+
+            if (data_fim.getFullYear() == data_hoje.getFullYear()) {
+                td.atestados = true
+
+                const listItem = document.createElement("li")
+                listItem.textContent = atestado.data_fim_formatada
+                list.append(listItem)
+
+            }
+
+        })
+
+        td.appendChild(list)
+
+        return td
+
     }
 
 }

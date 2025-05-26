@@ -62,6 +62,7 @@
             <option id="selectEndereco" value="saude">Dados de saúde</option>
             <option id="selectHistorico" value="historico">Dados de históricos</option>
             <option id="selectPendencIti" value="pendIti">Pendêncioa dos Itinerários</option>
+            <option id="selectAtestados" value="atestados">Atestados</option>
         </select>
         <label for="floatingSelect">Opções</label>
     </div>
@@ -80,16 +81,17 @@
 
                 <table class="table" id="tabelaDados">
 
-                    <div class="col-3">
+                    <thead>
 
-                        <div class="input-group mt-5">
-                            <span class="input-group-text" id="basic-addon1">BOLSA FAMÍLIA</span>
-                            <input id="contadorBolsaFamilia" type="text" class="form-control" value="0">
+                        <div class="col-3 m-1">
+
+                            <div class="input-group mt-5">
+                                <span class="input-group-text" id="basic-addon1">BOLSA FAMÍLIA</span>
+                                <input id="contadorBolsaFamilia" type="text" class="form-control" value="0">
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    <thead>
                         <tr>
                             <th scope="col">Matrícula</th>
                             <th scope="col">Nome completo do aluno</th>
@@ -105,6 +107,7 @@
                             <th scope="col" class="px-3">NIS</th>
                             <th scope="col" class="px-3">Codigo sistema</th>
                             <th scope="col" class="px-3">Telefone Responsável</th>
+                            <th scope="col" class="px-3">RG</th>
                         </tr>
                     </thead>
                     <tbody id="tbodytabelaDados">
@@ -123,6 +126,7 @@
                             <th scope="col">Endereço</th>
                             <th scope="col">Município</th>
                             <th scope="col">Área do aluno</th>
+                            <th scope="col">Conta de energia</th>
                         </tr>
                     </thead>
                     <tbody id="tbodytabelaEndereco">
@@ -148,6 +152,21 @@
                         </tr>
                     </thead>
                     <tbody id="tbodytabelaSaude">
+
+                    </tbody>
+
+                </table>
+
+                <table hidden class="table" id="tabelaAtestados">
+                    <thead>
+                        <tr>
+                            <th scope="col">Matrícula</th>
+                            <th scope="col">Nome completo do aluno</th>
+                            <th scope="col" class="px-3">TURMA</th>
+                            <th scope="col">ATESTADOS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytabelaAtestados">
 
                     </tbody>
 
@@ -200,7 +219,6 @@
                             </div>
 
                         </div>
-
 
                     </div>
 
