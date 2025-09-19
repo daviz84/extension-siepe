@@ -235,7 +235,7 @@
                             <th scope="col">Disciplina com Pendência</th>
                         </tr>
                     </thead>
-                    <tbody id="tbodytabelaSaude">
+                    <tbody>
 
                     </tbody>
 
@@ -258,11 +258,11 @@
 
             </div>
 
-            <div id="tabelaHistorico" hidden>
+            <div id="tabelaDisciplinasPendentes" hidden>
 
                 <h1>PESQUISAR HISTÓRICO</h1>
 
-                <form id="formRequestHistorico" class="card m-1">
+                <form id="formRequestBuscaHistorico" class="card m-1">
 
                     <div class="col-4 p-2">
 
@@ -319,8 +319,6 @@
 
                     <div id="carouselHistorico" class="carousel slide" style="min-width: 60%;">
 
-
-
                         <div class="carousel-historico-inner" id="carousel-historico-inner" style="height: 600px">
 
 
@@ -365,6 +363,32 @@
                 <div id="professoresTurmas" style="justify-content: center">
 
                 </div>
+
+            </div>
+
+            <div id="divDisciplinasParcial">
+
+                <table class="table" id="tabelaDisciplinasParcial">
+                    <thead>
+                        <tr>
+                            <th scope="col">Matrícula Aluno</th>
+                            <th scope="col">Aluno</th>
+                            <th scope="col">Disciplinas com Pendência</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+
+                </table>
+
+                <div>
+                    <div class="d-flex flex-column align-items-end mx-1">
+                        <input class="btn btn-primary col-12 mb-1" id="botaoSubmitParciais" type="button"
+                            value="BUSCAR PARCIAIS">
+                    </div>
+                </div>
+
 
             </div>
 

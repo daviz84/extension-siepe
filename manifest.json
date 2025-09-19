@@ -18,10 +18,11 @@
                 "src/css/bootstrap_edit.css"
             ],
             "js": [
-                "src/scripts/bootstrap.bundle.min.js",
                 "src/scripts/scriptCadastro.js",
+                "src/scripts/scriptBuscaHistorico.js",
+                "src/scripts/bootstrap.bundle.min.js",
                 "src/scripts/scriptHistorico.js",
-                "src/scripts/scriptBuscaHistorico.js"
+                "src/scripts/scriptParciais.js"
             ]
         },
         {

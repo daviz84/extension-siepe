@@ -1,3 +1,4 @@
+
 async function lerArquivo(arquivo) {
 
     let response = await fetch(`chrome-extension://${chrome.runtime.id}/src/html/${arquivo}`)
@@ -30,10 +31,6 @@ async function incluiRecursos() {
     let intext
     let txtAreaMatriculas = document.getElementById('txtAreaMatriculas')
     let lblMatriculas = document.getElementById('lblMatriculas')
-    let offcanvas = document.getElementById('offcanvasId')
-    let alertDanger = document.getElementById('alertDanger')
-    let descAlert = document.getElementById('descAlert')
-    let closeAlert = document.getElementById('closeAlert')
     let selectPesquisa = document.getElementById('selectPesquisa')
     let tabelaEndereco = document.getElementById('tabelaEndereco')
     let tabelaDados = document.getElementById('tabelaDados')
@@ -152,10 +149,6 @@ async function incluiRecursos() {
             })
 
         }
-
-
-
-
 
     })
 
@@ -460,7 +453,7 @@ async function incluiRecursos() {
             case "atestados":
 
                 const td = await buscaAtestados(codigo_sistema.split(';')[0])
-                if(td.atestados === false) return null
+                if (td.atestados === false) return null
 
                 tr.append(matAluno, nameAluno, turmaAluno, td)
 
@@ -697,7 +690,7 @@ async function incluiRecursos() {
         atestados.forEach((atestado) => {
             let dataStr = atestado.data_fim_formatada.split("/")
             let dataStrForm = `${dataStr[2]}/${dataStr[1]}/${dataStr[0]}/`
-            
+
             const data_fim = new Date(dataStrForm)
             const data_hoje = new Date()
 
@@ -717,6 +710,7 @@ async function incluiRecursos() {
         return td
 
     }
+
 
 }
 

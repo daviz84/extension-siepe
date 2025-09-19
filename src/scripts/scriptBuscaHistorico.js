@@ -1,22 +1,20 @@
-//let progressBarUm = document.getElementById('progress-bar-1')
-let formRequestHistorico = document.getElementById('formRequestHistorico')
-//let barGroupProgress = document.getElementById('bar-group-progress')
+setTimeout(() => {
+    let formRequestHistorico = document.getElementById('formRequestBuscaHistorico')
+let progressBarUm = document.getElementById('progress-bar-1')
+let barGroupProgress = document.getElementById('bar-group-progress')
 let carouselHistorico = document.getElementById("carouselHistorico")
 let carousel_historico_inner = document.getElementById("carousel-historico-inner")
 let contagemCards = 0
 let alunosUltimoAno = []
 let alunosHistoricoBody = document.getElementById("alunosHistoricoBody")
 
+formRequestHistorico.addEventListener('submit', (ev) => {
 
-formRequestHistorico.addEventListener('submit', (event) => {
-
-
-    event.preventDefault()
+    ev.preventDefault()
     iniciaLoopHistorico()
     barGroupProgress.toggleAttribute("hidden")
-
-
 })
+
 
 async function iniciaLoopHistorico() {
 
@@ -34,13 +32,11 @@ async function iniciaLoopHistorico() {
 
     barGroupProgress.toggleAttribute("hidden")
 
-
-
 }
 
 async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
-    let formRequest = document.getElementById("formRequestHistorico") // BUSCA FORMULÁRIO
+    let formRequest = document.getElementById("formRequestBuscaHistorico") // BUSCA FORMULÁRIO
     let formRequestFormData = new FormData(formRequest) // TRANSFORMA EM MANIPULÁVEL
 
 
@@ -173,16 +169,16 @@ async function tratarPesquisaHistorico(txtDocument) {
     card_title_button.style.color = "blank"
     card_title_button.innerText = chkNome
 
-    if(btnchecDownloadHistorico.checked == true){
+    if (btnchecDownloadHistorico.checked == true) {
 
         const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`)
         const pdfHistorico = await reeq.blob()
-    
+
         let url = window.URL.createObjectURL(pdfHistorico)
-    
+
         card_title_button.href = url
         card_title_button.download = chkNome
-    
+
         card_title_button.click()
 
     }
@@ -225,3 +221,35 @@ async function tratarPesquisaHistorico(txtDocument) {
 
 
 }
+
+async function historicoGov(codAluno) {
+
+    const body = {
+        codigoAlunoConsultar: '1615457',
+        anoConsultar: '2025',
+        idCidadaoSelecionado: '4440737_13060096',
+        actionType: 'selecionar'
+    }
+
+    let corpoRequestToX = new URLSearchParams(body).toString() // TRANSFORMA OS DADOS EM FORMATO x-www-form-urlencoded
+
+    const result = await fetch(`https://www.siepe.educacao.pe.gov.br/eol/aluno/consultarAlunoCadastroHistoricoAction.do`, {
+        method: "POST",
+        headers: {
+            'Accept': 'text/html',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: corpoRequestToX
+    }
+    )
+
+    const bod = await result.text()
+
+    console.log(bod)
+
+
+
+}
+
+}, 3000);
+
