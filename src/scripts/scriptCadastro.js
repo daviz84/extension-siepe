@@ -177,6 +177,8 @@ async function incluiRecursos() {
         event.preventDefault()
         iniciaLoop()
         barGroupProgress.toggleAttribute("hidden")
+        divLinkBoletins.hidden = false
+
 
 
     })
@@ -343,6 +345,29 @@ async function incluiRecursos() {
         let telefoneResp = document.createElement('td')
         let rgAluno = document.createElement('td')
         let ctrEnergia = document.createElement('td')
+        let stringBoletimCodigos = ""
+        let aLinkBoletim = document.querySelector("#aLinkBoletim")
+        let botaoGeraLinkdocument = document.querySelector("#botaoGeraLink")
+        let txtLinkBoletim = document.querySelector("#txtLinkBoletim")
+        let divLinkBoletins = document.querySelector("#divLinkBoletins") 
+
+        botaoGeraLinkdocument.addEventListener("click", () => {
+
+            let codigosAlunosBoletim = document.querySelectorAll(".codigo_sistema")
+
+            codigosAlunosBoletim.forEach((cod) => {
+
+                stringBoletimCodigos += `${cod.textContent}_`
+
+
+            })
+
+            txtLinkBoletim.value = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/BoletimEscolar?matriculas=${stringBoletimCodigos}&ano=2025`
+            aLinkBoletim.href = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/BoletimEscolar?matriculas=${stringBoletimCodigos}&ano=2025`
+
+        })
+
+
 
 
         let tr = document.createElement('tr')
@@ -356,6 +381,7 @@ async function incluiRecursos() {
         matAluno.innerText = tabelaDados['Matrícula']
         turmaAluno.innerText = turmaAlunoRes
         tdcodigo_sistema.innerText = codigo_sistema.split(';')[1]
+        tdcodigo_sistema.classList.add("codigo_sistema")
 
 
         switch (document.getElementById('selectPesquisa').value) {
