@@ -81,12 +81,15 @@ async function tratarPesquisaHistorico(txtDocument) {
 
     // TRANSFORMA A PÁGINA DE TEXTO PARA UM OBJETO DOM
     let documentDOM = parser.parseFromString(txtDocument, "text/html")
+	
+	let codMatricula = documentDOM.getElementById('chkAluno0').value.split(";")[0]
+	let codigoAlunoCid = documentDOM.getElementById('chkAluno0').value.replace(";", "_")
 
 
             // TRATAMENTO PARA RETORNO DE CODIGO OU ERROS
         if (documentDOM.getElementById('chkAluno0') != null) {
 
-            dadosAlunoPesquisa = { "codigo_sistema": documentDOM.getElementById('chkAluno0').value, "codigoAlunoCid": documentDOM.getElementById('chkAluno0').value.replace(";", "_") }
+            dadosAlunoPesquisa = { "codigo_sistema": codMatricula, "codigoAlunoCid": codigoAlunoCid }
 
         } else {
 
@@ -99,7 +102,7 @@ async function tratarPesquisaHistorico(txtDocument) {
 
         }
 
-    // let chkNome = documentDOM.getElementsByTagName("table")[2].querySelectorAll("tr label")[1].innerText
+
 
     //window.open(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/`, '_blank')
 
@@ -130,59 +133,44 @@ async function tratarPesquisaHistorico(txtDocument) {
 
     })
     let txtrequest = await request.text()
-
-    /*
-    console.log(txtrequest)
-
-    
-    const requestHistoricoHtml = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/html`)
-    const documentDOMHTML = parser.parseFromString(await requestHistoricoHtml.text(), "text/html")
-    let resultadosSeries = documentDOMHTML.getElementsByClassName('resultadoSerie')
-    let anosSeries = documentDOMHTML.getElementsByClassName('serie')
-    const resultadosMedio = documentDOMHTML.querySelectorAll('.verticalEstabelecimento')
-
-    const trHistorico = document.createElement('tr')
-    const nomeAlunoHistorico = document.createElement('td')
-    const escolaAlunoHistorico = document.createElement('td')
-    escolaAlunoHistorico.innerText = "-"
-    nomeAlunoHistorico.innerText = chkNome
+	
+	const documentDOMHTML = parser.parseFromString(txtrequest, "text/html")
+	
+	let chkNome = documentDOMHTML.querySelectorAll("tbody")[1].querySelectorAll("tr")[1].querySelectorAll("td")[1]
+	
+	
+	let iniciaListagem = false
+const trHistorico = document.createElement('tr')
+const nomeAlunoHistorico = document.createElement('td')
 
 
-    if (resultadosSeries[resultadosSeries.length - 2]) {
 
-        let tdEscola = parser.parseFromString(resultadosSeries[resultadosSeries.length - 2].innerHTML, "text/html")
-        let tdUltAno = parser.parseFromString(anosSeries[anosSeries.length - 1].innerHTML, "text/html")
+let historicoLinhas = documentDOMHTML.querySelectorAll("tbody")[2].querySelectorAll(".texto")
 
-        escolaAlunoHistorico.innerText = `${tdUltAno.querySelector('span').textContent} - ${tdEscola.querySelector('span').textContent}`
+nomeAlunoHistorico.textContent = chkNome.textContent
+trHistorico.append(nomeAlunoHistorico)
 
-        trHistorico.append(nomeAlunoHistorico, escolaAlunoHistorico)
-        alunosUltimoAno.push({ aluno: chkNome, escola: tdEscola.querySelector('span').textContent })
-    } else {
+historicoLinhas.forEach(linha => {
+	
+	let escolaAlunoHistorico = document.createElement('td')
+	
+    let serie = linha.querySelectorAll("td")[5].querySelector("label")
+    let escola = linha.querySelectorAll("td")[2].querySelector("label")
+	let etapa = linha.querySelectorAll("td")[3].querySelector("label")
+	
+    if(etapa.textContent == "Ensino Fundamental" || iniciaListagem === true){
 
-        trHistorico.append(nomeAlunoHistorico, escolaAlunoHistorico)
+        iniciaListagem = true
+		escolaAlunoHistorico.textContent = `${serie.textContent} - ${escola.textContent}`
+        trHistorico.append(escolaAlunoHistorico)
 
     }
+    
+})
 
-    resultadosMedio.forEach(vertical => {
-
-        let ensinoMedio = document.createElement('td')
-        ensinoMedio.innerHTML = vertical.querySelectorAll('span')[1].innerText
-        trHistorico.append(ensinoMedio)
-
-
-    })
-
-    alunosHistoricoBody.appendChild(trHistorico)
-
-
-
-    //window.URL.revokeObjectURL(url)
-
-    */
-
-
-
-    // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
+iniciaListagem = false
+alunosHistoricoBody.appendChild(trHistorico)
+	
 
     let carousel_item = document.createElement("div")
     carousel_item.classList.add("carousel-item")
@@ -217,17 +205,17 @@ async function tratarPesquisaHistorico(txtDocument) {
     card_title_button.classList.add("btn")
     card_title_button.classList.add("btn-primary")
     card_title_button.style.color = "blank"
-    card_title_button.innerText = chkNome
+    card_title_button.innerText = "NOME DO ALUNO"
 
     if (btnchecDownloadHistorico.checked == true) {
 
-        const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`)
+        const reeq = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${dadosAlunoPesquisa.codigo_sistema}/pdf`)
         const pdfHistorico = await reeq.blob()
 
         let url = window.URL.createObjectURL(pdfHistorico)
 
         card_title_button.href = url
-        card_title_button.download = chkNome
+        card_title_button.download = "NOME DO ALUNO"
 
         card_title_button.click()
 
@@ -247,7 +235,7 @@ async function tratarPesquisaHistorico(txtDocument) {
 
     if (btncheckOutrosHistorico.checked == true) {
 
-        iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/pdf`
+        iframe_aluno.src = `https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${dadosAlunoPesquisa.codigo_sistema}/pdf`
 
 
 
