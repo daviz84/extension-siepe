@@ -56,85 +56,80 @@ async function incluiRecursos() {
         if (selectPesquisa.value == "dados") {
 
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = false
             tabelaSaude.hidden = true
             btnGroupBtncheckOutros.hidden = false
             tabelaHistorico.hidden = true
-            pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-
-
+			tabelaDados.hidden = false
+			pesquisasCadastro.hidden = false
 
         } else if (selectPesquisa.value == "endereco") {
 
             tabelaEndereco.hidden = false
-            tabelaDados.hidden = true
             tabelaSaude.hidden = true
             btnGroupBtncheckOutros.hidden = true
             tabelaHistorico.hidden = true
-            pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
+			tabelaDados.hidden = true
+			pesquisasCadastro.hidden = false
 
         } else if (selectPesquisa.value == "saude") {
 
             tabelaSaude.hidden = false
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
             tabelaHistorico.hidden = true
-            pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
+			tabelaDados.hidden = true
+			pesquisasCadastro.hidden = false
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
             tabelaSaude.hidden = true
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
-            pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
+			pesquisasCadastro.hidden = true
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
             tabelaSaude.hidden = true
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
-            pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = false
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
+			pesquisasCadastro.hidden = true
 
         } else if (selectPesquisa.value == "parciais") {
             tabelaHistorico.hidden = true
             tabelaSaude.hidden = true
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
-            pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
-            tabelaAtestados.hidden = true
+            tabelaAtestados.hidden = false
             divDisciplinasParciais.hidden = false
+			pesquisasCadastro.hidden = true
 
         } else {
 
             tabelaHistorico.hidden = true
             tabelaSaude.hidden = true
             tabelaEndereco.hidden = true
-            tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
-            pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
             divDisciplinasParciais.hidden = true
+			tabelaDados.hidden = true
             tabelaAtestados.hidden = false
+			pesquisasCadastro.hidden = false
             
 
         }
