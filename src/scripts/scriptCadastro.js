@@ -409,8 +409,6 @@ async function incluiRecursos() {
 
             case 'endereco':
 
-				divLinkBoletins.hidden = false
-
                 // turnoAluno.innerText = 'INTEGRAL'
 
                 enderecoAluno.innerText = tabelaDados['Endereço']
@@ -429,6 +427,8 @@ async function incluiRecursos() {
                 break;
 
             case 'dados':
+
+				divLinkBoletins.hidden = false
 
                 maeAluno.innerText = tabelaDados['Filiação1']
 
