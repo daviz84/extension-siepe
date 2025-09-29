@@ -49,7 +49,7 @@ async function incluiRecursos() {
     let tbodytabelaSaude = document.getElementById('tbodytabelaSaude')
     let contadorBolsaFamilia = document.getElementById('contadorBolsaFamilia')
     let btnPesquisarTabelaPendenciaItin = document.querySelector("#botaoSubmitPendIti")
-    let pendParciais = document.querySelector("#pendParciais")
+    let divDisciplinasParciais = document.querySelector("#divDisciplinasParciais")
 
     selectPesquisa.addEventListener('input', () => {
 
@@ -63,7 +63,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
 
 
 
@@ -77,7 +77,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
 
         } else if (selectPesquisa.value == "saude") {
 
@@ -89,7 +89,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
@@ -100,7 +100,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
@@ -111,7 +111,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = false
             tabelaAtestados.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
 
         } else if (selectPesquisa.value == "parciais") {
             tabelaHistorico.hidden = true
@@ -122,7 +122,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
-            pendParciais.hidden = false
+            divDisciplinasParciais.hidden = false
 
         } else {
 
@@ -133,7 +133,7 @@ async function incluiRecursos() {
             btnGroupBtncheckOutros.hidden = true
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
-            pendParciais.hidden = true
+            divDisciplinasParciais.hidden = true
             tabelaAtestados.hidden = false
             
 
