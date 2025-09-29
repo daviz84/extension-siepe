@@ -63,7 +63,7 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
     switch (actionType) {
 
         // INICIA FLUXO DE PESQUISA DE CODIGO - BUSCA DE DADOS DO ALUNO
-        case 'selecionar':
+        case 'pesquisar':
 
             // CHAMADA DA FUNÇÃO RECURSIVA
             await tratarPesquisaHistorico(txtrequest)
