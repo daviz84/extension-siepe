@@ -198,7 +198,6 @@ async function incluiRecursos() {
         event.preventDefault()
         iniciaLoop()
         barGroupProgress.toggleAttribute("hidden")
-        divLinkBoletins.hidden = false
 
 
 
@@ -409,6 +408,8 @@ async function incluiRecursos() {
 
 
             case 'endereco':
+
+				divLinkBoletins.hidden = false
 
                 // turnoAluno.innerText = 'INTEGRAL'
 
