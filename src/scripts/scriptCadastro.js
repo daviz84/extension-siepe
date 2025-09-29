@@ -107,6 +107,17 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = false
             tabelaAtestados.hidden = true
 
+        } else if (selectPesquisa.value == "pendParciais") {
+            tabelaHistorico.hidden = true
+            tabelaSaude.hidden = true
+            tabelaEndereco.hidden = true
+            tabelaDados.hidden = true
+            btnGroupBtncheckOutros.hidden = true
+            pesquisasCadastro.hidden = true
+            divPendenciaItin.hidden = true
+            tabelaAtestados.hidden = true
+            pendParciais.hidden = false
+
         } else {
 
             tabelaHistorico.hidden = true
