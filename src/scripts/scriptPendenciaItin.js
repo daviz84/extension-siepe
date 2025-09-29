@@ -1,3 +1,7 @@
+setTimeout(() => {
+
+
+
 async function buscaPendencias() {
 
     let textFetchStr = ""
@@ -34,3 +38,4 @@ async function buscaPendencias() {
 
 
 }
+}, 3000)
