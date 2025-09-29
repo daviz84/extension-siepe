@@ -25,7 +25,7 @@ async function iniciaLoopHistorico() {
     for (matricula of intext) {
 
         alunoAtual++
-        await requisitarPesquisaHistorico(matricula, "pesquisar", "")
+        await requisitarPesquisaHistorico(matricula, "selecionar", "")
         progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
 
     }
@@ -41,14 +41,14 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
 
     formRequestFormData.set("actionType", actionType) // TIPO DE REQUISIÇÃO
-    formRequestFormData.set("codigoAluno", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("codigoAlunoConsultar", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
 
     let formRequestObj = Object.fromEntries(formRequestFormData) // TRANSFORMA EM OBJETO - CHAVE & VALOR
     let corpoRequestToX = new URLSearchParams(formRequestObj).toString() // TRANSFORMA OS DADOS EM FORMATO x-www-form-urlencoded
 
 
     // REQUISIÇÃO ASSÍNCRONA
-    let request = await fetch("/eol/aluno/consultarAlunosEmitirHistoricoEscolarAction.do", {
+    let request = await fetch("https://www.siepe.educacao.pe.gov.br/eol/aluno/consultarAlunoCadastroHistoricoAction.do", {
         method: "POST",
         headers: {
             'Accept': 'text/html',
@@ -63,7 +63,7 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
     switch (actionType) {
 
         // INICIA FLUXO DE PESQUISA DE CODIGO - BUSCA DE DADOS DO ALUNO
-        case 'pesquisar':
+        case 'selecionar':
 
             // CHAMADA DA FUNÇÃO RECURSIVA
             await tratarPesquisaHistorico(txtrequest)
