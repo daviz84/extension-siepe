@@ -110,7 +110,7 @@ async function tratarPesquisaHistorico(txtDocument) {
 
 
     formRequestFormData.set("actionType", "selecionar") // TIPO DE REQUISIÇÃO
-    formRequestFormData.set("codigoAlunoConsultar", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("codigoAlunoConsultar", dadosAlunoPesquisa.codigo_sistema) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
     formRequestFormData.set("anoConsultar", 2025) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
     formRequestFormData.set("idCidadaoSelecionado", dadosAlunoPesquisa.codigoAlunoCid) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
 
