@@ -35,7 +35,7 @@ async function incluiRecursos() {
     let tabelaEndereco = document.getElementById('tabelaEndereco')
     let tabelaDados = document.getElementById('tabelaDados')
     let tabelaSaude = document.getElementById('tabelaSaude')
-    let tabelaHistorico = document.getElementById('tabelaHistorico')
+    let tabelaHistorico = document.getElementById('formRequestBuscaHistorico')
     let tabelaAtestados = document.getElementById('tabelaAtestados')
     let divPendenciaItin = document.getElementById('divPendenciaItin')
     let pesquisasCadastro = document.getElementById('pesquisasCadastro')
