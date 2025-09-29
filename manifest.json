@@ -21,7 +21,6 @@
                 "src/scripts/scriptCadastro.js",
                 "src/scripts/scriptBuscaHistorico.js",
                 "src/scripts/bootstrap.bundle.min.js",
-                "src/scripts/scriptHistorico.js",
                 "src/scripts/scriptParciais.js"
             ]
         },
