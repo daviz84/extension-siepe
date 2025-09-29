@@ -113,7 +113,7 @@ async function incluiRecursos() {
             tabelaAtestados.hidden = true
             pendParciais.hidden = true
 
-        } else if (selectPesquisa.value == "pendParciais") {
+        } else if (selectPesquisa.value == "parciais") {
             tabelaHistorico.hidden = true
             tabelaSaude.hidden = true
             tabelaEndereco.hidden = true
