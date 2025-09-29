@@ -49,6 +49,7 @@ async function incluiRecursos() {
     let tbodytabelaSaude = document.getElementById('tbodytabelaSaude')
     let contadorBolsaFamilia = document.getElementById('contadorBolsaFamilia')
     let btnPesquisarTabelaPendenciaItin = document.querySelector("#botaoSubmitPendIti")
+    let pendParciais = document.querySelector("#pendParciais")
 
     selectPesquisa.addEventListener('input', () => {
 
@@ -62,6 +63,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
+            pendParciais.hidden = true
 
 
 
@@ -75,6 +77,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
+            pendParciais.hidden = true
 
         } else if (selectPesquisa.value == "saude") {
 
@@ -86,6 +89,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = false
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
+            pendParciais.hidden = true
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
@@ -96,6 +100,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
+            pendParciais.hidden = true
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
@@ -106,6 +111,7 @@ async function incluiRecursos() {
             pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = false
             tabelaAtestados.hidden = true
+            pendParciais.hidden = true
 
         } else if (selectPesquisa.value == "pendParciais") {
             tabelaHistorico.hidden = true
@@ -125,9 +131,11 @@ async function incluiRecursos() {
             tabelaEndereco.hidden = true
             tabelaDados.hidden = true
             btnGroupBtncheckOutros.hidden = true
-            pesquisasCadastro.hidden = false
+            pesquisasCadastro.hidden = true
             divPendenciaItin.hidden = true
+            pendParciais.hidden = true
             tabelaAtestados.hidden = false
+            
 
         }
     })
