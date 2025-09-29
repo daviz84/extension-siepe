@@ -41,7 +41,7 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
 
     formRequestFormData.set("actionType", actionType) // TIPO DE REQUISIÇÃO
-    formRequestFormData.set("chkAluno", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("txtCodigo", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
 
     let formRequestObj = Object.fromEntries(formRequestFormData) // TRANSFORMA EM OBJETO - CHAVE & VALOR
     let corpoRequestToX = new URLSearchParams(formRequestObj).toString() // TRANSFORMA OS DADOS EM FORMATO x-www-form-urlencoded
