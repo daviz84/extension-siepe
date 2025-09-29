@@ -25,7 +25,7 @@ async function iniciaLoopHistorico() {
     for (matricula of intext) {
 
         alunoAtual++
-        await requisitarPesquisaHistorico(matricula, "selecionar", "")
+        await requisitarPesquisaHistorico(matricula, "pesquisar", "")
         progressBarUm.style.width = `${100 * alunoAtual / intext.length}%`
 
     }
@@ -41,14 +41,14 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
 
     formRequestFormData.set("actionType", actionType) // TIPO DE REQUISIÇÃO
-    formRequestFormData.set("codigoAlunoConsultar", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("chkAluno", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
 
     let formRequestObj = Object.fromEntries(formRequestFormData) // TRANSFORMA EM OBJETO - CHAVE & VALOR
     let corpoRequestToX = new URLSearchParams(formRequestObj).toString() // TRANSFORMA OS DADOS EM FORMATO x-www-form-urlencoded
 
 
     // REQUISIÇÃO ASSÍNCRONA
-    let request = await fetch("https://www.siepe.educacao.pe.gov.br/eol/aluno/consultarAlunoCadastroHistoricoAction.do", {
+    let request = await fetch("/eol/aluno/consultarAlunoAction.do", {
         method: "POST",
         headers: {
             'Accept': 'text/html',
@@ -76,17 +76,65 @@ async function requisitarPesquisaHistorico(codMatricula, actionType) {
 
 async function tratarPesquisaHistorico(txtDocument) {
 
+    let dadosAlunoPesquisa = ""
     let parser = new DOMParser()
 
     // TRANSFORMA A PÁGINA DE TEXTO PARA UM OBJETO DOM
     let documentDOM = parser.parseFromString(txtDocument, "text/html")
 
-    let chkCodigo = documentDOM.getElementsByName("idCidadao")[0].value
-    let chkNome = documentDOM.getElementsByTagName("table")[2].querySelectorAll("tr label")[1].innerText
+
+            // TRATAMENTO PARA RETORNO DE CODIGO OU ERROS
+        if (documentDOM.getElementById('chkAluno0') != null) {
+
+            dadosAlunoPesquisa = { "codigo_sistema": documentDOM.getElementById('chkAluno0').value, "codigoAlunoCid": documentDOM.getElementById('chkAluno0').value.replace(";", "_") }
+
+        } else {
+
+            if (confirm(`O ALUNO DE MATRÍCULA ${codMatricula} NÃO FOI ENCONTRADO. DESEJA TENTAR NOVAMENTE?`)) {
+
+                //
+
+            }
+
+
+        }
+
+    // let chkNome = documentDOM.getElementsByTagName("table")[2].querySelectorAll("tr label")[1].innerText
 
     //window.open(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/`, '_blank')
 
     // -----------------x------------- VERIFICA DADOS DO HISTORICO EM HTML 
+
+    let formRequest = document.getElementById("formRequestBuscaHistorico") // BUSCA FORMULÁRIO
+    let formRequestFormData = new FormData(formRequest) // TRANSFORMA EM MANIPULÁVEL
+
+
+    formRequestFormData.set("actionType", "selecionar") // TIPO DE REQUISIÇÃO
+    formRequestFormData.set("codigoAlunoConsultar", codMatricula) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("anoConsultar", 2025) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+    formRequestFormData.set("idCidadaoSelecionado", dadosAlunoPesquisa.codigoAlunoCid) // MATRICULA PARA BUSCAR O CODIGO DO ALUNO NO SISTEMA
+
+    let formRequestObj = Object.fromEntries(formRequestFormData) // TRANSFORMA EM OBJETO - CHAVE & VALOR
+    let corpoRequestToX = new URLSearchParams(formRequestObj).toString() // TRANSFORMA OS DADOS EM FORMATO x-www-form-urlencoded
+    
+
+    // REQUISIÇÃO ASSÍNCRONA
+    let request = await fetch("https://www.siepe.educacao.pe.gov.br/eol/aluno/consultarAlunoCadastroHistoricoAction.do", {
+        method: "POST",
+        headers: {
+            'Accept': 'text/html',
+            'Content-Type': 'application/x-www-form-urlencoded'
+
+        },
+        body: corpoRequestToX
+
+    })
+    let txtrequest = await request.text()
+
+    /*
+    console.log(txtrequest)
+
+    
     const requestHistoricoHtml = await fetch(`https://www.siepe.educacao.pe.gov.br/ws/eol/aluno/documentos/historicoescolar/${chkCodigo}/html`)
     const documentDOMHTML = parser.parseFromString(await requestHistoricoHtml.text(), "text/html")
     let resultadosSeries = documentDOMHTML.getElementsByClassName('resultadoSerie')
@@ -129,6 +177,8 @@ async function tratarPesquisaHistorico(txtDocument) {
 
 
     //window.URL.revokeObjectURL(url)
+
+    */
 
 
 
