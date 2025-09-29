@@ -64,6 +64,7 @@ async function incluiRecursos() {
             divDisciplinasParciais.hidden = true
 			tabelaDados.hidden = false
 			pesquisasCadastro.hidden = false
+			divLinkBoletins.hidden = false
 
         } else if (selectPesquisa.value == "endereco") {
 
@@ -76,6 +77,7 @@ async function incluiRecursos() {
             divDisciplinasParciais.hidden = true
 			tabelaDados.hidden = true
 			pesquisasCadastro.hidden = false
+			divLinkBoletins.hidden = false
 
         } else if (selectPesquisa.value == "saude") {
 
@@ -88,6 +90,7 @@ async function incluiRecursos() {
             divDisciplinasParciais.hidden = true
 			tabelaDados.hidden = true
 			pesquisasCadastro.hidden = false
+			divLinkBoletins.hidden = false
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
@@ -98,6 +101,7 @@ async function incluiRecursos() {
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
 			pesquisasCadastro.hidden = true
+			divLinkBoletins.hidden = false
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
@@ -108,6 +112,7 @@ async function incluiRecursos() {
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
 			pesquisasCadastro.hidden = true
+			divLinkBoletins.hidden = false
 
         } else if (selectPesquisa.value == "parciais") {
             tabelaHistorico.hidden = true
@@ -118,6 +123,7 @@ async function incluiRecursos() {
             tabelaAtestados.hidden = false
             divDisciplinasParciais.hidden = false
 			pesquisasCadastro.hidden = true
+			divLinkBoletins.hidden = false
 
         } else {
 
@@ -130,6 +136,7 @@ async function incluiRecursos() {
 			tabelaDados.hidden = true
             tabelaAtestados.hidden = false
 			pesquisasCadastro.hidden = false
+			divLinkBoletins.hidden = false
             
 
         }
