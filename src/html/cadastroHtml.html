@@ -269,7 +269,12 @@
 
             <div id="tabelaDisciplinasPendentes" hidden>
 
-                <h1>PESQUISAR HISTÓRICO</h1>
+                
+				<div class="alert alert-warning m-3" role="alert">
+					<h1>PESQUISAR HISTÓRICO</h1
+					<h2>Inserir as matrículas dos alunos e marcar as ações nas caixas de opções.</h2>
+					<h2>A tabela no final aponta o histórico do fundamental e médio dos alunos da lista.</h2>
+				</div>
 
                 <form id="formRequestBuscaHistorico" class="card m-1">
 
@@ -283,10 +288,6 @@
                             <span class="input-group-text" id="basic-addon1">ANO</span>
                             <input name="txtAno" type="text" class="form-control" value="2025">
                         </div>
-
-
-
-
 
                         
                         <input type="text" name="codigoAlunoConsultar" hidden>
@@ -355,17 +356,16 @@
                     </div>
 
                     <div>
-                        <table class="table" id="alunosHistorico">
+                        <table class="table table-striped" id="alunosHistorico">
                             <thead>
                                 <tr>
                                     <th scope="col">Nome completo do aluno</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
+                                    <th scope="col">6° ANO</th>
+                                    <th scope="col">7° ANO</th>
+                                    <th scope="col">8° ANO</th>
+                                    <th scope="col">9° ANO</th>
+                                    <th scope="col">1° ANO</th>
+                                    <th scope="col">2° ANO</th>
 
                                 </tr>
                             </thead>
@@ -388,6 +388,14 @@
             </div>
 
             <div id="divDisciplinasParciais" hidden>
+			
+			
+				<div class="alert alert-warning m-3" role="alert">
+					<h1>Consultas > Operacionais > Alunos em progressão parcial/exame especial</h1>
+					<h2>Pesquisar os alunos e clicar no botão para ter o resultado daquela página de resultados</h2>
+				</div>
+
+				
 
                 <table class="table" id="tabelaDisciplinasParcial">
                     <thead>
