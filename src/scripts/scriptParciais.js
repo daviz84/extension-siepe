@@ -8,12 +8,12 @@ setTimeout(() => {
 
     botaoSubmitParciais.addEventListener("click", () => {
         const divsAlunosPendencias = document.querySelectorAll(".dgrid-row")
-        const divDisciplinasParcialTbody = document.querySelector('#divDisciplinasParcial tbody')
+        const divDisciplinasParcialTbody = document.querySelector('#tabelaDisciplinasParcial tbody')
 
         divsAlunosPendencias.forEach(div => {
 
-            const nomeAluno = div.querySelector('.dgrid-column-nome_aluno').textContent
-            codigosCidadao.push({ id: div.id.split('-')[2], nome: nomeAluno })
+            let nomeAluno = div.querySelector('.dgrid-column-nome_aluno')
+            codigosCidadao.push({ id: div.id.split('-')[2], nome: nomeAluno.textContent })
 
         })
         console.log("Botão de buscar parciais clicado")
@@ -21,7 +21,7 @@ setTimeout(() => {
     })
 
     async function iniciaLoop() {
-        const divDisciplinasParcialTbody = document.querySelector('#divDisciplinasParcial tbody')
+        const divDisciplinasParcialTbody = document.querySelector('#tabelaDisciplinasParcial tbody')
 
         for (const idAluno of codigosCidadao) {
 
@@ -77,11 +77,11 @@ setTimeout(() => {
                 if (!pendencias[idHistorico]) {
 
                     pendencias[idHistorico] = []
-                    pendencias[idHistorico].push(JSON.stringify([pendencia.descricao_disciplina, pendencia.resultado, pendencia.serie_equivalente]))
+                    pendencias[idHistorico].push(JSON.stringify([pendencia.descricao_disciplina, pendencia.resultado, componente.serie_equivalente]))
 
 
                 } else {
-                    pendencias[idHistorico].push(JSON.stringify([pendencia.descricao_disciplina, pendencia.resultado, pendencia.serie_equivalente]))
+                    pendencias[idHistorico].push(JSON.stringify([pendencia.descricao_disciplina, pendencia.resultado, componente.serie_equivalente]))
 
 
                 }
