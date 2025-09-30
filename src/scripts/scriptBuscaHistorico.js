@@ -16,7 +16,7 @@ formRequestHistorico.addEventListener('submit', (ev) => {
 })
 
 
-async function iniciaLoopHistorico() {"
+async function iniciaLoopHistorico() {
 
     intext = document.getElementById('txtAreaMatriculasHistorico').value.split('\n')
     let alunoAtual = 0
