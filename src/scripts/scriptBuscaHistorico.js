@@ -16,7 +16,7 @@ formRequestHistorico.addEventListener('submit', (ev) => {
 })
 
 
-async function iniciaLoopHistorico() {
+async function iniciaLoopHistorico() {"
 
     intext = document.getElementById('txtAreaMatriculasHistorico').value.split('\n')
     let alunoAtual = 0
@@ -215,7 +215,7 @@ alunosHistoricoBody.appendChild(trHistorico)
     card_title_button.classList.add("btn")
     card_title_button.classList.add("btn-primary")
     card_title_button.style.color = "blank"
-    card_title_button.innerText = "NOME DO ALUNO"
+    card_title_button.innerText = nomeAlunoHistorico
 
     if (btnchecDownloadHistorico.checked == true) {
 
@@ -225,7 +225,7 @@ alunosHistoricoBody.appendChild(trHistorico)
         let url = window.URL.createObjectURL(pdfHistorico)
 
         card_title_button.href = url
-        card_title_button.download = "NOME DO ALUNO"
+        card_title_button.download = nomeAlunoHistorico
 
         card_title_button.click()
 
