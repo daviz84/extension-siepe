@@ -168,6 +168,16 @@ historicoLinhas.forEach(linha => {
     
 })
 
+	//CODIGO PARA VISUAL
+	
+	while(trHistorico.querySelectorAll("td").length < 7){
+		
+		let newTd = document.createElement("td")
+		let primeiroTdNome = trHistorico.children[0]
+		primeiroTdNome.after(newTd) //ADICIONA TD NO INÍCIO DA LISTA DE ELEMENTOS FILHOS
+		
+	}
+
 iniciaListagem = false
 alunosHistoricoBody.appendChild(trHistorico)
 	
