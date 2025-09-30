@@ -225,7 +225,7 @@ alunosHistoricoBody.appendChild(trHistorico)
         let url = window.URL.createObjectURL(pdfHistorico)
 
         card_title_button.href = url
-        card_title_button.download = nomeAlunoHistorico.textContent
+        //card_title_button.download = nomeAlunoHistorico.textContent
 
         card_title_button.click()
 
