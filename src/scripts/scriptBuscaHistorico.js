@@ -215,7 +215,7 @@ alunosHistoricoBody.appendChild(trHistorico)
     card_title_button.classList.add("btn")
     card_title_button.classList.add("btn-primary")
     card_title_button.style.color = "blank"
-    card_title_button.innerText = nomeAlunoHistorico
+    card_title_button.innerText = nomeAlunoHistorico.textContent
 
     if (btnchecDownloadHistorico.checked == true) {
 
@@ -225,7 +225,7 @@ alunosHistoricoBody.appendChild(trHistorico)
         let url = window.URL.createObjectURL(pdfHistorico)
 
         card_title_button.href = url
-        card_title_button.download = nomeAlunoHistorico
+        card_title_button.download = nomeAlunoHistorico.textContent
 
         card_title_button.click()
 
