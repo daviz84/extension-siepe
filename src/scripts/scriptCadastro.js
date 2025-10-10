@@ -461,7 +461,7 @@ async function incluiRecursos() {
                     rgAluno.innerText = tabelaDados["CPF2"]
                 }
 
-				naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"] - ${tabelaDados["UFnascimento"]}`
+				naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"]} - ${tabelaDados["UFnascimento"]}`
 
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
