@@ -175,7 +175,7 @@ historicoLinhas.forEach(linha => {
 		if(trHistorico.querySelectorAll("td").length == 1){
 
 			let newTd = document.createElement("td")
-			let primeiroTdNome = trHistorico[0]
+			let primeiroTdNome = trHistorico.querySelectorAll("td")[0]
 			primeiroTdNome.after(newTd) //ADICIONA TD NO INICIO DA LISTA DE ELEMENTOS FILHOS
 
 			
