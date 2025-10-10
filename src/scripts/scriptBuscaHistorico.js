@@ -173,8 +173,8 @@ historicoLinhas.forEach(linha => {
 	while(trHistorico.querySelectorAll("td").length < 7){
 		
 		let newTd = document.createElement("td")
-		let primeiroTdNome = trHistorico.children[0]
-		primeiroTdNome.after(newTd) //ADICIONA TD NO INÍCIO DA LISTA DE ELEMENTOS FILHOS
+		let ultimoTdNome = trHistorico.lastChild
+		ultimoTdNome.after(newTd) //ADICIONA TD NO FINAL DA LISTA DE ELEMENTOS FILHOS
 		
 	}
 
