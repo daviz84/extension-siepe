@@ -370,6 +370,7 @@ async function incluiRecursos() {
         let botaoGeraLinkdocument = document.querySelector("#botaoGeraLink")
         let txtLinkBoletim = document.querySelector("#txtLinkBoletim")
         let divLinkBoletins = document.querySelector("#divLinkBoletins") 
+		let naturalidadeAluno = document.createElement('td')
 
         botaoGeraLinkdocument.addEventListener("click", () => {
 
@@ -460,9 +461,11 @@ async function incluiRecursos() {
                     rgAluno.innerText = tabelaDados["CPF2"]
                 }
 
+				naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"] - ${tabelaDados["UFnascimento"]}`
+
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp, rgAluno)
+                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp, rgAluno)
 
 
                 if (btncheckOutros.checked == true) {
