@@ -169,26 +169,17 @@ historicoLinhas.forEach(linha => {
 })
 
 	//CODIGO PARA VISUAL
+
+
 	
 	while(trHistorico.querySelectorAll("td").length < 7){
 
-		if(trHistorico.querySelectorAll("td").length == 1){
-
 			let newTd = document.createElement("td")
-			let primeiroTdNome = trHistorico.querySelectorAll("td")[0]
-			primeiroTdNome.after(newTd) //ADICIONA TD NO INICIO DA LISTA DE ELEMENTOS FILHOS
+			let primeiroTdNome = trHistorico.lastChild
+			primeiroTdNome.after(newTd) //ADICIONA TD NO FINAL DA LISTA DE ELEMENTOS FILHOS
 
-			
-		} else{
-			let newTd = document.createElement("td")
-			let ultimoTdNome = trHistorico.lastChild
-			ultimoTdNome.after(newTd) //ADICIONA TD NO FINAL DA LISTA DE ELEMENTOS FILHOS
-			
-		}
-		
-
-		
 	}
+
 
 iniciaListagem = false
 alunosHistoricoBody.appendChild(trHistorico)
