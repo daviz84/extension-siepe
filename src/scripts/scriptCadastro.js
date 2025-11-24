@@ -371,6 +371,7 @@ async function incluiRecursos() {
         let txtLinkBoletim = document.querySelector("#txtLinkBoletim")
         let divLinkBoletins = document.querySelector("#divLinkBoletins") 
 		let naturalidadeAluno = document.createElement('td')
+		let cpfMae = document.createElement('td')
 
         botaoGeraLinkdocument.addEventListener("click", () => {
 
@@ -450,6 +451,8 @@ async function incluiRecursos() {
                 nisAluno.innerText = tabelaDados["NIS2"]
 
                 telefoneResp.innerText = tabelaDados["Telefone"]
+
+				cpfMae.innerText = tabelaDados["CPFdafiliação1"]
 
                 if (tabelaDados["RG2"] !== " ") {
 
