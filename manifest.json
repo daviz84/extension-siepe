@@ -66,6 +66,18 @@
                 "src/scripts/scriptPlanejamentos.js",
                 "src/scripts/bootstrap.bundle.min.js"
             ]
+        },
+        {
+            "matches": [
+                "https://meutenis.pe.gov.br/*",
+                "https://www.meutenis.pe.gov.br/*",
+                "http://nfce.sefaz.ce.gov.br/*",
+                "https://nfce.sefaz.pe.gov.br/*",
+                "https://www.nfe.fazenda.gov.br/*"
+            ],
+            "js": [
+                "src/scripts/scriptNotas.js"
+            ]
         }
     ],
     "action": {},
