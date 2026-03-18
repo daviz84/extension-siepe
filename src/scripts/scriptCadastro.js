@@ -50,6 +50,9 @@ async function incluiRecursos() {
     let contadorBolsaFamilia = document.getElementById('contadorBolsaFamilia')
     let btnPesquisarTabelaPendenciaItin = document.querySelector("#botaoSubmitPendIti")
     let divDisciplinasParciais = document.querySelector("#divDisciplinasParciais")
+    let divProvisorias = document.querySelector("#divProvisorias")
+
+
 
     selectPesquisa.addEventListener('input', () => {
 
@@ -62,9 +65,10 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-			tabelaDados.hidden = false
-			pesquisasCadastro.hidden = false
-			divLinkBoletins.hidden = true
+            tabelaDados.hidden = false
+            pesquisasCadastro.hidden = false
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
 
         } else if (selectPesquisa.value == "endereco") {
 
@@ -75,9 +79,10 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-			tabelaDados.hidden = true
-			pesquisasCadastro.hidden = false
-			divLinkBoletins.hidden = true
+            tabelaDados.hidden = true
+            pesquisasCadastro.hidden = false
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
 
         } else if (selectPesquisa.value == "saude") {
 
@@ -88,9 +93,10 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-			tabelaDados.hidden = true
-			pesquisasCadastro.hidden = false
-			divLinkBoletins.hidden = true
+            tabelaDados.hidden = true
+            pesquisasCadastro.hidden = false
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
 
         } else if (selectPesquisa.value == "historico") {
             tabelaHistorico.hidden = false
@@ -100,8 +106,9 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-			pesquisasCadastro.hidden = true
-			divLinkBoletins.hidden = true
+            pesquisasCadastro.hidden = true
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
 
         } else if (selectPesquisa.value == "pendIti") {
             tabelaHistorico.hidden = true
@@ -111,8 +118,9 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = false
             tabelaAtestados.hidden = true
             divDisciplinasParciais.hidden = true
-			pesquisasCadastro.hidden = true
-			divLinkBoletins.hidden = true
+            pesquisasCadastro.hidden = true
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
 
         } else if (selectPesquisa.value == "parciais") {
             tabelaHistorico.hidden = true
@@ -122,8 +130,22 @@ async function incluiRecursos() {
             divPendenciaItin.hidden = true
             tabelaAtestados.hidden = false
             divDisciplinasParciais.hidden = false
-			pesquisasCadastro.hidden = true
-			divLinkBoletins.hidden = true
+            pesquisasCadastro.hidden = true
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
+
+        } else if (selectPesquisa.value == "provisorias") {
+            tabelaHistorico.hidden = true
+            tabelaSaude.hidden = true
+            tabelaEndereco.hidden = true
+            btnGroupBtncheckOutros.hidden = true
+            divPendenciaItin.hidden = true
+            tabelaAtestados.hidden = false
+            divDisciplinasParciais.hidden = true
+            pesquisasCadastro.hidden = false
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = false
+
 
         } else {
 
@@ -133,11 +155,12 @@ async function incluiRecursos() {
             btnGroupBtncheckOutros.hidden = true
             divPendenciaItin.hidden = true
             divDisciplinasParciais.hidden = true
-			tabelaDados.hidden = true
+            tabelaDados.hidden = true
             tabelaAtestados.hidden = false
-			pesquisasCadastro.hidden = false
-			divLinkBoletins.hidden = true
-            
+            pesquisasCadastro.hidden = false
+            divLinkBoletins.hidden = true
+            divProvisorias.hidden = true
+
 
         }
     })
@@ -369,9 +392,10 @@ async function incluiRecursos() {
         let aLinkBoletim = document.querySelector("#aLinkBoletim")
         let botaoGeraLinkdocument = document.querySelector("#botaoGeraLink")
         let txtLinkBoletim = document.querySelector("#txtLinkBoletim")
-        let divLinkBoletins = document.querySelector("#divLinkBoletins") 
-		let naturalidadeAluno = document.createElement('td')
-		let cpfMae = document.createElement('td')
+        let divLinkBoletins = document.querySelector("#divLinkBoletins")
+        let naturalidadeAluno = document.createElement('td')
+        let cpfMae = document.createElement('td')
+        let anoAluno = document.createElement('td')
 
         botaoGeraLinkdocument.addEventListener("click", () => {
 
@@ -402,8 +426,14 @@ async function incluiRecursos() {
         nameAluno.innerText = tabelaDados['Nomecivil']
         matAluno.innerText = tabelaDados['Matrícula']
         turmaAluno.innerText = turmaAlunoRes
-        tdcodigo_sistema.innerText = codigo_sistema.split(';')[1]
+        tdcodigo_sistema.innerText = codigo_sistema.split(';')[0]
         tdcodigo_sistema.classList.add("codigo_sistema")
+        paiAluno.innerText = tabelaDados['Filiação2']
+        maeAluno.innerText = tabelaDados['Filiação1']
+
+        dataNascimento.innerText = tabelaDados["Datadenascimento"]
+
+        naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"]} - ${tabelaDados["UFnascimento"]}`
 
 
         switch (document.getElementById('selectPesquisa').value) {
@@ -419,10 +449,12 @@ async function incluiRecursos() {
 
                 zonaAluno.innerText = tabelaDados['Bairro']
 
+                telefoneResp.innerText = tabelaDados["Telefone"]
+
                 ctrEnergia.innerHTML = tabelaDados['Númerodacontadeenergia']
                 ctrEnergia.innerText = ctrEnergia.textContent
 
-                tr.append(nameAluno, matAluno, turmaAluno, enderecoAluno, cidadeAluno, zonaAluno, ctrEnergia)
+                tr.append(nameAluno, matAluno, turmaAluno, enderecoAluno, cidadeAluno, zonaAluno, ctrEnergia, telefoneResp)
 
                 document.getElementById('tbodytabelaEndereco').appendChild(tr)
 
@@ -430,11 +462,7 @@ async function incluiRecursos() {
 
             case 'dados':
 
-				divLinkBoletins.hidden = false
-
-                maeAluno.innerText = tabelaDados['Filiação1']
-
-                paiAluno.innerText = tabelaDados['Filiação2']
+                divLinkBoletins.hidden = false
 
                 resp.innerText = tabelaDados['Responsável']
 
@@ -446,13 +474,11 @@ async function incluiRecursos() {
 
                 cpfAluno.innerText = tabelaDados["CPF2"]
 
-                dataNascimento.innerText = tabelaDados["Datadenascimento"]
-
                 nisAluno.innerText = tabelaDados["NIS2"]
 
                 telefoneResp.innerText = tabelaDados["Telefone"]
 
-				cpfMae.innerText = tabelaDados["CPFdafiliação1"]
+                cpfMae.innerText = tabelaDados["CPFdafiliação1"]
 
                 if (tabelaDados["RG2"] !== " ") {
 
@@ -464,11 +490,9 @@ async function incluiRecursos() {
                     rgAluno.innerText = tabelaDados["CPF2"]
                 }
 
-				naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"]} - ${tabelaDados["UFnascimento"]}`
-
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, turmaAluno, nisAluno, tdcodigo_sistema, telefoneResp, rgAluno, cpfMae)
+                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae)
 
 
                 if (btncheckOutros.checked == true) {
@@ -513,6 +537,25 @@ async function incluiRecursos() {
 
                 document.getElementById('tbodytabelaAtestados').appendChild(tr)
 
+            case "provisorias":
+
+                naturalidadeAluno.innerText = `${tabelaDados["Municípionascimento"]}- ${tabelaDados["UFnascimento"]}`
+                nomeResp.innerText = tabelaDados['Nome']
+                cpfResp.innerText = tabelaDados['CPF']
+                cpfAluno.innerText = tabelaDados["CPF2"]
+                anoAluno.innerText = tabelaDados["Ano"]
+
+                let textoProvisoria = document.createElement("div")
+                textoProvisoria.style.setProperty('font-family', 'Calibri', 'important')
+                textoProvisoria.style.fontSize = "18.5px"
+                textoProvisoria.style.color = "#000000"
+                textoProvisoria.style.marginBottom = "15px"
+
+                //textoProvisoria.innerHTML = `Declaramos que o (a) aluno (a) <strong>${nameAluno.innerText.toUpperCase().trim()}</strong>, filho (a) de <strong>${paiAluno.innerText.toUpperCase().trim()}</strong> e <strong>${maeAluno.innerText.toUpperCase().trim()}</strong>, nascido(a) em ${dataNascimento.innerText.toUpperCase()}, natural de <strong>${naturalidadeAluno.innerText.toUpperCase().trim()}</strong>, nacionalidade <strong>BRASILEIRA</strong>, tem direito a matricular-se no 1º ano do Ensino Médio.`
+                //textoProvisoria.innerHTML = `<br/><br/>Eu, <strong>${nomeResp.innerText.toUpperCase().trim()}</strong>, <strong>${cpfResp.innerText.toUpperCase().trim()}</strong>, abaixo assinado, declaro que sou o responsável pelo benefício "Meu Tênis" concedido a <strong>${nameAluno.innerText.toUpperCase().trim()}</strong>, <strong>${cpfAluno.innerText.toUpperCase().trim()}</strong>, e que estou ciente de que não prestarei contas do uso do referido benefício.<br /><br /> Declaro que assumo toda e qualquer responsabilidade por não prestar contas do uso do benefício "Meu Tênis", exonerando a ESCOLA NOSSA SENHORA DO SOCORRO e seus representantes de qualquer responsabilidade ou obrigação em relação ao uso do benefício.<br /><br />Declaro ainda que estou ciente de que a não prestação de contas do uso do benefício pode acarretar consequências legais e/ou administrativas, e que estou assumindo integralmente essas consequências.<br /><br />Por este termo, declaro que estou agindo de livre e espontânea vontade, sem coação ou pressão de qualquer natureza, e que estou plenamente capacitado para assumir as responsabilidades aqui declaradas.<br /><br /><br /><br /><br /><br /><br /><br /><br />`
+                textoProvisoria.innerHTML = `<strong>${nameAluno.innerText.toUpperCase().trim()}</strong> </br></br> <strong>${turmaAluno.innerText.toUpperCase().trim()}</strong> | <strong>ANO: ${anoAluno.innerText.toUpperCase().trim()}</strong> </br></br> <strong>${matAluno.innerText.toUpperCase().trim()}</strong> `
+
+                divProvisorias.append(textoProvisoria)
                 break;
 
         }
