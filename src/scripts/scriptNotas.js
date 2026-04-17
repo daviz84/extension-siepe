@@ -1,5 +1,7 @@
 let body = document.querySelector("body")
 let botao = document.createElement("input")
+let peAreaAlt = document.querySelector("#cont-botoes")
+
 botao.type = "button"
 botao.value = "COPIAR"
 botao.style.position = "relative"
@@ -7,6 +9,9 @@ botao.style.zIndex = "10"
 botao.classList.add("p-button")
 botao.classList.add("p-component")
 botao.classList.add("p-button-primary")
+
+if(peAreaAlt) peAreaAlt.append(botao)
+
 
 
 // ----- X -------
@@ -51,7 +56,7 @@ botao.onclick = async function () {
         } else {
 
             data = document.querySelectorAll("span")[18].textContent.split(" ")[0]
-            nomeTenis = document.querySelectorAll("span")[123].textContent
+            nomeTenis = document.querySelectorAll("#Prod span")[1].textContent
             valorTenis = document.querySelectorAll("span")[20].textContent
             vendedor = document.querySelectorAll("span")[22].textContent
             cnpj = document.querySelectorAll("span")[21].textContent
@@ -106,39 +111,44 @@ botao.onclick = async function () {
 
         let dadosNota = JSON.parse(await pegarTexto())
 
-        const buyDate = document.querySelector('input[name="buyDate"]'); // ou o seletor específico
+        let buyDate = document.querySelector('input[name="buyDate"]'); // ou o seletor específico
         buyDate.value = dadosNota[0];
         buyDate.dispatchEvent(new Event('input', { bubbles: true }));
 
-        const shoesName = document.querySelector('input[name="shoesName"]'); // ou o seletor específico
+        let shoesName = document.querySelector('input[name="shoesName"]'); // ou o seletor específico
         shoesName.value = dadosNota[1].slice(0, 50)
 
         shoesName.dispatchEvent(new Event('input', { bubbles: true }));
 
         // CAMPO COM MÁSCARA - USA FOCO PARA AJUSTAR
-        const shoesValor = document.querySelector('input[placeholder="R$ 139,90"]'); // ou o seletor específico
+
+        let shoesValor = document.querySelector('input[placeholder="R$ 139,90"]') 
+
+        if(shoesValor == null) shoesValor = document.querySelector('input[placeholder="R$ 150,00"]')
+
         shoesValor.focus()
         shoesValor.value = dadosNota[2]
         shoesValor.dispatchEvent(new Event('input', { bubbles: true }));
         shoesValor.blur()
 
-        const storeName = document.querySelector('input[name="storeName"]'); // ou o seletor específico
+        let storeName = null
+        storeName = document.querySelector('input[name="storeName"]'); // ou o seletor específico
         storeName.value = dadosNota[3]
         storeName.dispatchEvent(new Event('input', { bubbles: true }));
 
-        const storeCnpj = document.querySelector('input[name="storeCnpj"]'); // ou o seletor específico
+        let storeCnpj = document.querySelector('input[name="storeCnpj"]'); // ou o seletor específico
         storeCnpj.value = dadosNota[4]
         storeCnpj.dispatchEvent(new Event('input', { bubbles: true }));
 
-        const accessKey = document.querySelector('input[name="accessKey"]'); // ou o seletor específico
+        let accessKey = document.querySelector('input[name="accessKey"]'); // ou o seletor específico
         accessKey.value = dadosNota[5]
         accessKey.dispatchEvent(new Event('input', { bubbles: true }));
 
-        const buyerName = document.querySelector('input[name="buyerName"]'); // ou o seletor específico
+        let buyerName = document.querySelector('input[name="buyerName"]'); // ou o seletor específico
         buyerName.value = dadosNota[6]
         buyerName.dispatchEvent(new Event('input', { bubbles: true }));
 
-        const buyerCpf = document.querySelector('input[name="buyerCpf"]'); // ou o seletor específico
+        let buyerCpf = document.querySelector('input[name="buyerCpf"]'); // ou o seletor específico
         buyerCpf.value = dadosNota[7]
         buyerCpf.dispatchEvent(new Event('input', { bubbles: true }));
 
