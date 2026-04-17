@@ -373,13 +373,6 @@ async function incluiRecursos() {
         let resp = document.createElement('td')
         let cpfResp = document.createElement('td')
         let nomeResp = document.createElement('td')
-        let numSus = document.createElement('td')
-        let saudeAluno = document.createElement('td')
-        let usaMedicacaoControlada = document.createElement('td')
-        let medicacaoControlada = document.createElement('td')
-        let alergia = document.createElement('td')
-        let possuiDeficiencia = document.createElement('td')
-        let tipoDeficiencia = document.createElement('td')
         let bolsaFamilia = document.createElement('td')
         let cpfAluno = document.createElement('td')
         let dataNascimento = document.createElement('td')
@@ -396,6 +389,7 @@ async function incluiRecursos() {
         let naturalidadeAluno = document.createElement('td')
         let cpfMae = document.createElement('td')
         let anoAluno = document.createElement('td')
+        let racacor = document.createElement('td')
 
         botaoGeraLinkdocument.addEventListener("click", () => {
 
@@ -420,8 +414,6 @@ async function incluiRecursos() {
 
 
         // DADOS PADRÃO PARA TODOS OS CASOS
-
-
 
         nameAluno.innerText = tabelaDados['Nomecivil']
         matAluno.innerText = tabelaDados['Matrícula']
@@ -480,6 +472,8 @@ async function incluiRecursos() {
 
                 cpfMae.innerText = tabelaDados["CPFdafiliação1"]
 
+                racacor.innerText = tabelaDados["Raça/cor"]
+
                 if (tabelaDados["RG2"] !== " ") {
 
                     rgAluno.innerText = tabelaDados["RG2"]
@@ -492,7 +486,7 @@ async function incluiRecursos() {
 
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae)
+                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae, racacor)
 
 
                 if (btncheckOutros.checked == true) {
@@ -515,18 +509,38 @@ async function incluiRecursos() {
 
             case "saude":
 
-                numSus.innerText = tabelaDados.CNS
-                dataNascimento.innerText = tabelaDados["Datadenascimento"]
-                let saudeParaFormatar = document.createElement("p")
-                saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
-                tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] ? usaMedicacaoControlada.innerText = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] : ""
-                tabelaDados["Medicaçãocontroladaoudeusocontínuo"] ? medicacaoControlada.innerText = tabelaDados["Medicaçãocontroladaoudeusocontínuo"] : ""
-                tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ? alergia.innerText = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
-                tabelaDados["Possuideficiência"] ? possuiDeficiencia.innerText = tabelaDados["Possuideficiência"] : ""
-                tabelaDados["Deficiência"] ? tipoDeficiencia.innerText = tabelaDados["Deficiência"] : ""
+                // APÓS BUG DE LINHAS DESAPARECENDO, OPTEI POR TRAZER AS VARIÁVEIS DA ABA SAÚDE PARA DENTRO DO BLOCO SAÚDE
+                let trSaude = document.createElement("tr")
+                let nameAlunoSaude = document.createElement('td')
+                let matAlunoSaude = document.createElement('td')
+                let turmaAlunoSaude = document.createElement('td')
+                let numSus = document.createElement('td')
+                let dataNascimentoSaude = document.createElement('td')
 
-                document.getElementById('tbodytabelaSaude').appendChild(tr)
-                tr.append(matAluno, nameAluno, numSus, turmaAluno, dataNascimento, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
+                let saudeAluno = document.createElement('td')
+                let usaMedicacaoControlada = document.createElement('td')
+                let medicacaoControlada = document.createElement('td')
+                let alergia = document.createElement('td')
+                let possuiDeficiencia = document.createElement('td')
+                let tipoDeficiencia = document.createElement('td')
+                
+                turmaAlunoSaude.textContent = turmaAlunoRes
+                nameAlunoSaude.textContent = tabelaDados['Nomecivil']
+                matAlunoSaude.textContent = tabelaDados['Matrícula']
+                numSus.textContent = tabelaDados['CNS']
+                dataNascimento.textContent = tabelaDados["Datadenascimento"]
+        
+                saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
+                
+                tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] ? usaMedicacaoControlada.textContent = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] : ""
+                tabelaDados["Medicaçãocontroladaoudeusocontínuo"] ? medicacaoControlada.textContent = tabelaDados["Medicaçãocontroladaoudeusocontínuo"] : ""
+                tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ? alergia.textContent = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
+                tabelaDados["Possuideficiência"] ? possuiDeficiencia.textContent = tabelaDados["Possuideficiência"] : ""
+                tabelaDados["Deficiência"] ? tipoDeficiencia.textContent = tabelaDados["Deficiência"] : ""
+
+                trSaude.append(matAlunoSaude, nameAlunoSaude, numSus, turmaAlunoSaude, dataNascimentoSaude, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
+                document.getElementById('tbodytabelaSaude').appendChild(trSaude)
+                
 
             case "atestados":
 
