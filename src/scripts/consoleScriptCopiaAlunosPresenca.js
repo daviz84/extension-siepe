@@ -8,9 +8,10 @@ body.addEventListener("click", () => {
 
         let nomeAluno = aluno.querySelector(".cdk-column-nome").querySelector("span").textContent.trim()
         let serieAluno = aluno.querySelector(".cdk-column-noSerie").textContent.trim()
+        let nisAluno = aluno.querySelector(".cdk-column-nuNis").textContent.trim()
 
 
-        alunos += `${nomeAluno}	 ${serieAluno}\n`
+        alunos += `${nomeAluno}	 ${serieAluno}	 ${nisAluno}\n`
 
     })
 

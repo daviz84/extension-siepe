@@ -486,7 +486,7 @@ async function incluiRecursos() {
 
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae, racacor)
+                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae, racacor, nisAluno)
 
 
                 if (btncheckOutros.checked == true) {
