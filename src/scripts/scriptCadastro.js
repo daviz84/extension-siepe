@@ -390,6 +390,7 @@ async function incluiRecursos() {
         let cpfMae = document.createElement('td')
         let anoAluno = document.createElement('td')
         let racacor = document.createElement('td')
+        let religiao = document.createElement('td')
 
         botaoGeraLinkdocument.addEventListener("click", () => {
 
@@ -474,6 +475,8 @@ async function incluiRecursos() {
 
                 racacor.innerText = tabelaDados["Raça/cor"]
 
+                religiao.textContent = tabelaDados["Pretendecursaroensinoreligioso"]
+
                 if (tabelaDados["RG2"] !== " ") {
 
                     rgAluno.innerText = tabelaDados["RG2"]
@@ -486,7 +489,7 @@ async function incluiRecursos() {
 
                 if (tabelaDados["RecebeBolsaFamília"] === 'Sim') contadorBolsaFamilia.value = (Number(contadorBolsaFamilia.value) + 1)
 
-                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae, racacor, nisAluno)
+                tr.append(matAluno, nameAluno, dataNascimento, naturalidadeAluno, cpfAluno, maeAluno, paiAluno, cpfResp, nomeResp, turmaAluno, bolsaFamilia, tdcodigo_sistema, rgAluno, cpfMae, racacor, nisAluno, religiao)
 
 
                 if (btncheckOutros.checked == true) {
@@ -528,7 +531,7 @@ async function incluiRecursos() {
                 nameAlunoSaude.textContent = tabelaDados['Nomecivil']
                 matAlunoSaude.textContent = tabelaDados['Matrícula']
                 numSus.textContent = tabelaDados['CNS']
-                dataNascimento.textContent = tabelaDados["Datadenascimento"]
+                dataNascimentoSaude.textContent = tabelaDados["Datadenascimento"]
         
                 saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
                 

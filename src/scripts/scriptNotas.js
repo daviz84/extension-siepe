@@ -124,7 +124,7 @@ botao.onclick = async function () {
 
         let shoesValor = document.querySelector('input[placeholder="R$ 139,90"]') 
 
-        if(shoesValor == null) shoesValor = document.querySelector('input[placeholder="R$ 150,00"]')
+        if(shoesValor == null) shoesValor = document.querySelector('input[placeholder="R$ 0,00"]')
 
         shoesValor.focus()
         shoesValor.value = dadosNota[2]

@@ -6,7 +6,8 @@
     "permissions": [
         "activeTab",
         "scripting",
-        "webRequest"
+        "webRequest",
+        "tts"
     ],
     "content_scripts": [
         {
@@ -77,6 +78,14 @@
             ],
             "js": [
                 "src/scripts/scriptNotas.js"
+            ]
+        },
+        {
+            "matches": [
+                "https://sei.pe.gov.br/sei/modulos/pesquisa/*"
+            ],
+            "js": [
+                "src/scripts/scriptSei.js"
             ]
         }
     ],
