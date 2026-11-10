@@ -1,3 +1,12 @@
+if(document.querySelector("#ctl00_ContentPlaceHolder1_txtChaveAcessoResumo")){
+
+    let inputNumNota = document.querySelector("#ctl00_ContentPlaceHolder1_txtChaveAcessoResumo")
+    inputNumNota.addEventListener("input", () => {
+        inputNumNota.value = inputNumNota.value.replaceAll(" ", "")
+    })
+
+}
+
 let body = document.querySelector("body")
 let botao = document.createElement("input")
 let peAreaAlt = document.querySelector("#cont-botoes")
@@ -127,7 +136,7 @@ botao.onclick = async function () {
         if(shoesValor == null) shoesValor = document.querySelector('input[placeholder="R$ 0,00"]')
 
         shoesValor.focus()
-        shoesValor.value = dadosNota[2]
+        shoesValor.value = dadosNota[2].slice(0,6) //ajustado para 3 numeros após a virgula
         shoesValor.dispatchEvent(new Event('input', { bubbles: true }));
         shoesValor.blur()
 

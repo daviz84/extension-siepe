@@ -526,24 +526,27 @@ async function incluiRecursos() {
                 let alergia = document.createElement('td')
                 let possuiDeficiencia = document.createElement('td')
                 let tipoDeficiencia = document.createElement('td')
-                
+                let transtornoDisturbio = document.createElement('td')
+
                 turmaAlunoSaude.textContent = turmaAlunoRes
                 nameAlunoSaude.textContent = tabelaDados['Nomecivil']
                 matAlunoSaude.textContent = tabelaDados['Matrícula']
                 numSus.textContent = tabelaDados['CNS']
                 dataNascimentoSaude.textContent = tabelaDados["Datadenascimento"]
-        
+
                 saudeAluno.innerHTML = tabelaDados["Saúdedoaluno/Outrosresultadosdeexames"]
-                
+
                 tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] ? usaMedicacaoControlada.textContent = tabelaDados["Fazusodemedicaçãocontroladaoudeusocontínuo"] : ""
                 tabelaDados["Medicaçãocontroladaoudeusocontínuo"] ? medicacaoControlada.textContent = tabelaDados["Medicaçãocontroladaoudeusocontínuo"] : ""
                 tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] ? alergia.textContent = tabelaDados["Possuialgumaalergia(Medicação,alimentose/ououtros)"] : ""
                 tabelaDados["Possuideficiência"] ? possuiDeficiencia.textContent = tabelaDados["Possuideficiência"] : ""
                 tabelaDados["Deficiência"] ? tipoDeficiencia.textContent = tabelaDados["Deficiência"] : ""
+                tabelaDados["Transtorno/Distúrbio"] ? transtornoDisturbio.textContent = tabelaDados["Transtorno/Distúrbio"] : ""
 
-                trSaude.append(matAlunoSaude, nameAlunoSaude, numSus, turmaAlunoSaude, dataNascimentoSaude, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia)
+
+                trSaude.append(matAlunoSaude, nameAlunoSaude, numSus, turmaAlunoSaude, dataNascimentoSaude, saudeAluno, usaMedicacaoControlada, medicacaoControlada, alergia, possuiDeficiencia, tipoDeficiencia, transtornoDisturbio)
                 document.getElementById('tbodytabelaSaude').appendChild(trSaude)
-                
+
 
             case "atestados":
 

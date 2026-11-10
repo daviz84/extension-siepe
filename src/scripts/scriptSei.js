@@ -1,5 +1,6 @@
 //script usado para monitorar processo SEI e receber notificação de atualização no whatsapp
 
+/*
 async function buscaAtualização() {
 
     let url = "https://sei.pe.gov.br/sei/modulos/pesquisa/md_pesq_processo_exibir.php?6axV45_4s79etb-ZDLNpKFeyrxxqEXsZQaM4tFDswWzALoI048GigTUvLicMiEx8XMAn_Ly7WsKJxzByHDZ8ulFaz1BkZSMoOxeXRpLQK13htkASAHQkt_-JLu4zNdUM"
@@ -51,3 +52,5 @@ let intervalo = setInterval(async () => {
     if (res == false) clearInterval(intervalo)
 
 }, 30000);
+
+*/
